@@ -4,7 +4,12 @@ import re
 import uuid
 from typing import Dict, List, Tuple
 
-from .config import get_provider_name
+from .config import (
+    get_provider_name,
+    get_openai_api_key,
+    get_openai_model,
+    get_openai_base_url,
+)
 
 
 class SupportAgent:
@@ -12,6 +17,23 @@ class SupportAgent:
         self.provider = get_provider_name()
         # In-memory chat history per session
         self.sessions: Dict[str, List[Tuple[str, str]]] = {}
+        # LLM client (optional)
+        self._llm_client = None
+        self._llm_model = get_openai_model()
+        api_key = get_openai_api_key()
+        base_url = get_openai_base_url()
+        if api_key:
+            try:
+                # Lazy import to avoid hard dependency if not used
+                from openai import OpenAI  # type: ignore
+
+                if base_url:
+                    self._llm_client = OpenAI(api_key=api_key, base_url=base_url)
+                else:
+                    self._llm_client = OpenAI(api_key=api_key)
+            except Exception:
+                # If import or client init fails, stay in rule-based mode
+                self._llm_client = None
 
         # Minimal knowledge base with topic -> details
         self.knowledge: Dict[str, Dict] = {
@@ -124,9 +146,36 @@ class SupportAgent:
         # Fallback
         return "unknown"
 
-    def _build_reply(self, topic: str, user_text: str) -> tuple[str, List[str], bool]:
+    def _llm_reply(self, user_text: str, topic: str, sid: str) -> str | None:
+        if not self._llm_client:
+            return None
+        try:
+            system = (
+                f"You are a concise, friendly mobile network provider support chatbot for {self.provider}. "
+                "Answer helpfully for telecom topics like plans, upgrades, data/balance, billing, roaming, network/coverage, devices/SIM. "
+                "Avoid hallucinations; if uncertain, ask for details or suggest contacting a human agent."
+            )
+            # Build short context using session last few turns
+            messages = [{"role": "system", "content": system}]
+            history = self.sessions.get(sid, [])
+            for role, text in history[-6:]:
+                messages.append({"role": role, "content": text})
+            messages.append({"role": "user", "content": user_text})
+
+            resp = self._llm_client.chat.completions.create(
+                model=self._llm_model,
+                messages=messages,  # type: ignore
+                temperature=0.3,
+                max_tokens=220,
+            )
+            content = resp.choices[0].message.content if resp.choices else None
+            return content or None
+        except Exception:
+            return None
+
+    def _build_reply(self, topic: str, user_text: str, sid: str) -> tuple[str, List[str], bool]:
         if topic == "unknown":
-            reply = (
+            reply = self._llm_reply(user_text, topic, sid) or (
                 f"I'm your {self.provider} virtual assistant. I can help with plans, "
                 "data/balance, billing, roaming, coverage, or devices. Could you share a few details?"
             )
@@ -141,7 +190,8 @@ class SupportAgent:
             return reply, suggestions, False
 
         info = self.knowledge[topic]
-        reply = info["reply"]
+        # Prefer LLM reply when available; otherwise canned text
+        reply = self._llm_reply(user_text, topic, sid) or info["reply"]
         suggestions = info["suggestions"]
         escalate = topic == "support" or any(
             w in user_text.lower() for w in ["agent", "human", "person", "escalate"]
@@ -153,7 +203,7 @@ class SupportAgent:
         self.sessions[sid].append(("user", message))
 
         topic = self._detect_topic(message)
-        reply, suggestions, escalate = self._build_reply(topic, message)
+        reply, suggestions, escalate = self._build_reply(topic, message, sid)
 
         self.sessions[sid].append(("assistant", reply))
         return {
@@ -163,4 +213,3 @@ class SupportAgent:
             "escalate": escalate,
             "session_id": sid,
         }
-

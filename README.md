@@ -32,12 +32,20 @@ A local full‑stack customer support chatbot specialized for a mobile network p
 - Mobile telco–themed chatbot with friendly tone
 - Common intents: plans, upgrades, data/balance, roaming, billing, coverage, support
 - Suggestions (quick replies) returned by API and shown as chips
-- Simple rule-based agent (no external API needed)
+- Rule-based agent by default; optional OpenAI-powered replies when configured
 
 ## Configuration
 
 - Frontend reads `NEXT_PUBLIC_API_BASE_URL` to call the backend
-- Backend reads `ALLOWED_ORIGINS` for theming/CORS
+- Backend reads `PROVIDER_NAME` and `ALLOWED_ORIGINS`
+
+### Optional: OpenAI SDK
+
+- To enable LLM-generated replies, set in `server/.env`:
+  - `OPENAI_API_KEY=...`
+  - `OPENAI_MODEL=gpt-4o-mini` (or preferred)
+  - `OPENAI_BASE_URL=` (optional, e.g., for proxies/Azure)
+- When `OPENAI_API_KEY` is set, the API uses the model for reply text while keeping suggestions and guardrails locally.
 
 ## Project Structure
 
