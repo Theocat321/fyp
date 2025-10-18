@@ -55,7 +55,7 @@ async def chat_stream(req: ChatRequest):
         # Determine topic + suggestions + escalate
         topic = agent._detect_topic(req.message)
         if topic == "unknown":
-            suggestions = [
+            base_unknown = [
                 "Show plan options",
                 "Check data balance",
                 "View my bill",
@@ -63,9 +63,22 @@ async def chat_stream(req: ChatRequest):
                 "Coverage map",
                 "Talk to an agent",
             ]
+            if agent.mode == "open":
+                suggestions = [
+                    *agent.general_suggestions,
+                    *base_unknown,
+                ]
+            else:
+                suggestions = base_unknown
             escalate = False
         else:
-            suggestions = agent.knowledge[topic]["suggestions"]
+            if agent.mode == "open":
+                suggestions = [
+                    *agent.knowledge[topic]["suggestions"],
+                    agent.general_suggestions[0],
+                ]
+            else:
+                suggestions = agent.knowledge[topic]["suggestions"]
             escalate = topic == "support" or any(
                 w in req.message.lower() for w in ["agent", "human", "person", "escalate"]
             )
@@ -87,11 +100,18 @@ async def chat_stream(req: ChatRequest):
         # Stream via OpenAI when configured; otherwise simulate streaming
         if agent._llm_client is not None:
             try:
-                system = (
-                    f"You are a concise, friendly mobile network provider support chatbot for {agent.provider}. "
-                    "Answer helpfully for telecom topics like plans, upgrades, data/balance, billing, roaming, network/coverage, devices/SIM. "
-                    "Avoid hallucinations; if uncertain, ask for details or suggest contacting a human agent."
-                )
+                if agent.mode == "open":
+                    system = (
+                        f"You are a helpful support agent for {agent.provider}. Keep replies concise. "
+                        "You can chat broadly, and for telecom topics (plans, upgrades, data/balance, billing, roaming, network/coverage, devices/SIM) give clear, practical guidance. "
+                        "Ask brief follow‑ups when needed. Don't guess."
+                    )
+                else:
+                    system = (
+                        f"You are a helpful mobile network support agent for {agent.provider}. Keep replies concise. "
+                        "Focus on telecom topics like plans, upgrades, data/balance, billing, roaming, network/coverage and devices/SIM. "
+                        "Ask brief follow‑ups when needed. Don't guess."
+                    )
                 messages = [{"role": "system", "content": system}]
                 history = agent.sessions.get(sid, [])
                 for role, text in history[-6:]:
@@ -101,7 +121,7 @@ async def chat_stream(req: ChatRequest):
                 stream = agent._llm_client.chat.completions.create(
                     model=agent._llm_model,
                     messages=messages,  # type: ignore
-                    temperature=0.3,
+                    temperature=0.5 if agent.mode == "open" else 0.3,
                     max_tokens=220,
                     stream=True,
                 )
@@ -122,10 +142,9 @@ async def chat_stream(req: ChatRequest):
                     agent.knowledge.get(topic, {}).get("reply")
                     if topic in agent.knowledge
                     else (
-                        f"I'm your {agent.provider} virtual assistant. I can help with plans, "
-                        "data/balance, billing, roaming, coverage, or devices. Could you share a few details?"
+                        f"Hi — I’m {agent.provider} Support. I can help with plans, data/balance, billing, roaming, coverage or devices. What do you need help with?"
                     )
-                ) or "Sorry, I ran into an issue."
+                ) or "Sorry, something went wrong."
                 for part in _chunk_text_for_stream(reply):
                     full_reply += part
                     yield sse("token", part)
@@ -133,10 +152,14 @@ async def chat_stream(req: ChatRequest):
         else:
             # Rule-based reply; stream in small chunks
             if topic == "unknown":
-                reply = (
-                    f"I'm your {agent.provider} virtual assistant. I can help with plans, "
-                    "data/balance, billing, roaming, coverage, or devices. Could you share a few details?"
-                )
+                if agent.mode == "open":
+                    reply = (
+                        f"Hi — I’m {agent.provider} Support. I can chat broadly and help with plans, data/balance, billing, roaming, coverage or devices. How can I help?"
+                    )
+                else:
+                    reply = (
+                        f"Hi — I’m {agent.provider} Support. I can help with plans, data/balance, billing, roaming, coverage or devices. What do you need help with?"
+                    )
             else:
                 reply = agent.knowledge[topic]["reply"]
             for part in _chunk_text_for_stream(reply):

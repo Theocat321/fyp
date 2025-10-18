@@ -18,8 +18,8 @@ venv/
 .env
 *.env.local
 server/.env
+web/.env
 web/.env.local
 
 # OS
 .DS_Store
-

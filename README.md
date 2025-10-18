@@ -1,18 +1,16 @@
-# VodaCare Support Chatbot (Next.js + FastAPI)
+# VodaCare Support (Next.js + FastAPI)
 
-A local full‑stack customer support chatbot specialized for a mobile network provider (think Vodafone). Frontend is Next.js, backend is FastAPI. No production setup — local dev only.
+Local support chat for a mobile network provider. Next.js frontend, FastAPI backend. Local dev only; no production configs.
 
 ## Quick Start
 
 - Prerequisites: Node.js 18+, Python 3.10+
 - Ports: frontend `3000`, backend `8000`
 
-1) Copy env files
+1) Environment variables
 
-- Root example: `.env.example`
-- Recommended copies:
-  - `cp server/.env.example server/.env`
-  - `cp web/.env.example web/.env.local`
+- Use a single root `.env` for development (copy from `.env.example`). Both apps load it automatically.
+- On Vercel, set env vars in the project settings. For local parity, from `web/` run `npm run env:pull` to create/update `web/.env.local`.
 
 2) Backend (FastAPI)
 
@@ -29,12 +27,12 @@ A local full‑stack customer support chatbot specialized for a mobile network p
 
 ## Features
 
-- Mobile telco–themed chatbot with friendly tone
-- Common intents: plans, upgrades, data/balance, roaming, billing, coverage, support
-- Suggestions (quick replies) returned by API and shown as chips
-- Rule-based agent by default; optional OpenAI-powered replies when configured
-- Streaming replies via SSE when using the new `/api/chat-stream` endpoint
-- Optional Supabase integration to persist chat messages
+- Telco intents: plans, upgrades, data/balance, roaming, billing, coverage, support
+- Quick‑reply suggestions
+- Rule‑based by default; optional OpenAI replies
+- Streaming replies via SSE (`/api/chat-stream`)
+- Optional Supabase persistence and interaction logging
+- Simple pre‑chat enrollment (name + group A/B)
 
 ## Configuration
 
@@ -42,15 +40,22 @@ A local full‑stack customer support chatbot specialized for a mobile network p
 - Frontend streaming toggle: set `NEXT_PUBLIC_USE_STREAMING=true` to stream replies
 - Backend reads `PROVIDER_NAME` and `ALLOWED_ORIGINS`
 
-### Optional: OpenAI SDK
+### OpenAI (optional)
 
-- To enable LLM-generated replies, set in `server/.env`:
+- To enable LLM-generated replies, set in root `.env` (dev) or Vercel envs (prod):
   - `OPENAI_API_KEY=...`
   - `OPENAI_MODEL=gpt-4o-mini` (or preferred)
   - `OPENAI_BASE_URL=` (optional, e.g., for proxies/Azure)
-- When `OPENAI_API_KEY` is set, the API uses the model for reply text while keeping suggestions and guardrails locally.
+- When set, replies come from the model; suggestions stay local.
 
-### Streaming Chat (SSE)
+### Assistant mode
+
+- Control how narrow or open‑ended the assistant feels with `ASSISTANT_MODE`:
+  - `open` (default): general chat is allowed; telecom topics are still supported.
+  - `strict`: restricts behavior and suggestions to telecom/help topics.
+- Set `ASSISTANT_MODE=open` in root `.env` for dev or in Vercel envs for production.
+
+### Streaming (SSE)
 
 - Endpoint: `POST /api/chat-stream`
 - Request body: `{ "message": string, "session_id?": string }`
@@ -60,27 +65,75 @@ A local full‑stack customer support chatbot specialized for a mobile network p
   - `event: done` with `{ reply }`
 - Frontend: set `NEXT_PUBLIC_USE_STREAMING=true` to use streaming path; falls back to non-streaming `/api/chat` otherwise.
 
-### Optional: Supabase
+### Supabase (optional)
 
 - To persist messages from the frontend, set in `web/.env.local`:
   - `NEXT_PUBLIC_SUPABASE_URL=...`
   - `NEXT_PUBLIC_SUPABASE_ANON_KEY=...`
-- Create a table `messages` (example schema):
-  - `id`: bigint PK (generated)
-  - `created_at`: timestamp with time zone default now()
-  - `session_id`: text
-  - `role`: text check in ('user','assistant')
-  - `content`: text
+- Create tables (example schemas):
+  - `participants`
+    - `participant_id`: text primary key
+    - `created_at`: timestamp with time zone default now()
+    - `name`: text
+    - `group`: text check in ('A','B')
+    - `session_id`: text (optional)
+  - `messages`
+    - `id`: bigint PK (generated)
+    - `created_at`: timestamp with time zone default now()
+    - `session_id`: text
+    - `role`: text check in ('user','assistant')
+    - `content`: text
+    - `participant_id`: text (optional FK to participants.participant_id)
+    - `participant_name`: text (optional)
+    - `participant_group`: text (optional)
 - RLS: allow inserts for `anon` if desired for local dev, e.g. a permissive policy:
-  - `create policy "allow anon inserts" on messages for insert to anon using (true) with check (true);`
-- Notes: Frontend persistence is best-effort and non-blocking; if Supabase is not configured, the UI continues to function.
+  - `create policy "allow anon inserts messages" on messages for insert to anon using (true) with check (true);`
+  - `create policy "allow anon inserts participants" on participants for insert to anon using (true) with check (true);`
+  - `create table if not exists interactions (id bigserial primary key, created_at timestamptz default now(), "group" text check ("group" in ('A','B')), input text, output text);`
+  - `alter table interactions enable row level security;`
+  - `create policy "allow anon inserts interactions" on interactions for insert to anon using (true) with check (true);`
+- Notes: Frontend persistence is best‑effort; the UI works without it.
+
+### Verbose interaction events (optional)
+
+For detailed user behavior logs (component clicks, typing duration, message send timestamps, etc.), use the provided API route and table schema:
+
+- API route: `POST /api/interaction`
+  - Accepts a single event or an array. Minimal shape:
+    - `session_id` string (required)
+    - `event` string (e.g., `click`, `typing`, `message_send`)
+    - Optional: `component`, `label`, `duration_ms`, `client_ts`, `page_url`, `participant_id`, `participant_group`, `meta`
+- Server env (in `web/.env.local`):
+  - `SUPABASE_URL`
+  - `SUPABASE_SERVICE_ROLE_KEY` (server-only)
+- Table DDL: see `res/verbose_interactions.sql` (creates `interaction_events` with useful indexes)
+
+Client instrumentation in `web/components/ChatWindow.tsx` logs:
+- text input focus/blur
+- typing duration on submit
+- suggestion chip clicks
+- send button click and message send
+
+If `SUPABASE_*` server vars are not set, events are accepted but not stored (returns 202).
 
 ## Project Structure
 
 - `server/` FastAPI app and chatbot logic
 - `web/` Next.js app with chat UI
 
+## Deployment
+
+- For Vercel using only the Next.js app, see `INSTRUCTIONS.md`.
+- The FastAPI server is optional for local development.
+
+### Unified Env (Dev + Vercel)
+
+- Single file in dev: put your variables in the repo root `.env`. Both the Next.js app and the FastAPI server load it automatically in development.
+- On Vercel: set envs in the dashboard (source of truth). For local dev, from `web/` run `npm run env:pull` to create/update `web/.env.local`.
+- Do not set `NEXT_PUBLIC_API_BASE_URL` on Vercel; leave it empty so the UI calls the built‑in routes.
+- Keep secrets out of Git: `.env` is git‑ignored; `web/.env` is ignored too.
+
 ## Notes
 
-- All data is in-memory; restarting the API clears session history.
-- This is a local dev setup; no production configs included.
+- In‑memory by default; restarting the API clears history.
+- Local dev setup only.

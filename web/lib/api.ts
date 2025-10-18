@@ -4,12 +4,25 @@ export type ChatResponse = {
   topic: string;
   escalate: boolean;
   session_id: string;
+  engine?: string;
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
+function apiUrl(path: string) {
+  // If a localhost base is set but we're not on localhost (e.g., Vercel), ignore it.
+  try {
+    if (typeof window !== "undefined") {
+      const onLocalhost = /localhost|127\.0\.0\.1/.test(window.location.host);
+      const baseIsLocalhost = /localhost|127\.0\.0\.1/.test(BASE_URL);
+      if (!onLocalhost && baseIsLocalhost) return path;
+    }
+  } catch {}
+  return BASE_URL ? `${BASE_URL}${path}` : path;
+}
 
 export async function sendMessage(message: string, sessionId?: string): Promise<ChatResponse> {
-  const res = await fetch(`${BASE_URL}/api/chat`, {
+  const res = await fetch(apiUrl(`/api/chat`), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message, session_id: sessionId }),
@@ -32,7 +45,7 @@ export async function sendMessageStream(
   sessionId: string | undefined,
   handlers: StreamHandlers
 ) {
-  const res = await fetch(`${BASE_URL}/api/chat-stream`, {
+  const res = await fetch(apiUrl(`/api/chat-stream`), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

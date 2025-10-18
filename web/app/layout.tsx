@@ -1,6 +1,6 @@
 export const metadata = {
   title: "VodaCare Support",
-  description: "Mobile provider support chatbot",
+  description: "Mobile provider support chat",
 };
 
 import "../styles/globals.css";
@@ -22,4 +22,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
