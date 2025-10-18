@@ -33,10 +33,13 @@ A local full‑stack customer support chatbot specialized for a mobile network p
 - Common intents: plans, upgrades, data/balance, roaming, billing, coverage, support
 - Suggestions (quick replies) returned by API and shown as chips
 - Rule-based agent by default; optional OpenAI-powered replies when configured
+- Streaming replies via SSE when using the new `/api/chat-stream` endpoint
+- Optional Supabase integration to persist chat messages
 
 ## Configuration
 
 - Frontend reads `NEXT_PUBLIC_API_BASE_URL` to call the backend
+- Frontend streaming toggle: set `NEXT_PUBLIC_USE_STREAMING=true` to stream replies
 - Backend reads `PROVIDER_NAME` and `ALLOWED_ORIGINS`
 
 ### Optional: OpenAI SDK
@@ -46,6 +49,31 @@ A local full‑stack customer support chatbot specialized for a mobile network p
   - `OPENAI_MODEL=gpt-4o-mini` (or preferred)
   - `OPENAI_BASE_URL=` (optional, e.g., for proxies/Azure)
 - When `OPENAI_API_KEY` is set, the API uses the model for reply text while keeping suggestions and guardrails locally.
+
+### Streaming Chat (SSE)
+
+- Endpoint: `POST /api/chat-stream`
+- Request body: `{ "message": string, "session_id?": string }`
+- Server sends SSE events:
+  - `event: init` with `{ session_id, suggestions, topic, escalate }`
+  - `event: token` with partial text tokens
+  - `event: done` with `{ reply }`
+- Frontend: set `NEXT_PUBLIC_USE_STREAMING=true` to use streaming path; falls back to non-streaming `/api/chat` otherwise.
+
+### Optional: Supabase
+
+- To persist messages from the frontend, set in `web/.env.local`:
+  - `NEXT_PUBLIC_SUPABASE_URL=...`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY=...`
+- Create a table `messages` (example schema):
+  - `id`: bigint PK (generated)
+  - `created_at`: timestamp with time zone default now()
+  - `session_id`: text
+  - `role`: text check in ('user','assistant')
+  - `content`: text
+- RLS: allow inserts for `anon` if desired for local dev, e.g. a permissive policy:
+  - `create policy "allow anon inserts" on messages for insert to anon using (true) with check (true);`
+- Notes: Frontend persistence is best-effort and non-blocking; if Supabase is not configured, the UI continues to function.
 
 ## Project Structure
 
