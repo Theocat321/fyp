@@ -115,7 +115,7 @@ export default function ChatWindow() {
     setBusy(true);
     const sid = ensureSessionId();
     if (!sessionId) setSessionId(sid);
-    // Log typing duration if any
+    // Log typing end with duration if any
     try {
       if (typingStartAt) {
         const dur = Date.now() - typingStartAt;
@@ -123,7 +123,7 @@ export default function ChatWindow() {
           session_id: sid,
           participant_id: participantId,
           participant_group: participantGroup || undefined,
-          event: "typing",
+          event: "typing_end",
           component: "text_input",
           duration_ms: dur,
           value: undefined,
@@ -337,7 +337,22 @@ export default function ChatWindow() {
           value={input}
           onChange={(e) => {
             const val = e.target.value;
-            if (!typingStartAt && val.trim().length > 0) setTypingStartAt(Date.now());
+            if (!typingStartAt && val.trim().length > 0) {
+              const startedAt = Date.now();
+              setTypingStartAt(startedAt);
+              try {
+                const sid = sessionId || ensureSessionId();
+                logEvent({
+                  session_id: sid,
+                  participant_id: participantId,
+                  participant_group: participantGroup || undefined,
+                  event: "typing_start",
+                  component: "text_input",
+                  client_ts: startedAt,
+                  page_url: typeof window !== "undefined" ? window.location.href : undefined,
+                });
+              } catch {}
+            }
             setInput(val);
           }}
           onFocus={() => {

@@ -18,7 +18,7 @@ Frontend is Next.js; backend is Python (FastAPI) deployed as Vercel Serverless F
 - From `server/` (local dev):
   - Create venv and install: `python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
   - Run API: `uvicorn app.main:app --reload --port 8000`
-  - Next.js proxies `/api/chat*` to this server in dev; in production, Python runs as Vercel functions in `api/`.
+  - Next.js proxies `/api/chat*` to this server in dev; in production, Python runs as Vercel functions in `server/api/`.
 
 3) Frontend (Next.js)
 
@@ -126,7 +126,7 @@ If `SUPABASE_*` server vars are not set, events are accepted but not stored (ret
 ## Deployment
 
 - Single Vercel project from the repo root using `vercel.json`.
-- Next.js app lives in `web/`. Python Serverless Functions live in `api/` and include shared logic from `server/app/*`.
+- Next.js app lives in `web/`. Python Serverless Functions live in `server/api/` and include shared logic from `server/app/*`.
 
 ### Unified Env (Dev + Vercel)
 

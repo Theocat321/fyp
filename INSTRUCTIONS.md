@@ -1,6 +1,6 @@
 # Vercel Deployment
 
-Single project deployment from the repo root. The Next.js app (in `web/`) serves the UI, and Python Serverless Functions (in `api/`) provide the chat backend. The shared chatbot logic lives in `server/app/*` and is bundled into the Python functions.
+Single project deployment from the repo root. The Next.js app (in `web/`) serves the UI, and Python Serverless Functions (in `server/api/`) provide the chat backend. The shared chatbot logic lives in `server/app/*` and is bundled into the Python functions.
 
 ## Settings
 

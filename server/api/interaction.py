@@ -78,3 +78,4 @@ async def interaction(req: Request):
     if stored:
         return JSONResponse({"ok": True, "stored": stored}, status_code=status)
     return JSONResponse({"ok": True, "stored": 0, "skipped": len(rows)}, status_code=status)
+

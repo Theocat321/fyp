@@ -30,7 +30,7 @@ def health():
 @app.post("/")
 def chat(req: ChatRequest):
     """Mirror of server/app/main.py /api/chat but mounted at the function root.
-    The Vercel route rewrites /api/chat -> /api/chat.py
+    The Vercel route rewrites /api/chat -> /server/api/chat.py
     """
     # If no LLM, return error style payload instead of rule-based
     if agent._llm_client is None:
@@ -71,3 +71,4 @@ def chat(req: ChatRequest):
             }
         )
     return JSONResponse(result)
+
