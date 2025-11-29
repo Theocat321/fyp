@@ -19,15 +19,23 @@ store = SupabaseStore()
 
 @app.post("/")
 def upsert_participant(p: dict):
-    row = {
-        "participant_id": p.get("participant_id"),
-        "name": p.get("name"),
-        "group": p.get("group"),
-        "session_id": p.get("session_id"),
-    }
-    if not row["participant_id"]:
+    pid = p.get("participant_id")
+    if not pid:
         return JSONResponse({"error": "participant_id_required"}, status_code=400)
-    stored, code = store.insert_rows("participants", [row], upsert=True)
+    name = p.get("name")
+    group = p.get("group")
+    session_id = p.get("session_id")
+    # If only updating session_id for an existing participant, do a PATCH update
+    if pid and not name and not group and session_id:
+        updated, code = store.update_by_pk("participants", "participant_id", pid, {"session_id": session_id})
+        status = 200 if updated else (code if code else 202)
+        return JSONResponse({"ok": True, "updated": updated}, status_code=status)
+    row = {
+        "participant_id": pid,
+        "name": name,
+        "group": group,
+        "session_id": session_id,
+    }
+    stored, code = store.insert_rows("participants", [row], upsert=True, on_conflict="participant_id")
     status = 200 if stored else (code if code else 202)
     return JSONResponse({"ok": True, "stored": stored}, status_code=status)
-

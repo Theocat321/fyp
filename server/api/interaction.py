@@ -47,6 +47,11 @@ async def interaction(req: Request):
                 "output": str(events_raw[0].get("output"))[:4000],
             }
         ]
+        try:
+            import logging
+            logging.getLogger(__name__).info("/api/interaction (fn) compact rows=%d configured=%s", len(rows), store.is_configured())
+        except Exception:
+            pass
         stored, code = store.insert_rows("interactions", rows)
         status = 200 if stored else (code if code else 202)
         return JSONResponse({"ok": True, "stored": stored}, status_code=status)
@@ -73,9 +78,13 @@ async def interaction(req: Request):
         )
     if not rows:
         return JSONResponse({"ok": True, "stored": 0, "skipped": len(events_raw)}, status_code=202)
+    try:
+        import logging
+        logging.getLogger(__name__).info("/api/interaction (fn) verbose rows=%d configured=%s", len(rows), store.is_configured())
+    except Exception:
+        pass
     stored, code = store.insert_rows("interaction_events", rows)
     status = 200 if stored else (code if code else 202)
     if stored:
         return JSONResponse({"ok": True, "stored": stored}, status_code=status)
     return JSONResponse({"ok": True, "stored": 0, "skipped": len(rows)}, status_code=status)
-

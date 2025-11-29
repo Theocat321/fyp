@@ -59,3 +59,30 @@ class SupabaseStore:
         except Exception:
             pass
         return 0, resp.status_code
+
+    def update_by_pk(
+        self,
+        table: str,
+        pk_col: str,
+        pk_value: str,
+        fields: Dict,
+    ) -> Tuple[int, int]:
+        """Patch a single row by primary key column using PostgREST eq filter."""
+        if not self.is_configured():
+            return 0, 202
+        endpoint = f"{self.url}/rest/v1/{table}?{pk_col}=eq.{pk_value}"
+        resp = requests.patch(endpoint, headers=self._headers(upsert=False), data=json.dumps(fields), timeout=10)
+        if 200 <= resp.status_code < 300:
+            # PostgREST returns 204 No Content by default; treat as updated 1
+            return 1, resp.status_code
+        try:
+            from logging import getLogger
+
+            logger = getLogger(__name__)
+            msg = resp.text[:500] if resp.text else ""
+            logger.warning(
+                "Supabase update failed: table=%s status=%s response=%s", table, resp.status_code, msg
+            )
+        except Exception:
+            pass
+        return 0, resp.status_code

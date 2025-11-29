@@ -76,6 +76,11 @@ async def interaction(req: Request):
                 "output": str(events_raw[0].get("output"))[:4000],
             }
         ]
+        # Debug log to help diagnose empty tables
+        try:
+            logger.info("/api/interaction compact rows=%d configured=%s", len(rows), store.is_configured())
+        except Exception:
+            pass
         stored, code = store.insert_rows("interactions", rows)
         status = 200 if stored else (code if code else 202)
         return JSONResponse({"ok": True, "stored": stored}, status_code=status)
@@ -99,6 +104,10 @@ async def interaction(req: Request):
                 "meta": e.meta,
             }
         )
+    try:
+        logger.info("/api/interaction verbose rows=%d configured=%s", len(rows), store.is_configured())
+    except Exception:
+        pass
     stored, code = store.insert_rows("interaction_events", rows)
     status = 200 if stored else (code if code else 202)
     if stored:
@@ -108,13 +117,23 @@ async def interaction(req: Request):
 
 @app.post("/api/participants")
 def create_or_update_participant(p: ParticipantInsert):
+    # If we only have participant_id + session_id, update session_id without touching name/group
+    if p.participant_id and not p.name and not p.group and p.session_id:
+        updated, code = store.update_by_pk(
+            "participants", "participant_id", p.participant_id, {"session_id": p.session_id}
+        )
+        status = 200 if updated else (code if code else 202)
+        return JSONResponse({"ok": True, "updated": updated}, status_code=status)
+
     row = {
         "participant_id": p.participant_id,
         "name": (p.name or None),
         "group": (p.group or None),
         "session_id": (p.session_id or None),
     }
-    stored, code = store.insert_rows("participants", [row], upsert=True, on_conflict="participant_id")
+    stored, code = store.insert_rows(
+        "participants", [row], upsert=True, on_conflict="participant_id"
+    )
     status = 200 if stored else (code if code else 202)
     return JSONResponse({"ok": True, "stored": stored}, status_code=status)
 

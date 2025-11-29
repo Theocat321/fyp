@@ -16,10 +16,10 @@ body { background: var(--bg); color: var(--ink); font-family: system-ui, sans-se
 .app-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--panel); border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 10; }
 .brand-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--brand); }
 .brand { font-size: 16px; }
-.app-main { display: grid; place-items: center; padding: 16px; }
-.page { width: 100%; max-width: 720px; }
+.app-main { display: block; padding: 0; height: 100%; }
+.page { width: 100%; max-width: none; height: 100%; }
 
-.chat-shell { background: var(--panel); border: 1px solid #e5e7eb; border-radius: 12px; min-height: 70vh; display: grid; grid-template-rows: 1fr auto auto; }
+.chat-shell { background: var(--panel); border: none; border-radius: 0; height: 100%; min-height: 0; display: grid; grid-template-rows: 1fr auto; }
 .chat-list { padding: 12px; overflow: auto; }
 .bubble-row { display: flex; margin: 8px 0; }
 .bubble-row.left { justify-content: flex-start; }
@@ -54,7 +54,7 @@ body { background: var(--bg); color: var(--ink); font-family: system-ui, sans-se
 }
 
 /* Pre-chat gate */
-.prechat-shell { background: var(--panel); border: 1px solid #e5e7eb; border-radius: 12px; min-height: 50vh; display: grid; place-items: center; padding: 24px; }
+.prechat-shell { background: var(--panel); border: none; border-radius: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; }
 .prechat-card { width: 100%; max-width: 560px; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; }
 .prechat-card h2 { margin: 0 0 8px 0; }
 .prechat-card .muted { color: var(--muted); margin: 0 0 12px 0; }

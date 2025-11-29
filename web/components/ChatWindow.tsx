@@ -18,9 +18,9 @@ export default function ChatWindow() {
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const [atBottom, setAtBottom] = useState(true);
   // Default to streaming unless explicitly disabled
   const useStreaming = process.env.NEXT_PUBLIC_USE_STREAMING !== "false";
-  const [engine, setEngine] = useState<string | undefined>(undefined);
   // Research participant gate
   const [participantName, setParticipantName] = useState<string>("");
   const [participantGroup, setParticipantGroup] = useState<"A" | "B" | "">("");
@@ -29,8 +29,11 @@ export default function ChatWindow() {
   const [typingStartAt, setTypingStartAt] = useState<number | null>(null);
 
   useEffect(() => {
-    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, busy]);
+    if (!listRef.current) return;
+    if (atBottom) {
+      listRef.current.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
+    }
+  }, [messages, busy, atBottom]);
 
   // Load participant from localStorage
   useEffect(() => {
@@ -176,8 +179,6 @@ export default function ChatWindow() {
           onInit: (meta) => {
             setSessionId(meta.session_id);
             sidLocal = meta.session_id;
-            setEngine((meta as any)?.engine);
-            try { console.debug("chat-stream init", meta); } catch {}
             // Best-effort update participant with session id
             try {
               const pid = ensureParticipantId();
@@ -318,7 +319,18 @@ export default function ChatWindow() {
 
   return (
     <div className="chat-shell">
-      <div className="chat-list" ref={listRef}>
+      <div
+        className="chat-list"
+        ref={listRef}
+        onScroll={() => {
+          try {
+            const el = listRef.current;
+            if (!el) return;
+            const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 40;
+            setAtBottom(nearBottom);
+          } catch {}
+        }}
+      >
         {messages.map((m, i) => (
           <MessageBubble key={i} role={m.role} text={m.text} />
         ))}
@@ -326,9 +338,6 @@ export default function ChatWindow() {
         <div className="sr-only" aria-live="polite" aria-atomic="true">
           {busy ? "VodaCare is typing" : ""}
         </div>
-        {engine && (
-          <div className="muted" style={{ fontSize: 12, marginTop: 8 }}>engine: {engine}</div>
-        )}
       </div>
       <form className="input-row" onSubmit={onSubmit}>
         <input
