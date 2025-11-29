@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import logging
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -8,6 +9,7 @@ from server.app.config import get_allowed_origins, get_provider_name
 
 # FastAPI app for Vercel Python Serverless Function
 app = FastAPI(title="VodaCare Support API (Vercel) - chat")
+logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,6 +34,7 @@ def chat(req: ChatRequest):
     """
     # If no LLM, return error style payload instead of rule-based
     if agent._llm_client is None:
+        logger.warning("LLM client not configured (function); returning error payload")
         sid = agent._ensure_session(req.session_id)
         agent.sessions[sid].append(("user", req.message))
         topic = agent._detect_topic(req.message)
@@ -49,5 +52,22 @@ def chat(req: ChatRequest):
                 "engine": "error",
             }
         )
-    result = agent.chat(req.message, req.session_id)
+    try:
+        result = agent.chat(req.message, req.session_id)
+    except Exception:
+        logger.exception("LLM chat failed (function)")
+        sid = agent._ensure_session(req.session_id)
+        topic = agent._detect_topic(req.message)
+        return JSONResponse(
+            {
+                "reply": "There’s a problem — the chat service isn’t working right now. Please try again later.",
+                "suggestions": [],
+                "topic": topic,
+                "escalate": topic == "support" or any(
+                    w in req.message.lower() for w in ["agent", "human", "person", "escalate"]
+                ),
+                "session_id": sid,
+                "engine": "error",
+            }
+        )
     return JSONResponse(result)

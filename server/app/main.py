@@ -60,7 +60,8 @@ async def interaction(req: Request):
         except Exception:
             continue
     if not events:
-        return JSONResponse({"error": "no_valid_events"}, status_code=400)
+        # Accept but skip storing if no valid events (e.g., missing session_id)
+        return JSONResponse({"ok": True, "stored": 0, "skipped": len(events_raw)}, status_code=202)
 
     # Route compact interaction ({group,input,output}) to 'interactions' table if present
     if len(events_raw) == 1 and isinstance(events_raw[0], dict) and {
@@ -113,7 +114,7 @@ def create_or_update_participant(p: ParticipantInsert):
         "group": (p.group or None),
         "session_id": (p.session_id or None),
     }
-    stored, code = store.insert_rows("participants", [row], upsert=True)
+    stored, code = store.insert_rows("participants", [row], upsert=True, on_conflict="participant_id")
     status = 200 if stored else (code if code else 202)
     return JSONResponse({"ok": True, "stored": stored}, status_code=status)
 

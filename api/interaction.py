@@ -32,7 +32,7 @@ async def interaction(req: Request):
         events_raw = [body]
 
     if not events_raw:
-        return JSONResponse({"error": "no_valid_events"}, status_code=400)
+        return JSONResponse({"ok": True, "stored": 0, "skipped": 0}, status_code=202)
 
     # compact interaction
     if len(events_raw) == 1 and isinstance(events_raw[0], dict) and {
@@ -72,10 +72,9 @@ async def interaction(req: Request):
             }
         )
     if not rows:
-        return JSONResponse({"error": "no_valid_events"}, status_code=400)
+        return JSONResponse({"ok": True, "stored": 0, "skipped": len(events_raw)}, status_code=202)
     stored, code = store.insert_rows("interaction_events", rows)
     status = 200 if stored else (code if code else 202)
     if stored:
         return JSONResponse({"ok": True, "stored": stored}, status_code=status)
     return JSONResponse({"ok": True, "stored": 0, "skipped": len(rows)}, status_code=status)
-
