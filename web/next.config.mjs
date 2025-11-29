@@ -19,6 +19,9 @@ const nextConfig = {
     return [
       { source: "/api/chat", destination: `${target}/api/chat` },
       { source: "/api/chat-stream", destination: `${target}/api/chat-stream` },
+      { source: "/api/interaction", destination: `${target}/api/interaction` },
+      { source: "/api/participants", destination: `${target}/api/participants` },
+      { source: "/api/messages", destination: `${target}/api/messages` },
     ];
   },
 };

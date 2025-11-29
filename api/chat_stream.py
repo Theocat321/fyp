@@ -3,12 +3,14 @@ import json
 from typing import AsyncGenerator
 
 from fastapi import FastAPI
+import logging
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from server.app.agent import SupportAgent
 
 app = FastAPI(title="VodaCare Support API (Vercel) - chat-stream")
+logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
@@ -96,6 +98,7 @@ async def chat_stream(req: dict):
                         yield sse("token", token)
                         await asyncio.sleep(0)
             except Exception:
+                logger.exception("OpenAI streaming failed (function)")
                 reply = "There’s a problem — the chat service isn’t working right now. Please try again later."
                 for part in _chunk_text_for_stream(reply):
                     full_reply += part
@@ -103,6 +106,7 @@ async def chat_stream(req: dict):
                     await asyncio.sleep(0)
         else:
             # No LLM configured: send error text
+            logger.warning("LLM client not configured (function); sending error text")
             reply = "There’s a problem — the chat service isn’t working right now. Please try again later."
             for part in _chunk_text_for_stream(reply):
                 full_reply += part

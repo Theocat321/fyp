@@ -38,3 +38,11 @@ def get_assistant_mode() -> str:
     """Assistant mode: 'open' (default) or 'strict'."""
     v = (os.getenv("ASSISTANT_MODE", "open") or "").lower()
     return "strict" if v == "strict" else "open"
+
+
+def get_supabase_url() -> Optional[str]:
+    return os.getenv("SUPABASE_URL") or os.getenv("NEXT_PUBLIC_SUPABASE_URL") or None
+
+
+def get_supabase_service_key() -> Optional[str]:
+    return os.getenv("SUPABASE_SERVICE_ROLE_KEY") or None

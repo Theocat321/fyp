@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
 import { sendMessage, ChatResponse, sendMessageStream } from "../lib/api";
-import { supabase } from "../lib/supabaseClient";
 import { logEvent } from "../lib/telemetry";
 
 type Msg = { role: "user" | "assistant"; text: string };
@@ -92,13 +91,17 @@ export default function ChatWindow() {
         page_url: typeof window !== "undefined" ? window.location.href : undefined,
       });
     } catch {}
-    // Best-effort participant insert
+    // Participant upsert via Python backend
     try {
-      await supabase?.from("participants").insert({
-        participant_id: pid,
-        name: participantName.trim(),
-        group: participantGroup,
-        session_id: sid,
+      await fetch("/api/participants", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          participant_id: pid,
+          name: participantName.trim(),
+          group: participantGroup,
+          session_id: sid,
+        }),
       });
     } catch {}
     setStarted(true);
@@ -146,16 +149,20 @@ export default function ChatWindow() {
       });
     } catch {}
     setMessages((m) => [...m, { role: "user", text: trimmed }]);
-    // Persist user message (best-effort)
+    // Persist user message via Python backend (best-effort)
     try {
       const pid = ensureParticipantId();
-      await supabase?.from("messages").insert({
-        session_id: sid,
-        role: "user",
-        content: trimmed,
-        participant_id: pid,
-        participant_name: participantName.trim(),
-        participant_group: participantGroup,
+      await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          session_id: sid,
+          role: "user",
+          content: trimmed,
+          participant_id: pid,
+          participant_name: participantName.trim(),
+          participant_group: participantGroup,
+        }),
       });
     } catch {}
     setInput("");
@@ -174,7 +181,11 @@ export default function ChatWindow() {
             // Best-effort update participant with session id
             try {
               const pid = ensureParticipantId();
-              supabase?.from("participants").update({ session_id: meta.session_id }).eq("participant_id", pid);
+              fetch("/api/participants", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ participant_id: pid, session_id: meta.session_id }),
+              });
             } catch {}
           },
           onToken: (token) => {
@@ -191,22 +202,29 @@ export default function ChatWindow() {
           },
           onDone: async (finalText) => {
             setBusy(false);
-            // Persist assistant message (best-effort)
+            // Persist assistant message and compact interaction via Python backend (best-effort)
             try {
               const pid = ensureParticipantId();
-              await supabase?.from("messages").insert({
-                session_id: sidLocal ?? null,
-                role: "assistant",
-                content: finalText,
-                participant_id: pid,
-                participant_name: participantName.trim(),
-                participant_group: participantGroup,
+              await fetch("/api/messages", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  session_id: sidLocal ?? null,
+                  role: "assistant",
+                  content: finalText,
+                  participant_id: pid,
+                  participant_name: participantName.trim(),
+                  participant_group: participantGroup,
+                }),
               });
-              // Also log compact interaction (group, input, output)
-              await supabase?.from("interactions").insert({
-                group: participantGroup,
-                input: trimmed,
-                output: finalText,
+              await fetch("/api/interaction", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  group: participantGroup,
+                  input: trimmed,
+                  output: finalText,
+                }),
               });
             } catch {}
           },
@@ -223,25 +241,36 @@ export default function ChatWindow() {
         setSessionId(resp.session_id);
         try {
           const pid = ensureParticipantId();
-          supabase?.from("participants").update({ session_id: resp.session_id }).eq("participant_id", pid);
+          fetch("/api/participants", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ participant_id: pid, session_id: resp.session_id }),
+          });
         } catch {}
         setMessages((m) => [...m, { role: "assistant", text: resp.reply }]);
-        // Persist assistant message (best-effort)
+        // Persist assistant message and compact interaction via Python backend (best-effort)
         try {
           const pid = ensureParticipantId();
-          await supabase?.from("messages").insert({
-            session_id: resp.session_id,
-            role: "assistant",
-            content: resp.reply,
-            participant_id: pid,
-            participant_name: participantName.trim(),
-            participant_group: participantGroup,
+          await fetch("/api/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              session_id: resp.session_id,
+              role: "assistant",
+              content: resp.reply,
+              participant_id: pid,
+              participant_name: participantName.trim(),
+              participant_group: participantGroup,
+            }),
           });
-          // Also log compact interaction (group, input, output)
-          await supabase?.from("interactions").insert({
-            group: participantGroup,
-            input: trimmed,
-            output: resp.reply,
+          await fetch("/api/interaction", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              group: participantGroup,
+              input: trimmed,
+              output: resp.reply,
+            }),
           });
         } catch {}
         setBusy(false);

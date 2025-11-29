@@ -11,6 +11,9 @@
   "routes": [
     { "src": "^/api/chat$", "dest": "/api/chat.py" },
     { "src": "^/api/chat-stream$", "dest": "/api/chat_stream.py" },
+    { "src": "^/api/interaction$", "dest": "/api/interaction.py" },
+    { "src": "^/api/participants$", "dest": "/api/participants.py" },
+    { "src": "^/api/messages$", "dest": "/api/messages.py" },
     { "src": "/(.*)", "dest": "web/$1" }
   ]
 }

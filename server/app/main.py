@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+import logging
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 import asyncio
@@ -6,11 +7,13 @@ import json
 from typing import AsyncGenerator
 
 from .config import get_allowed_origins, get_provider_name
-from .models import ChatRequest, ChatResponse
+from .models import ChatRequest, ChatResponse, InteractionEvent, ParticipantInsert, MessageInsert
 from .agent import SupportAgent
+from .storage import SupabaseStore
 
 
 app = FastAPI(title="VodaCare Support API", version="0.1.0")
+logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,6 +24,7 @@ app.add_middleware(
 )
 
 agent = SupportAgent()
+store = SupabaseStore()
 
 
 @app.get("/api/health")
@@ -32,6 +36,101 @@ def health():
 def chat(req: ChatRequest):
     result = agent.chat(req.message, req.session_id)
     return JSONResponse(result)
+
+
+@app.post("/api/interaction")
+async def interaction(req: Request):
+    try:
+        body = await req.json()
+    except Exception:
+        return JSONResponse({"error": "invalid_json"}, status_code=400)
+
+    # Accept single event, array, or {events: []}
+    if isinstance(body, dict) and "events" in body and isinstance(body["events"], list):
+        events_raw = body["events"]
+    elif isinstance(body, list):
+        events_raw = body
+    else:
+        events_raw = [body]
+
+    events: list[InteractionEvent] = []
+    for e in events_raw:
+        try:
+            events.append(InteractionEvent(**e))
+        except Exception:
+            continue
+    if not events:
+        return JSONResponse({"error": "no_valid_events"}, status_code=400)
+
+    # Route compact interaction ({group,input,output}) to 'interactions' table if present
+    if len(events_raw) == 1 and isinstance(events_raw[0], dict) and {
+        "group",
+        "input",
+        "output",
+    }.issubset(set(events_raw[0].keys())):
+        rows = [
+            {
+                "group": str(events_raw[0].get("group"))[:2],
+                "input": str(events_raw[0].get("input"))[:4000],
+                "output": str(events_raw[0].get("output"))[:4000],
+            }
+        ]
+        stored, code = store.insert_rows("interactions", rows)
+        status = 200 if stored else (code if code else 202)
+        return JSONResponse({"ok": True, "stored": stored}, status_code=status)
+
+    # Otherwise log verbose to interaction_events
+    rows = []
+    for e in events:
+        rows.append(
+            {
+                "session_id": e.session_id,
+                "participant_id": e.participant_id,
+                "participant_group": e.participant_group,
+                "event": (e.event or "unknown")[:64],
+                "component": (e.component or None),
+                "label": (e.label or None),
+                "value": (e.value or None),
+                "duration_ms": int(e.duration_ms) if e.duration_ms is not None else None,
+                "client_ts": e.client_ts,
+                "page_url": e.page_url,
+                "user_agent": e.user_agent,
+                "meta": e.meta,
+            }
+        )
+    stored, code = store.insert_rows("interaction_events", rows)
+    status = 200 if stored else (code if code else 202)
+    if stored:
+        return JSONResponse({"ok": True, "stored": stored}, status_code=status)
+    return JSONResponse({"ok": True, "stored": 0, "skipped": len(rows)}, status_code=status)
+
+
+@app.post("/api/participants")
+def create_or_update_participant(p: ParticipantInsert):
+    row = {
+        "participant_id": p.participant_id,
+        "name": (p.name or None),
+        "group": (p.group or None),
+        "session_id": (p.session_id or None),
+    }
+    stored, code = store.insert_rows("participants", [row], upsert=True)
+    status = 200 if stored else (code if code else 202)
+    return JSONResponse({"ok": True, "stored": stored}, status_code=status)
+
+
+@app.post("/api/messages")
+def insert_message(m: MessageInsert):
+    row = {
+        "session_id": m.session_id,
+        "role": m.role,
+        "content": m.content,
+        "participant_id": m.participant_id,
+        "participant_name": m.participant_name,
+        "participant_group": m.participant_group,
+    }
+    stored, code = store.insert_rows("messages", [row])
+    status = 200 if stored else (code if code else 202)
+    return JSONResponse({"ok": True, "stored": stored}, status_code=status)
 
 
 @app.post("/api/chat-stream")
@@ -114,6 +213,7 @@ async def chat_stream(req: ChatRequest):
                         yield sse("token", token)
                         await asyncio.sleep(0)  # let event loop flush
             except Exception:
+                logger.exception("OpenAI streaming failed")
                 # Error text when LLM streaming fails
                 reply = "There’s a problem — the chat service isn’t working right now. Please try again later."
                 for part in _chunk_text_for_stream(reply):
@@ -122,6 +222,7 @@ async def chat_stream(req: ChatRequest):
                     await asyncio.sleep(0)
         else:
             # No LLM configured: send error text
+            logger.warning("LLM client not configured; sending error text in stream")
             reply = "There’s a problem — the chat service isn’t working right now. Please try again later."
             for part in _chunk_text_for_stream(reply):
                 full_reply += part

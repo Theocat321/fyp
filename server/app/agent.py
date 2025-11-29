@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 import uuid
 from typing import Dict, List, Tuple
+import logging
 
 from .config import (
     get_provider_name,
@@ -15,6 +16,7 @@ from .config import (
 
 class SupportAgent:
     def __init__(self):
+        self._logger = logging.getLogger(__name__)
         self.provider = get_provider_name()
         self.mode = get_assistant_mode()  # 'open' or 'strict'
         # In-memory chat history per session
@@ -34,7 +36,8 @@ class SupportAgent:
                 else:
                     self._llm_client = OpenAI(api_key=api_key)
             except Exception:
-                # If import or client init fails, stay in rule-based mode
+                # If import or client init fails, stay in rule-based mode but log
+                self._logger.exception("Failed to initialize OpenAI client")
                 self._llm_client = None
 
         # Minimal knowledge base with topic -> details
@@ -177,6 +180,7 @@ class SupportAgent:
             content = resp.choices[0].message.content if resp.choices else None
             return content or None
         except Exception:
+            self._logger.exception("LLM chat completion failed")
             return None
 
     def _build_reply(self, topic: str, user_text: str, sid: str) -> tuple[str, List[str], bool]:
