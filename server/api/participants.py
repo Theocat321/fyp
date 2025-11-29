@@ -18,6 +18,7 @@ store = SupabaseStore()
 
 
 @app.post("/")
+@app.post("/api/participants")
 def upsert_participant(p: dict):
     pid = p.get("participant_id")
     if not pid:

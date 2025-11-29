@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import re
 import uuid
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
+from pathlib import Path
 import logging
 
 from .config import (
@@ -127,6 +128,31 @@ class SupportAgent:
             "Something else",
         ]
 
+    def _system_prompt(self, participant_group: Optional[str]) -> str:
+        """Return system prompt, preferring group-specific files if present.
+        Looks for sys_prompt_a.txt or sys_prompt_b.txt at the repo root.
+        Falls back to mode-based defaults.
+        """
+        try:
+            root = Path(__file__).resolve().parents[2]
+            if participant_group and participant_group.upper() in ("A", "B"):
+                p = root / (f"sys_prompt_{participant_group.lower()}.txt")
+                if p.exists():
+                    return p.read_text(encoding="utf-8").strip()
+        except Exception:
+            pass
+        if self.mode == "open":
+            return (
+                f"You are a helpful support agent for {self.provider}. Keep replies concise. "
+                "You can chat broadly, and for telecom topics (plans, upgrades, data/balance, billing, roaming, network/coverage, devices/SIM) give clear, practical guidance. "
+                "Ask brief follow‑ups when needed. Don't guess."
+            )
+        return (
+            f"You are a helpful mobile network support agent for {self.provider}. Keep replies concise. "
+            "Focus on telecom topics like plans, upgrades, data/balance, billing, roaming, network/coverage and devices/SIM. "
+            "Ask brief follow‑ups when needed. Don't guess."
+        )
+
     def _ensure_session(self, session_id: str | None) -> str:
         if not session_id:
             session_id = uuid.uuid4().hex
@@ -148,22 +174,11 @@ class SupportAgent:
         # Fallback
         return "unknown"
 
-    def _llm_reply(self, user_text: str, topic: str, sid: str) -> str | None:
+    def _llm_reply(self, user_text: str, topic: str, sid: str, participant_group: Optional[str] = None) -> str | None:
         if not self._llm_client:
             return None
         try:
-            if self.mode == "open":
-                system = (
-                    f"You are a helpful support agent for {self.provider}. Keep replies concise. "
-                    "You can chat broadly, and for telecom topics (plans, upgrades, data/balance, billing, roaming, network/coverage, devices/SIM) give clear, practical guidance. "
-                    "Ask brief follow‑ups when needed. Don't guess."
-                )
-            else:
-                system = (
-                    f"You are a helpful mobile network support agent for {self.provider}. Keep replies concise. "
-                    "Focus on telecom topics like plans, upgrades, data/balance, billing, roaming, network/coverage and devices/SIM. "
-                    "Ask brief follow‑ups when needed. Don't guess."
-                )
+            system = self._system_prompt(participant_group)
             # Build short context using session last few turns
             messages = [{"role": "system", "content": system}]
             history = self.sessions.get(sid, [])
@@ -183,7 +198,7 @@ class SupportAgent:
             self._logger.exception("LLM chat completion failed")
             return None
 
-    def _build_reply(self, topic: str, user_text: str, sid: str) -> tuple[str, List[str], bool]:
+    def _build_reply(self, topic: str, user_text: str, sid: str, participant_group: Optional[str]) -> tuple[str, List[str], bool]:
         error_reply = (
             "There’s a problem — the chat service isn’t working right now. Please try again later."
         )
@@ -196,7 +211,7 @@ class SupportAgent:
             return error_reply, [], escalate
 
         # Attempt LLM reply
-        reply = self._llm_reply(user_text, topic, sid)
+        reply = self._llm_reply(user_text, topic, sid, participant_group)
         if not reply:
             escalate = topic == "support" or any(
                 w in user_text.lower() for w in ["agent", "human", "person", "escalate"]
@@ -208,12 +223,12 @@ class SupportAgent:
         )
         return reply, [], escalate
 
-    def chat(self, message: str, session_id: str | None) -> dict:
+    def chat(self, message: str, session_id: str | None, participant_group: Optional[str] = None) -> dict:
         sid = self._ensure_session(session_id)
         self.sessions[sid].append(("user", message))
 
         topic = self._detect_topic(message)
-        reply, suggestions, escalate = self._build_reply(topic, message, sid)
+        reply, suggestions, escalate = self._build_reply(topic, message, sid, participant_group)
 
         self.sessions[sid].append(("assistant", reply))
         return {

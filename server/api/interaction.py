@@ -18,6 +18,7 @@ store = SupabaseStore()
 
 
 @app.post("/")
+@app.post("/api/interaction")
 async def interaction(req: Request):
     try:
         body = await req.json()

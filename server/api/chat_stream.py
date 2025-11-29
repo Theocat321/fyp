@@ -24,6 +24,7 @@ agent = SupportAgent()
 
 
 @app.post("/")
+@app.post("/api/chat-stream")
 async def chat_stream(req: dict):
     """SSE stream compatible with the web client.
     Mirrors server/app/main.py:chat_stream but mounted at function root.
@@ -62,18 +63,7 @@ async def chat_stream(req: dict):
         # Stream via OpenAI when configured; otherwise return error text
         if agent._llm_client is not None:
             try:
-                if agent.mode == "open":
-                    system = (
-                        f"You are a helpful support agent for {agent.provider}. Keep replies concise. "
-                        "You can chat broadly, and for telecom topics (plans, upgrades, data/balance, billing, roaming, network/coverage, devices/SIM) give clear, practical guidance. "
-                        "Ask brief follow‑ups when needed. Don't guess."
-                    )
-                else:
-                    system = (
-                        f"You are a helpful mobile network support agent for {agent.provider}. Keep replies concise. "
-                        "Focus on telecom topics like plans, upgrades, data/balance, billing, roaming, network/coverage and devices/SIM. "
-                        "Ask brief follow‑ups when needed. Don't guess."
-                    )
+                system = agent._system_prompt(req.get("participant_group"))
                 messages = [{"role": "system", "content": system}]
                 history = agent.sessions.get(sid, [])
                 for role, text in history[-6:]:
@@ -142,4 +132,3 @@ async def chat_stream(req: dict):
             "X-Accel-Buffering": "no",
         },
     )
-

@@ -22,11 +22,11 @@ function apiUrl(path: string) {
   return BASE_URL ? `${BASE_URL}${path}` : path;
 }
 
-export async function sendMessage(message: string, sessionId?: string): Promise<ChatResponse> {
+export async function sendMessage(message: string, sessionId?: string, participantGroup?: string): Promise<ChatResponse> {
   const res = await fetch(apiUrl(`/api/chat`), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message, session_id: sessionId }),
+    body: JSON.stringify({ message, session_id: sessionId, participant_group: participantGroup }),
   });
   if (!res.ok) {
     throw new Error(`API error ${res.status}`);
@@ -44,7 +44,8 @@ export type StreamHandlers = {
 export async function sendMessageStream(
   message: string,
   sessionId: string | undefined,
-  handlers: StreamHandlers
+  handlers: StreamHandlers,
+  participantGroup?: string
 ) {
   const res = await fetch(apiUrl(`/api/chat-stream`), {
     method: "POST",
@@ -52,7 +53,7 @@ export async function sendMessageStream(
       "Content-Type": "application/json",
       Accept: "text/event-stream",
     },
-    body: JSON.stringify({ message, session_id: sessionId }),
+    body: JSON.stringify({ message, session_id: sessionId, participant_group: participantGroup }),
   });
   if (!res.ok || !res.body) {
     throw new Error(`Stream error ${res.status}`);

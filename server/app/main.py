@@ -34,7 +34,7 @@ def health():
 
 @app.post("/api/chat", response_model=ChatResponse)
 def chat(req: ChatRequest):
-    result = agent.chat(req.message, req.session_id)
+    result = agent.chat(req.message, req.session_id, getattr(req, "participant_group", None))
     return JSONResponse(result)
 
 
@@ -196,18 +196,7 @@ async def chat_stream(req: ChatRequest):
         # Stream via OpenAI when configured; otherwise return error text
         if agent._llm_client is not None:
             try:
-                if agent.mode == "open":
-                    system = (
-                        f"You are a helpful support agent for {agent.provider}. Keep replies concise. "
-                        "You can chat broadly, and for telecom topics (plans, upgrades, data/balance, billing, roaming, network/coverage, devices/SIM) give clear, practical guidance. "
-                        "Ask brief follow‑ups when needed. Don't guess."
-                    )
-                else:
-                    system = (
-                        f"You are a helpful mobile network support agent for {agent.provider}. Keep replies concise. "
-                        "Focus on telecom topics like plans, upgrades, data/balance, billing, roaming, network/coverage and devices/SIM. "
-                        "Ask brief follow‑ups when needed. Don't guess."
-                    )
+                system = agent._system_prompt(getattr(req, "participant_group", None))
                 messages = [{"role": "system", "content": system}]
                 history = agent.sessions.get(sid, [])
                 for role, text in history[-6:]:

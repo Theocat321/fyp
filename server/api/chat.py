@@ -28,6 +28,7 @@ def health():
 
 
 @app.post("/")
+@app.post("/api/chat")
 def chat(req: ChatRequest):
     """Mirror of server/app/main.py /api/chat but mounted at the function root.
     The Vercel route rewrites /api/chat -> /server/api/chat.py
@@ -53,7 +54,7 @@ def chat(req: ChatRequest):
             }
         )
     try:
-        result = agent.chat(req.message, req.session_id)
+        result = agent.chat(req.message, req.session_id, getattr(req, "participant_group", None))
     except Exception:
         logger.exception("LLM chat failed (function)")
         sid = agent._ensure_session(req.session_id)
@@ -71,4 +72,3 @@ def chat(req: ChatRequest):
             }
         )
     return JSONResponse(result)
-

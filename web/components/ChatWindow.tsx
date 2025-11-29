@@ -236,9 +236,9 @@ export default function ChatWindow() {
               { role: "assistant", text: "Sorry—something went wrong. Please try again." },
             ]);
           },
-        });
+        }, participantGroup);
       } else {
-        const resp: ChatResponse = await sendMessage(trimmed, sid);
+        const resp: ChatResponse = await sendMessage(trimmed, sid, participantGroup);
         setSessionId(resp.session_id);
         try {
           const pid = ensureParticipantId();

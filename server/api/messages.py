@@ -18,6 +18,7 @@ store = SupabaseStore()
 
 
 @app.post("/")
+@app.post("/api/messages")
 def insert_message(m: dict):
     row = {
         "session_id": m.get("session_id"),
@@ -32,4 +33,3 @@ def insert_message(m: dict):
     stored, code = store.insert_rows("messages", [row])
     status = 200 if stored else (code if code else 202)
     return JSONResponse({"ok": True, "stored": stored}, status_code=status)
-
