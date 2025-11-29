@@ -45,5 +45,13 @@ def get_messages(session_id: str):
         order="created_at.asc",
         limit=200,
     )
+    if not (code and 200 <= code < 300):
+        rows, code = store.select_rows(
+            "messages",
+            {"session_id": session_id},
+            select="session_id,role,content,participant_id,participant_name,participant_group",
+            order=None,
+            limit=200,
+        )
     status = 200 if code and 200 <= code < 300 else (code or 500)
-    return JSONResponse({"messages": rows}, status_code=status)
+    return JSONResponse({"messages": rows or []}, status_code=status)

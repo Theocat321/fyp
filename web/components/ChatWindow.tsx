@@ -54,12 +54,11 @@ export default function ChatWindow() {
     }
   }, [messages, busy, atBottom]);
 
-  // Load past messages for this session from backend storage
+  // Load past messages for this session from backend storage (independent of enrollment UI)
   useEffect(() => {
     (async () => {
       try {
-        if (!started) return;
-        const sid = sessionId || localStorage.getItem("vc_session_id") || undefined;
+        const sid = sessionId || (typeof window !== "undefined" ? localStorage.getItem("vc_session_id") || undefined : undefined);
         if (!sid) return;
         const res = await fetchMessages(sid);
         const msgs = (res.messages || []).map((m: any) => ({ role: m.role as "user" | "assistant", text: m.content as string }));
@@ -68,7 +67,7 @@ export default function ChatWindow() {
         }
       } catch {}
     })();
-  }, [started, sessionId]);
+  }, [sessionId]);
 
   // Load participant from localStorage
   useEffect(() => {
