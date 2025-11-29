@@ -1,3 +1,5 @@
+import Markdown from "./Markdown";
+
 type Props = {
   role: "user" | "assistant";
   text?: string;
@@ -6,7 +8,7 @@ type Props = {
 
 export default function MessageBubble({ role, text = "", typing = false }: Props) {
   const isUser = role === "user";
-  const displayText = typing ? "" : (isUser ? text : text.replace(/\*/g, ""));
+  const displayText = typing ? "" : text;
   return (
     <div className={`bubble-row ${isUser ? "right" : "left"}`}>
       <div className={`bubble ${isUser ? "user" : "assistant"}`}>
@@ -16,8 +18,10 @@ export default function MessageBubble({ role, text = "", typing = false }: Props
             <span />
             <span />
           </div>
-        ) : (
+        ) : isUser ? (
           displayText
+        ) : (
+          <Markdown content={displayText} />
         )}
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
 import { sendMessage, ChatResponse, sendMessageStream, fetchMessages } from "../lib/api";
 import { logEvent } from "../lib/telemetry";
+import { supabase } from "../lib/supabaseClient";
 
 type Msg = { role: "user" | "assistant"; text: string };
 
@@ -28,7 +29,27 @@ export default function ChatWindow() {
   const [started, setStarted] = useState<boolean>(false);
   const [typingStartAt, setTypingStartAt] = useState<number | null>(null);
   const [lastSendAt, setLastSendAt] = useState<number | null>(null);
+  // Feedback modal state
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [submittingFeedback, setSubmittingFeedback] = useState(false);
+  const [feedbackDone, setFeedbackDone] = useState(false);
+  const [form, setForm] = useState({
+    rating_overall: 0,
+    rating_helpfulness: 0,
+    rating_friendliness: 0,
+    resolved: "",
+    time_to_resolution: "",
+    issues: [] as string[],
+    comments_positive: "",
+    comments_negative: "",
+    comments_other: "",
+    would_use_again: "",
+    recommend_nps: 0,
+    contact_ok: false,
+    contact_email: "",
+  });
 
+  // Lightweight formatting heuristic to make streamed text more readable as it arrives
   function formatStreamingText(input: string): string {
     try {
       let t = input;
@@ -408,6 +429,28 @@ export default function ChatWindow() {
         </div>
       </div>
       <form className="input-row" onSubmit={onSubmit}>
+        <button
+          type="button"
+          className="finish-btn"
+          onClick={() => {
+            setShowFeedback(true);
+            try {
+              const sid = sessionId || ensureSessionId();
+              logEvent({
+                session_id: sid,
+                participant_id: participantId,
+                participant_group: participantGroup || undefined,
+                event: "click",
+                component: "finish_button",
+                label: "finish_conversation_open",
+                client_ts: Date.now(),
+                page_url: typeof window !== "undefined" ? window.location.href : undefined,
+              });
+            } catch {}
+          }}
+        >
+          Finish
+        </button>
         <input
           className="text-input"
           placeholder="Type your message..."
@@ -494,6 +537,200 @@ export default function ChatWindow() {
           Send
         </button>
       </form>
+      {showFeedback && (
+        <div className="feedback-overlay" role="dialog" aria-modal="true" aria-label="Finish Conversation Feedback">
+          <div className="feedback-modal">
+            <div className="feedback-header">
+              <h3>Finish Conversation</h3>
+              <button className="feedback-close" onClick={() => setShowFeedback(false)} aria-label="Close feedback">×</button>
+            </div>
+            {!feedbackDone ? (
+              <form
+                className="feedback-form"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (submittingFeedback) return;
+                  setSubmittingFeedback(true);
+                  try {
+                    const sid = sessionId || ensureSessionId();
+                    const pid = participantId || ensureParticipantId();
+                    const payload: any = {
+                      session_id: sid,
+                      participant_id: pid,
+                      participant_group: participantGroup || null,
+                      rating_overall: form.rating_overall || null,
+                      rating_helpfulness: form.rating_helpfulness || null,
+                      rating_friendliness: form.rating_friendliness || null,
+                      resolved: form.resolved === "yes" ? true : form.resolved === "no" ? false : null,
+                      time_to_resolution: form.time_to_resolution || null,
+                      issues: form.issues,
+                      comments_positive: form.comments_positive || null,
+                      comments_negative: form.comments_negative || null,
+                      comments_other: form.comments_other || null,
+                      would_use_again: form.would_use_again || null,
+                      recommend_nps: form.recommend_nps || null,
+                      contact_ok: form.contact_ok,
+                      contact_email: form.contact_email || null,
+                      user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
+                      page_url: typeof window !== "undefined" ? window.location.href : null,
+                    };
+                    if (supabase) {
+                      const { error } = await supabase.from("support_feedback").insert(payload);
+                      if (error) throw error;
+                    }
+                    try {
+                      await logEvent({
+                        session_id: sid,
+                        participant_id: pid,
+                        participant_group: participantGroup || undefined,
+                        event: "submit",
+                        component: "feedback_form",
+                        label: "finish_conversation",
+                        client_ts: Date.now(),
+                        page_url: typeof window !== "undefined" ? window.location.href : undefined,
+                        meta: payload,
+                      });
+                    } catch {}
+                    setFeedbackDone(true);
+                  } catch (err) {
+                    alert("Sorry—could not save feedback. Please try again.");
+                  } finally {
+                    setSubmittingFeedback(false);
+                  }
+                }}
+              >
+                <p className="muted">Thanks for chatting with VodaCare. A few quick questions to wrap up your support session.</p>
+                <div className="grid-2">
+                  <div className="field-row">
+                    <label className="label">Overall, how satisfied are you?</label>
+                    <div className="radio-row">
+                      {[1,2,3,4,5].map((n) => (
+                        <label key={n}><input type="radio" name="rating_overall" value={n}
+                          checked={form.rating_overall === n}
+                          onChange={() => setForm({ ...form, rating_overall: n })} /> {n}</label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="field-row">
+                    <label className="label">How helpful was the support?</label>
+                    <div className="radio-row">
+                      {[1,2,3,4,5].map((n) => (
+                        <label key={n}><input type="radio" name="rating_helpfulness" value={n}
+                          checked={form.rating_helpfulness === n}
+                          onChange={() => setForm({ ...form, rating_helpfulness: n })} /> {n}</label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="field-row">
+                    <label className="label">How friendly/professional did the support feel?</label>
+                    <div className="radio-row">
+                      {[1,2,3,4,5].map((n) => (
+                        <label key={n}><input type="radio" name="rating_friendliness" value={n}
+                          checked={form.rating_friendliness === n}
+                          onChange={() => setForm({ ...form, rating_friendliness: n })} /> {n}</label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="field-row">
+                    <label className="label">Was your issue resolved?</label>
+                    <div className="radio-row">
+                      {[
+                        {v:"yes", t:"Yes"},
+                        {v:"no", t:"No"},
+                        {v:"partial", t:"Partially"},
+                      ].map((opt) => (
+                        <label key={opt.v}><input type="radio" name="resolved" value={opt.v}
+                          checked={form.resolved === opt.v}
+                          onChange={() => setForm({ ...form, resolved: opt.v })} /> {opt.t}</label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="field-row">
+                    <label className="label">Time to resolution</label>
+                    <select className="select" value={form.time_to_resolution} onChange={(e) => setForm({ ...form, time_to_resolution: e.target.value })}>
+                      <option value="">Select…</option>
+                      <option value="<5m">Under 5 minutes</option>
+                      <option value="5-15m">5–15 minutes</option>
+                      <option value=">15m">Over 15 minutes</option>
+                      <option value="na">Not resolved</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="field-row">
+                  <label className="label">What did you need help with? (select all that apply)</label>
+                  <div className="checkbox-grid">
+                    {["Plans","Balance","Billing","Roaming","Network","Device","Other"].map((k) => (
+                      <label key={k}>
+                        <input
+                          type="checkbox"
+                          checked={form.issues.includes(k)}
+                          onChange={(e) => {
+                            const next = new Set(form.issues);
+                            if (e.target.checked) next.add(k); else next.delete(k);
+                            setForm({ ...form, issues: Array.from(next) });
+                          }}
+                        /> {k}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div className="grid-2">
+                  <div className="field-row">
+                    <label className="label">What went well?</label>
+                    <textarea className="textarea" placeholder="Tell us what worked for you" value={form.comments_positive} onChange={(e) => setForm({ ...form, comments_positive: e.target.value })} />
+                  </div>
+                  <div className="field-row">
+                    <label className="label">What could be better?</label>
+                    <textarea className="textarea" placeholder="Anything confusing or frustrating?" value={form.comments_negative} onChange={(e) => setForm({ ...form, comments_negative: e.target.value })} />
+                  </div>
+                </div>
+                <div className="field-row">
+                  <label className="label">Anything else you'd like us to know?</label>
+                  <textarea className="textarea" placeholder="Your suggestions and ideas" value={form.comments_other} onChange={(e) => setForm({ ...form, comments_other: e.target.value })} />
+                </div>
+                <div className="grid-2">
+                  <div className="field-row">
+                    <label className="label">Would you use VodaCare support again?</label>
+                    <select className="select" value={form.would_use_again} onChange={(e) => setForm({ ...form, would_use_again: e.target.value })}>
+                      <option value="">Select…</option>
+                      <option value="definitely">Definitely</option>
+                      <option value="probably">Probably</option>
+                      <option value="not_sure">Not sure</option>
+                      <option value="probably_not">Probably not</option>
+                      <option value="definitely_not">Definitely not</option>
+                    </select>
+                  </div>
+                  <div className="field-row">
+                    <label className="label">How likely are you to recommend us to a friend? (0–10)</label>
+                    <input type="number" min={0} max={10} className="text-input" value={form.recommend_nps}
+                      onChange={(e) => setForm({ ...form, recommend_nps: Number(e.target.value) })} />
+                  </div>
+                </div>
+                <div className="grid-2">
+                  <div className="field-row">
+                    <label className="label"><input type="checkbox" checked={form.contact_ok} onChange={(e) => setForm({ ...form, contact_ok: e.target.checked })} /> OK to contact me for follow-up</label>
+                  </div>
+                  <div className="field-row">
+                    <label className="label">Email (optional)</label>
+                    <input type="email" className="text-input" placeholder="you@example.com" value={form.contact_email}
+                      onChange={(e) => setForm({ ...form, contact_email: e.target.value })} />
+                  </div>
+                </div>
+                <div className="feedback-actions">
+                  <button type="button" className="btn-secondary" onClick={() => setShowFeedback(false)} disabled={submittingFeedback}>Cancel</button>
+                  <button type="submit" className="send-btn" disabled={submittingFeedback}>{submittingFeedback ? "Submitting…" : "Submit feedback"}</button>
+                </div>
+              </form>
+            ) : (
+              <div className="feedback-done">
+                <h4>Thanks for your feedback!</h4>
+                <p className="muted">We really appreciate you taking the time. Your responses help us improve VodaCare support.</p>
+                <button className="send-btn" onClick={() => { setShowFeedback(false); }}>Close</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
