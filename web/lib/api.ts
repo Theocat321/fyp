@@ -126,3 +126,9 @@ export async function sendMessageStream(
     throw err;
   }
 }
+export async function fetchMessages(sessionId: string): Promise<{ messages: { role: string; content: string }[] }> {
+  const url = apiUrl(`/api/messages?session_id=${encodeURIComponent(sessionId)}`);
+  const res = await fetch(url, { method: "GET" });
+  if (!res.ok) throw new Error(`fetch messages error ${res.status}`);
+  return res.json();
+}

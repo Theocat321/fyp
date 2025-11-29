@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Any
 import requests
 
 from .config import get_supabase_url, get_supabase_service_key
@@ -86,3 +86,44 @@ class SupabaseStore:
         except Exception:
             pass
         return 0, resp.status_code
+
+    def select_rows(
+        self,
+        table: str,
+        params: Dict[str, Any],
+        select: Optional[str] = None,
+        order: Optional[str] = None,
+        limit: Optional[int] = None,
+    ) -> Tuple[List[Dict], int]:
+        """Select rows via Supabase REST with simple eq filters. Returns (rows, status_code)."""
+        if not self.is_configured():
+            return [], 202
+        endpoint = f"{self.url}/rest/v1/{table}"
+        q: Dict[str, Any] = {}
+        for k, v in params.items():
+            if v is None:
+                continue
+            q[k] = f"eq.{v}"
+        if select:
+            q["select"] = select
+        if order:
+            q["order"] = order
+        if limit is not None:
+            q["limit"] = str(limit)
+        resp = requests.get(endpoint, headers=self._headers(), params=q, timeout=10)
+        if 200 <= resp.status_code < 300:
+            try:
+                return resp.json() or [], resp.status_code
+            except Exception:
+                return [], resp.status_code
+        try:
+            from logging import getLogger
+
+            logger = getLogger(__name__)
+            msg = resp.text[:500] if resp.text else ""
+            logger.warning(
+                "Supabase select failed: table=%s status=%s response=%s", table, resp.status_code, msg
+            )
+        except Exception:
+            pass
+        return [], resp.status_code

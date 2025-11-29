@@ -170,6 +170,23 @@ def insert_message(m: MessageInsert):
     return JSONResponse({"ok": True, "stored": stored}, status_code=status)
 
 
+@app.get("/api/messages")
+def get_messages(session_id: str):
+    try:
+        rows, code = store.select_rows(
+            "messages",
+            {"session_id": session_id},
+            select="session_id,role,content,participant_id,participant_name,participant_group,created_at",
+            order="created_at.asc",
+            limit=200,
+        )
+        status = 200 if code and 200 <= code < 300 else (code or 500)
+        return JSONResponse({"messages": rows}, status_code=status)
+    except Exception:
+        logger.exception("Failed to fetch messages for session_id=%s", session_id)
+        return JSONResponse({"messages": []}, status_code=500)
+
+
 @app.post("/api/chat-stream")
 async def chat_stream(req: ChatRequest, request: Request):
     """Server-Sent Events stream of reply tokens.

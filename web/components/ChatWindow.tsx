@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
-import { sendMessage, ChatResponse, sendMessageStream } from "../lib/api";
+import { sendMessage, ChatResponse, sendMessageStream, fetchMessages } from "../lib/api";
 import { logEvent } from "../lib/telemetry";
 
 type Msg = { role: "user" | "assistant"; text: string };
@@ -29,16 +29,18 @@ export default function ChatWindow() {
   const [typingStartAt, setTypingStartAt] = useState<number | null>(null);
   const [lastSendAt, setLastSendAt] = useState<number | null>(null);
 
-  function sanitizeAssistantText(input: string): string {
+  function formatStreamingText(input: string): string {
     try {
-      let t = input.replace(/\*/g, "");
-      // Insert newline after a colon when followed immediately by a numbered list
-      t = t.replace(/:(\s*)?(?=\d+\.)/g, ":\n");
-      // Insert newline before numbered list items when not already at line start
-      t = t.replace(/(\d+\.\s*)/g, (m, _g1, offset: number, s: string) => {
-        if (offset === 0) return m;
-        return s[offset - 1] === "\n" ? m : "\n" + m;
-      });
+      let t = input;
+      // If a colon is immediately followed by a list start (number or hyphen), insert a newline
+      t = t.replace(/:(\s*)?(?=(\d+\.|-\s|•\s))/g, ":\n");
+      // Ensure numbered items begin on a new line
+      t = t.replace(/([^\n])(\d+\.\s+)/g, (_m, prev, item) => `${prev}\n${item}`);
+      // Ensure hyphen/• bullets begin on a new line
+      t = t.replace(/([^\n])(\-\s+)/g, (_m, prev, item) => `${prev}\n${item}`);
+      t = t.replace(/([^\n])(•\s+)/g, (_m, prev, item) => `${prev}\n${item}`);
+      // Collapse more than 2 consecutive newlines to 2 during streaming
+      t = t.replace(/\n{3,}/g, "\n\n");
       return t;
     } catch {
       return input;
@@ -51,6 +53,22 @@ export default function ChatWindow() {
       listRef.current.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
     }
   }, [messages, busy, atBottom]);
+
+  // Load past messages for this session from backend storage
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!started) return;
+        const sid = sessionId || localStorage.getItem("vc_session_id") || undefined;
+        if (!sid) return;
+        const res = await fetchMessages(sid);
+        const msgs = (res.messages || []).map((m: any) => ({ role: m.role as "user" | "assistant", text: m.content as string }));
+        if (msgs.length) {
+          setMessages(msgs);
+        }
+      } catch {}
+    })();
+  }, [started, sessionId]);
 
   // Load participant from localStorage
   useEffect(() => {
@@ -225,7 +243,7 @@ export default function ChatWindow() {
           },
           onToken: (token) => {
             assistantText += token;
-            const formatted = sanitizeAssistantText(assistantText);
+            const formatted = formatStreamingText(assistantText);
             setMessages((m) => {
               const next = [...m];
               // Update last message (assistant placeholder)
@@ -247,7 +265,7 @@ export default function ChatWindow() {
                 body: JSON.stringify({
                   session_id: sidLocal ?? null,
                   role: "assistant",
-                  content: sanitizeAssistantText(finalText),
+                  content: finalText,
                   participant_id: pid,
                   participant_name: participantName.trim(),
                   participant_group: participantGroup,
@@ -291,7 +309,7 @@ export default function ChatWindow() {
             body: JSON.stringify({ participant_id: pid, session_id: resp.session_id }),
           });
         } catch {}
-        setMessages((m) => [...m, { role: "assistant", text: sanitizeAssistantText(resp.reply) }]);
+        setMessages((m) => [...m, { role: "assistant", text: resp.reply }]);
         // Persist assistant message via Python backend (best-effort)
         try {
           const pid = ensureParticipantId();
