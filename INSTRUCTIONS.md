@@ -1,14 +1,12 @@
 # Vercel Deployment
 
-Deploy only the Next.js app in `web/`. The FastAPI app in `server/` is for local experiments and isn’t needed on Vercel.
+Single project deployment from the repo root. The Next.js app (in `web/`) serves the UI, and Python Serverless Functions (in `api/`) provide the chat backend. The shared chatbot logic lives in `server/app/*` and is bundled into the Python functions.
 
 ## Settings
 
-- Root Directory: `web`
-- Framework: Next.js
-- Build: `npm run build`
-- Install: `npm install`
-- Output: `.next`
+- Root Directory: repository root (contains `vercel.json`)
+- Frameworks: Next.js (UI) + Python (Serverless Functions)
+- `vercel.json` wires builds and routes.
 
 No `vercel.json` required.
 
@@ -31,7 +29,7 @@ Supabase (optional):
 - Client: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - Server logging: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
 
-Leave `NEXT_PUBLIC_API_BASE_URL` unset so the UI uses built‑in routes (`/api/*`).
+Leave `NEXT_PUBLIC_API_BASE_URL` unset so the UI uses relative `/api/*` which resolve to Python functions in production and proxy to FastAPI in local dev.
 
 ## Supabase Tables (optional)
 
@@ -69,7 +67,7 @@ Verbose events (server): see `res/verbose_interactions.sql` and POST `/api/inter
 
 ## Streaming
 
-- `POST /api/chat-stream` returns SSE (`text/event-stream`).
+- `POST /api/chat-stream` returns SSE (`text/event-stream`) from the Python function.
 - With `OPENAI_API_KEY`, tokens stream from OpenAI; otherwise a rule‑based reply is chunked.
 - The UI consumes tokens and updates the assistant bubble live.
 
@@ -80,17 +78,12 @@ Single .env (recommended):
 - Put all variables in the repo root `.env`. Both the Next.js app and the FastAPI server load it automatically in development.
 - Alternatively, pull from Vercel into `web/.env.local`: `cd web && npm run env:pull`.
 
-Using Next.js API only:
+Local dev (proxy to FastAPI):
 
-- `cd web && npm install && npm run dev`
-- Open http://localhost:3000
-
-Using FastAPI (optional):
-
-- Create venv, install, run uvicorn (see README)
-- If you prefer routing UI to FastAPI, set `NEXT_PUBLIC_API_BASE_URL=http://localhost:8000` in `.env`.
+- Start FastAPI: `cd server && python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && uvicorn app.main:app --reload --port 8000`
+- Start Next.js: `cd web && npm install && npm run dev` then open http://localhost:3000
+- Next.js rewrites `/api/chat*` to `http://localhost:8000` during dev, so the UI always calls `/api/*`.
 
 ## Notes
 
 - Vercel functions are stateless; UI holds session state. Use Supabase to persist if needed.
-- The FastAPI app is optional for local use; Vercel uses the Next.js API.

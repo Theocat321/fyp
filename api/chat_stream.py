@@ -1,20 +1,18 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
 import asyncio
 import json
 from typing import AsyncGenerator
 
-from .config import get_allowed_origins, get_provider_name
-from .models import ChatRequest, ChatResponse
-from .agent import SupportAgent
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 
+from server.app.agent import SupportAgent
 
-app = FastAPI(title="VodaCare Support API", version="0.1.0")
+app = FastAPI(title="VodaCare Support API (Vercel) - chat-stream")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=get_allowed_origins(),
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -23,25 +21,10 @@ app.add_middleware(
 agent = SupportAgent()
 
 
-@app.get("/api/health")
-def health():
-    return {"status": "ok", "provider": get_provider_name()}
-
-
-@app.post("/api/chat", response_model=ChatResponse)
-def chat(req: ChatRequest):
-    result = agent.chat(req.message, req.session_id)
-    return JSONResponse(result)
-
-
-@app.post("/api/chat-stream")
-async def chat_stream(req: ChatRequest):
-    """Server-Sent Events stream of reply tokens.
-
-    Events:
-      - event: init, data: { session_id, suggestions, topic, escalate }
-      - event: token, data: <partial text>
-      - event: done, data: { reply }
+@app.post("/")
+async def chat_stream(req: dict):
+    """SSE stream compatible with the web client.
+    Mirrors server/app/main.py:chat_stream but mounted at function root.
     """
 
     async def event_gen() -> AsyncGenerator[bytes, None]:
@@ -49,17 +32,17 @@ async def chat_stream(req: ChatRequest):
             return f"event: {event}\ndata: {data}\n\n".encode("utf-8")
 
         # Ensure session and record user message
-        sid = agent._ensure_session(req.session_id)
-        agent.sessions[sid].append(("user", req.message))
+        sid = agent._ensure_session(req.get("session_id"))
+        user_message = str(req.get("message", ""))
+        agent.sessions[sid].append(("user", user_message))
 
         # Determine topic + escalate; suggestions removed
-        topic = agent._detect_topic(req.message)
+        topic = agent._detect_topic(user_message)
         suggestions: list[str] = []
         escalate = topic == "support" or any(
-            w in req.message.lower() for w in ["agent", "human", "person", "escalate"]
+            w in user_message.lower() for w in ["agent", "human", "person", "escalate"]
         )
 
-        # Send init metadata first
         init_payload = json.dumps(
             {
                 "session_id": sid,
@@ -93,7 +76,7 @@ async def chat_stream(req: ChatRequest):
                 history = agent.sessions.get(sid, [])
                 for role, text in history[-6:]:
                     messages.append({"role": role, "content": text})
-                messages.append({"role": "user", "content": req.message})
+                messages.append({"role": "user", "content": user_message})
 
                 stream = agent._llm_client.chat.completions.create(
                     model=agent._llm_model,
@@ -102,7 +85,6 @@ async def chat_stream(req: ChatRequest):
                     max_tokens=220,
                     stream=True,
                 )
-
                 for chunk in stream:  # type: ignore
                     try:
                         delta = chunk.choices[0].delta if chunk.choices else None
@@ -112,9 +94,8 @@ async def chat_stream(req: ChatRequest):
                     if token:
                         full_reply += token
                         yield sse("token", token)
-                        await asyncio.sleep(0)  # let event loop flush
+                        await asyncio.sleep(0)
             except Exception:
-                # Error text when LLM streaming fails
                 reply = "There’s a problem — the chat service isn’t working right now. Please try again later."
                 for part in _chunk_text_for_stream(reply):
                     full_reply += part
@@ -154,6 +135,6 @@ async def chat_stream(req: ChatRequest):
         headers={
             "Cache-Control": "no-cache, no-transform",
             "Connection": "keep-alive",
-            "X-Accel-Buffering": "no",  # for proxies like nginx
+            "X-Accel-Buffering": "no",
         },
     )

@@ -7,6 +7,7 @@ export type ChatResponse = {
   engine?: string;
 };
 
+// Use relative API paths; Next.js proxies to Python in dev via rewrites
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
 function apiUrl(path: string) {
@@ -77,7 +78,10 @@ export async function sendMessageStream(
           if (line.startsWith("event:")) {
             eventType = line.slice(6).trim();
           } else if (line.startsWith("data:")) {
-            dataLines.push(line.slice(5).trimStart());
+            // Per SSE spec, remove one optional leading space after the colon only
+            let v = line.slice(5);
+            if (v.startsWith(" ")) v = v.slice(1);
+            dataLines.push(v);
           }
         }
         const data = dataLines.join("\n");

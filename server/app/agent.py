@@ -180,46 +180,29 @@ class SupportAgent:
             return None
 
     def _build_reply(self, topic: str, user_text: str, sid: str) -> tuple[str, List[str], bool]:
-        if topic == "unknown":
-            if self.mode == "open":
-                reply = self._llm_reply(user_text, topic, sid) or (
-                    f"Hi — I’m {self.provider} Support. I can chat broadly and help with plans, data/balance, billing, roaming, coverage or devices. How can I help?"
-                )
-                suggestions = [
-                    *self.general_suggestions,
-                    "Show plan options",
-                    "Check data balance",
-                    "View my bill",
-                    "Roaming rates",
-                    "Coverage map",
-                    "Talk to an agent",
-                ]
-            else:
-                reply = self._llm_reply(user_text, topic, sid) or (
-                    f"Hi — I’m {self.provider} Support. I can help with plans, data/balance, billing, roaming, coverage or devices. What do you need help with?"
-                )
-                suggestions = [
-                    "Show plan options",
-                    "Check data balance",
-                    "View my bill",
-                    "Roaming rates",
-                    "Coverage map",
-                    "Talk to an agent",
-                ]
-            return reply, suggestions, False
-
-        info = self.knowledge[topic]
-        # Prefer LLM reply when available; otherwise canned text
-        reply = self._llm_reply(user_text, topic, sid) or info["reply"]
-        suggestions = (
-            [*info["suggestions"], self.general_suggestions[0]]
-            if self.mode == "open"
-            else info["suggestions"]
+        error_reply = (
+            "There’s a problem — the chat service isn’t working right now. Please try again later."
         )
+
+        # If no LLM client is configured, do not fall back to rule-based
+        if not self._llm_client:
+            escalate = topic == "support" or any(
+                w in user_text.lower() for w in ["agent", "human", "person", "escalate"]
+            )
+            return error_reply, [], escalate
+
+        # Attempt LLM reply
+        reply = self._llm_reply(user_text, topic, sid)
+        if not reply:
+            escalate = topic == "support" or any(
+                w in user_text.lower() for w in ["agent", "human", "person", "escalate"]
+            )
+            return error_reply, [], escalate
+
         escalate = topic == "support" or any(
             w in user_text.lower() for w in ["agent", "human", "person", "escalate"]
         )
-        return reply, suggestions, escalate
+        return reply, [], escalate
 
     def chat(self, message: str, session_id: str | None) -> dict:
         sid = self._ensure_session(session_id)

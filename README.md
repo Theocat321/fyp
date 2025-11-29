@@ -1,6 +1,7 @@
-# VodaCare Support (Next.js + FastAPI)
+# VodaCare Support (Next.js + Python on Vercel)
 
-Local support chat for a mobile network provider. Next.js frontend, FastAPI backend. Local dev only; no production configs.
+Local support chat for a mobile network provider.
+Frontend is Next.js; backend is Python (FastAPI) deployed as Vercel Serverless Functions.
 
 ## Quick Start
 
@@ -14,9 +15,10 @@ Local support chat for a mobile network provider. Next.js frontend, FastAPI back
 
 2) Backend (FastAPI)
 
-- From `server/`:
+- From `server/` (local dev):
   - Create venv and install: `python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
   - Run API: `uvicorn app.main:app --reload --port 8000`
+  - Next.js proxies `/api/chat*` to this server in dev; in production, Python runs as Vercel functions in `api/`.
 
 3) Frontend (Next.js)
 
@@ -30,7 +32,7 @@ Local support chat for a mobile network provider. Next.js frontend, FastAPI back
 - Telco intents: plans, upgrades, data/balance, roaming, billing, coverage, support
 - Quick‑reply suggestions
 - Rule‑based by default; optional OpenAI replies
-- Streaming replies via SSE (`/api/chat-stream`)
+- Streaming replies via SSE (`/api/chat-stream`) served by Python in prod and proxied in dev
 - Optional Supabase persistence and interaction logging
 - Simple pre‑chat enrollment (name + group A/B)
 
@@ -123,8 +125,8 @@ If `SUPABASE_*` server vars are not set, events are accepted but not stored (ret
 
 ## Deployment
 
-- For Vercel using only the Next.js app, see `INSTRUCTIONS.md`.
-- The FastAPI server is optional for local development.
+- Single Vercel project from the repo root using `vercel.json`.
+- Next.js app lives in `web/`. Python Serverless Functions live in `api/` and include shared logic from `server/app/*`.
 
 ### Unified Env (Dev + Vercel)
 

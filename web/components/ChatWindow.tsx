@@ -16,11 +16,12 @@ export default function ChatWindow() {
     },
   ]);
   const [input, setInput] = useState("");
-  const [suggestions, setSuggestions] = useState<string[]>(["Show plan options", "Check data balance", "View my bill", "Roaming rates"]);
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
-  const useStreaming = process.env.NEXT_PUBLIC_USE_STREAMING === "true";
+  // Default to streaming unless explicitly disabled
+  const useStreaming = process.env.NEXT_PUBLIC_USE_STREAMING !== "false";
+  const [engine, setEngine] = useState<string | undefined>(undefined);
   // Research participant gate
   const [participantName, setParticipantName] = useState<string>("");
   const [participantGroup, setParticipantGroup] = useState<"A" | "B" | "">("");
@@ -168,7 +169,8 @@ export default function ChatWindow() {
           onInit: (meta) => {
             setSessionId(meta.session_id);
             sidLocal = meta.session_id;
-            setSuggestions(meta.suggestions || []);
+            setEngine((meta as any)?.engine);
+            try { console.debug("chat-stream init", meta); } catch {}
             // Best-effort update participant with session id
             try {
               const pid = ensureParticipantId();
@@ -224,7 +226,6 @@ export default function ChatWindow() {
           supabase?.from("participants").update({ session_id: resp.session_id }).eq("participant_id", pid);
         } catch {}
         setMessages((m) => [...m, { role: "assistant", text: resp.reply }]);
-        setSuggestions(resp.suggestions || []);
         // Persist assistant message (best-effort)
         try {
           const pid = ensureParticipantId();
@@ -252,24 +253,6 @@ export default function ChatWindow() {
       ]);
       setBusy(false);
     }
-  }
-
-  function onSuggestionClick(s: string) {
-    // Log chip click
-    try {
-      const sid = ensureSessionId();
-      logEvent({
-        session_id: sid,
-        participant_id: participantId,
-        participant_group: participantGroup || undefined,
-        event: "click",
-        component: "suggestion_chip",
-        label: s,
-        client_ts: Date.now(),
-        page_url: typeof window !== "undefined" ? window.location.href : undefined,
-      });
-    } catch {}
-    onSend(s);
   }
 
   function onSubmit(e: React.FormEvent) {
@@ -314,19 +297,9 @@ export default function ChatWindow() {
         <div className="sr-only" aria-live="polite" aria-atomic="true">
           {busy ? "VodaCare is typing" : ""}
         </div>
-      </div>
-      <div className="suggestions">
-        {suggestions.map((s) => (
-          <button
-            className="chip"
-            key={s}
-            onClick={() => onSuggestionClick(s)}
-            disabled={busy}
-            aria-label={`Suggestion: ${s}`}
-          >
-            {s}
-          </button>
-        ))}
+        {engine && (
+          <div className="muted" style={{ fontSize: 12, marginTop: 8 }}>engine: {engine}</div>
+        )}
       </div>
       <form className="input-row" onSubmit={onSubmit}>
         <input
