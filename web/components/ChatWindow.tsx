@@ -29,6 +29,22 @@ export default function ChatWindow() {
   const [typingStartAt, setTypingStartAt] = useState<number | null>(null);
   const [lastSendAt, setLastSendAt] = useState<number | null>(null);
 
+  function sanitizeAssistantText(input: string): string {
+    try {
+      let t = input.replace(/\*/g, "");
+      // Insert newline after a colon when followed immediately by a numbered list
+      t = t.replace(/:(\s*)?(?=\d+\.)/g, ":\n");
+      // Insert newline before numbered list items when not already at line start
+      t = t.replace(/(\d+\.\s*)/g, (m, _g1, offset: number, s: string) => {
+        if (offset === 0) return m;
+        return s[offset - 1] === "\n" ? m : "\n" + m;
+      });
+      return t;
+    } catch {
+      return input;
+    }
+  }
+
   useEffect(() => {
     if (!listRef.current) return;
     if (atBottom) {
@@ -209,12 +225,13 @@ export default function ChatWindow() {
           },
           onToken: (token) => {
             assistantText += token;
+            const formatted = sanitizeAssistantText(assistantText);
             setMessages((m) => {
               const next = [...m];
               // Update last message (assistant placeholder)
               const idx = next.length - 1;
               if (idx >= 0 && next[idx].role === "assistant") {
-                next[idx] = { ...next[idx], text: assistantText } as Msg;
+                next[idx] = { ...next[idx], text: formatted } as Msg;
               }
               return next;
             });
@@ -230,7 +247,7 @@ export default function ChatWindow() {
                 body: JSON.stringify({
                   session_id: sidLocal ?? null,
                   role: "assistant",
-                  content: finalText,
+                  content: sanitizeAssistantText(finalText),
                   participant_id: pid,
                   participant_name: participantName.trim(),
                   participant_group: participantGroup,
@@ -274,7 +291,7 @@ export default function ChatWindow() {
             body: JSON.stringify({ participant_id: pid, session_id: resp.session_id }),
           });
         } catch {}
-        setMessages((m) => [...m, { role: "assistant", text: resp.reply }]);
+        setMessages((m) => [...m, { role: "assistant", text: sanitizeAssistantText(resp.reply) }]);
         // Persist assistant message via Python backend (best-effort)
         try {
           const pid = ensureParticipantId();

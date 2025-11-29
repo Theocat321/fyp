@@ -6,6 +6,7 @@ type Props = {
 
 export default function MessageBubble({ role, text = "", typing = false }: Props) {
   const isUser = role === "user";
+  const displayText = typing ? "" : (isUser ? text : text.replace(/\*/g, ""));
   return (
     <div className={`bubble-row ${isUser ? "right" : "left"}`}>
       <div className={`bubble ${isUser ? "user" : "assistant"}`}>
@@ -16,7 +17,7 @@ export default function MessageBubble({ role, text = "", typing = false }: Props
             <span />
           </div>
         ) : (
-          text
+          displayText
         )}
       </div>
     </div>

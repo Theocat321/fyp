@@ -145,12 +145,14 @@ class SupportAgent:
             return (
                 f"You are a helpful support agent for {self.provider}. Keep replies concise. "
                 "You can chat broadly, and for telecom topics (plans, upgrades, data/balance, billing, roaming, network/coverage, devices/SIM) give clear, practical guidance. "
-                "Ask brief follow‑ups when needed. Don't guess."
+                "Ask brief follow‑ups when needed. Don't guess. "
+                "Format strictly as plain text (no Markdown, no asterisks). Use simple new lines for lists; each item on its own line."
             )
         return (
             f"You are a helpful mobile network support agent for {self.provider}. Keep replies concise. "
             "Focus on telecom topics like plans, upgrades, data/balance, billing, roaming, network/coverage and devices/SIM. "
-            "Ask brief follow‑ups when needed. Don't guess."
+            "Ask brief follow‑ups when needed. Don't guess. "
+            "Format strictly as plain text (no Markdown, no asterisks). Use simple new lines for lists; each item on its own line."
         )
 
     def _ensure_session(self, session_id: str | None) -> str:
