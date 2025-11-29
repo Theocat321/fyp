@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
 import { sendMessage, ChatResponse, sendMessageStream, fetchMessages } from "../lib/api";
 import { logEvent } from "../lib/telemetry";
-import { supabase } from "../lib/supabaseClient";
 
 type Msg = { role: "user" | "assistant"; text: string };
 
@@ -574,9 +573,16 @@ export default function ChatWindow() {
                       user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
                       page_url: typeof window !== "undefined" ? window.location.href : null,
                     };
-                    if (supabase) {
-                      const { error } = await supabase.from("support_feedback").insert(payload);
-                      if (error) throw error;
+                    // Submit via server API to ensure a visible request and avoid client env requirements
+                    const resp = await fetch("/api/feedback", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(payload),
+                    });
+                    if (!resp.ok) throw new Error("feedback_store_failed");
+                    const data = await resp.json();
+                    if (!data?.ok || data?.stored === false) {
+                      throw new Error("feedback_not_stored");
                     }
                     try {
                       await logEvent({

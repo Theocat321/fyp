@@ -9,7 +9,7 @@ import time
 from datetime import datetime, timezone
 
 from .config import get_allowed_origins, get_provider_name
-from .models import ChatRequest, ChatResponse, InteractionEvent, ParticipantInsert, MessageInsert
+from .models import ChatRequest, ChatResponse, InteractionEvent, ParticipantInsert, MessageInsert, FeedbackInsert
 from .agent import SupportAgent
 from .storage import SupabaseStore
 
@@ -169,6 +169,61 @@ def insert_message(m: MessageInsert):
     status = 200 if stored else (code if code else 202)
     return JSONResponse({"ok": True, "stored": stored}, status_code=status)
 
+
+@app.post("/api/feedback")
+def insert_feedback(fb: FeedbackInsert, request: Request):
+    # Log config diagnostics to FastAPI logs so we can see what's wrong
+    try:
+        cfg = {
+            "configured": store.is_configured(),
+            "has_url": bool(store.url),
+            "has_key": bool(store.key),
+            "url_host": (store.url.split("//",1)[1].split("/",1)[0] if store.url else None),
+            "key_prefix": (store.key[:6] + "…" if store.key else None),
+        }
+        logger.warning("/api/feedback config %s", cfg)
+    except Exception:
+        logger.exception("/api/feedback config logging failed")
+
+    row = {
+        "session_id": fb.session_id,
+        "participant_id": fb.participant_id,
+        "participant_group": fb.participant_group,
+        "rating_overall": fb.rating_overall,
+        "rating_helpfulness": fb.rating_helpfulness,
+        "rating_friendliness": fb.rating_friendliness,
+        "resolved": fb.resolved,
+        "time_to_resolution": fb.time_to_resolution,
+        "issues": fb.issues or [],
+        "comments_positive": fb.comments_positive,
+        "comments_negative": fb.comments_negative,
+        "comments_other": fb.comments_other,
+        "would_use_again": fb.would_use_again,
+        "recommend_nps": fb.recommend_nps,
+        "contact_ok": bool(fb.contact_ok) if fb.contact_ok is not None else False,
+        "contact_email": fb.contact_email,
+        "user_agent": fb.user_agent or request.headers.get("user-agent"),
+        "page_url": fb.page_url,
+    }
+
+    stored, code = store.insert_rows("support_feedback", [row])
+    status = 200 if stored else (code if code else 202)
+
+    # Emit a clear log line about the write result
+    try:
+        logger.warning(
+            "/api/feedback write status=%s stored=%s configured=%s", status, stored, store.is_configured()
+        )
+    except Exception:
+        pass
+
+    if not stored:
+        # Surface more actionable messages
+        if not store.is_configured():
+            return JSONResponse({"ok": False, "error": "supabase_not_configured"}, status_code=500)
+        return JSONResponse({"ok": False, "error": "insert_failed", "status": code}, status_code=500)
+
+    return JSONResponse({"ok": True, "stored": True}, status_code=status)
 
 @app.get("/api/messages")
 def get_messages(session_id: str):

@@ -117,7 +117,8 @@ select.select::-ms-expand { display: none; }
 .btn-secondary { background: #f3f4f6; color: #111827; border: 1px solid #e5e7eb; padding: 10px 14px; border-radius: 8px; cursor: pointer; }
 .btn-secondary:hover { background: #e5e7eb; }
 .feedback-actions { display: flex; gap: 8px; justify-content: flex-end; padding: 12px 16px; border-top: 1px solid #f0f0f0; background: #fff; position: sticky; bottom: 0; }
-.feedback-done { display: grid; gap: 8px; }
+.feedback-done { display: grid; gap: 10px; padding: 20px 16px; text-align: center; }
+.feedback-done .send-btn { justify-self: center; }
 
 /* Stars */
 .rating-stars { display: inline-flex; gap: 6px; align-items: center; }

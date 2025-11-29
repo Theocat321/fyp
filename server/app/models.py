@@ -47,3 +47,24 @@ class MessageInsert(BaseModel):
     participant_id: Optional[str] = None
     participant_name: Optional[str] = None
     participant_group: Optional[str] = None
+
+
+class FeedbackInsert(BaseModel):
+    session_id: Optional[str] = None
+    participant_id: Optional[str] = None
+    participant_group: Optional[str] = None
+    rating_overall: Optional[int] = None
+    rating_helpfulness: Optional[int] = None
+    rating_friendliness: Optional[int] = None
+    resolved: Optional[bool] = None
+    time_to_resolution: Optional[str] = None
+    issues: Optional[list[str]] = []
+    comments_positive: Optional[str] = None
+    comments_negative: Optional[str] = None
+    comments_other: Optional[str] = None
+    would_use_again: Optional[str] = None
+    recommend_nps: Optional[int] = None
+    contact_ok: Optional[bool] = None
+    contact_email: Optional[str] = None
+    user_agent: Optional[str] = None
+    page_url: Optional[str] = None

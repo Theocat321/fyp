@@ -22,6 +22,7 @@ const nextConfig = {
       { source: "/api/interaction", destination: `${target}/api/interaction` },
       { source: "/api/participants", destination: `${target}/api/participants` },
       { source: "/api/messages", destination: `${target}/api/messages` },
+      { source: "/api/feedback", destination: `${target}/api/feedback` },
     ];
   },
 };
