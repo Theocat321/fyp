@@ -4,7 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 import asyncio
 import json
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Optional, Any
+import time
+from datetime import datetime, timezone
 
 from .config import get_allowed_origins, get_provider_name
 from .models import ChatRequest, ChatResponse, InteractionEvent, ParticipantInsert, MessageInsert
@@ -26,10 +28,39 @@ app.add_middleware(
 agent = SupportAgent()
 store = SupabaseStore()
 
+def iso_now() -> Optional[str]:
+    try:
+        return datetime.now(timezone.utc).isoformat()
+    except Exception:
+        return None
+
+
+def to_iso_ts(value: Any) -> Optional[str]:
+    try:
+        if value is None:
+            return None
+        # If number, treat as epoch milliseconds if large; else seconds
+        if isinstance(value, (int, float)):
+            ts = float(value)
+            if ts > 1e12:
+                ts = ts / 1000.0
+            return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
+        # If string, try parse; otherwise return as-is
+        if isinstance(value, str):
+            # Accept ISO-like strings
+            return value
+        return None
+    except Exception:
+        return None
+
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "provider": get_provider_name()}
+    try:
+        configured = store.is_configured()
+    except Exception:
+        configured = False
+    return {"status": "ok", "provider": get_provider_name(), "storage_configured": configured}
 
 
 @app.post("/api/chat", response_model=ChatResponse)
@@ -63,27 +94,13 @@ async def interaction(req: Request):
         # Accept but skip storing if no valid events (e.g., missing session_id)
         return JSONResponse({"ok": True, "stored": 0, "skipped": len(events_raw)}, status_code=202)
 
-    # Route compact interaction ({group,input,output}) to 'interactions' table if present
+    # Ignore compact interaction shape; interactions table is deprecated
     if len(events_raw) == 1 and isinstance(events_raw[0], dict) and {
         "group",
         "input",
         "output",
     }.issubset(set(events_raw[0].keys())):
-        rows = [
-            {
-                "group": str(events_raw[0].get("group"))[:2],
-                "input": str(events_raw[0].get("input"))[:4000],
-                "output": str(events_raw[0].get("output"))[:4000],
-            }
-        ]
-        # Debug log to help diagnose empty tables
-        try:
-            logger.info("/api/interaction compact rows=%d configured=%s", len(rows), store.is_configured())
-        except Exception:
-            pass
-        stored, code = store.insert_rows("interactions", rows)
-        status = 200 if stored else (code if code else 202)
-        return JSONResponse({"ok": True, "stored": stored}, status_code=status)
+        return JSONResponse({"ok": True, "stored": 0, "skipped": 1}, status_code=202)
 
     # Otherwise log verbose to interaction_events
     rows = []
@@ -98,14 +115,14 @@ async def interaction(req: Request):
                 "label": (e.label or None),
                 "value": (e.value or None),
                 "duration_ms": int(e.duration_ms) if e.duration_ms is not None else None,
-                "client_ts": e.client_ts,
+                "client_ts": to_iso_ts(e.client_ts),
                 "page_url": e.page_url,
                 "user_agent": e.user_agent,
                 "meta": e.meta,
             }
         )
     try:
-        logger.info("/api/interaction verbose rows=%d configured=%s", len(rows), store.is_configured())
+        logger.warning("/api/interaction verbose rows=%d configured=%s", len(rows), store.is_configured())
     except Exception:
         pass
     stored, code = store.insert_rows("interaction_events", rows)
@@ -154,7 +171,7 @@ def insert_message(m: MessageInsert):
 
 
 @app.post("/api/chat-stream")
-async def chat_stream(req: ChatRequest):
+async def chat_stream(req: ChatRequest, request: Request):
     """Server-Sent Events stream of reply tokens.
 
     Events:
@@ -189,9 +206,36 @@ async def chat_stream(req: ChatRequest):
             },
             ensure_ascii=False,
         )
+        # Log reply_init event (server-side telemetry)
+        try:
+            ua = request.headers.get("user-agent") if request else None
+            store.insert_rows(
+                "interaction_events",
+                [
+                    {
+                        "session_id": sid,
+                        "participant_group": getattr(req, "participant_group", None),
+                        "participant_id": getattr(req, "participant_id", None),
+                        "event": "reply_init",
+                        "component": "chat_stream",
+                        "label": "stream_init",
+                        "value": None,
+                        "duration_ms": None,
+                        "client_ts": iso_now(),
+                        "page_url": getattr(req, "page_url", None),
+                        "user_agent": ua,
+                        "meta": {"engine": ("openai" if agent._llm_client else "error"), "escalate": escalate},
+                    }
+                ],
+            )
+        except Exception:
+            logger.exception("Failed to persist reply_init event (server)")
+
         yield sse("init", init_payload)
 
         full_reply: str = ""
+        stream_start = time.perf_counter()
+        first_token_sent = False
 
         # Stream via OpenAI when configured; otherwise return error text
         if agent._llm_client is not None:
@@ -219,6 +263,31 @@ async def chat_stream(req: ChatRequest):
                         token = None
                     if token:
                         full_reply += token
+                        if not first_token_sent:
+                            first_token_sent = True
+                            try:
+                                ttft_ms = int((time.perf_counter() - stream_start) * 1000)
+                                store.insert_rows(
+                                    "interaction_events",
+                                    [
+                                        {
+                                            "session_id": sid,
+                                            "participant_group": getattr(req, "participant_group", None),
+                                            "participant_id": getattr(req, "participant_id", None),
+                                            "event": "first_token",
+                                            "component": "chat_stream",
+                                            "label": "first_token",
+                                            "value": str(ttft_ms),
+                                            "duration_ms": ttft_ms,
+                                            "client_ts": iso_now(),
+                                            "page_url": getattr(req, "page_url", None),
+                                            "user_agent": ua,
+                                            "meta": None,
+                                        }
+                                    ],
+                                )
+                            except Exception:
+                                logger.exception("Failed to persist first_token event (server)")
                         yield sse("token", token)
                         await asyncio.sleep(0)  # let event loop flush
             except Exception:
@@ -240,6 +309,31 @@ async def chat_stream(req: ChatRequest):
 
         # Save assistant reply to history and send done
         agent.sessions[sid].append(("assistant", full_reply))
+        # Server-side telemetry: reply_done
+        try:
+            total_ms = int((time.perf_counter() - stream_start) * 1000) if stream_start else None
+            store.insert_rows(
+                "interaction_events",
+                [
+                    {
+                        "session_id": sid,
+                        "participant_group": getattr(req, "participant_group", None),
+                        "participant_id": getattr(req, "participant_id", None),
+                        "event": "reply_done",
+                        "component": "chat_stream",
+                        "label": "stream_done",
+                        "value": f"chars={len(full_reply)}",
+                        "duration_ms": total_ms,
+                        "client_ts": iso_now(),
+                        "page_url": getattr(req, "page_url", None),
+                        "user_agent": ua,
+                        "meta": {"chars": len(full_reply)},
+                    }
+                ],
+            )
+        except Exception:
+            logger.exception("Failed to persist reply_done event (server)")
+
         done_payload = json.dumps({"reply": full_reply}, ensure_ascii=False)
         yield sse("done", done_payload)
 

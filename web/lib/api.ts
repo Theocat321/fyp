@@ -22,11 +22,22 @@ function apiUrl(path: string) {
   return BASE_URL ? `${BASE_URL}${path}` : path;
 }
 
-export async function sendMessage(message: string, sessionId?: string, participantGroup?: string): Promise<ChatResponse> {
+export async function sendMessage(
+  message: string,
+  sessionId?: string,
+  participantGroup?: string,
+  participantId?: string
+): Promise<ChatResponse> {
   const res = await fetch(apiUrl(`/api/chat`), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message, session_id: sessionId, participant_group: participantGroup }),
+    body: JSON.stringify({
+      message,
+      session_id: sessionId,
+      participant_group: participantGroup,
+      participant_id: participantId,
+      page_url: typeof window !== "undefined" ? window.location.href : undefined,
+    }),
   });
   if (!res.ok) {
     throw new Error(`API error ${res.status}`);
@@ -45,7 +56,8 @@ export async function sendMessageStream(
   message: string,
   sessionId: string | undefined,
   handlers: StreamHandlers,
-  participantGroup?: string
+  participantGroup?: string,
+  participantId?: string
 ) {
   const res = await fetch(apiUrl(`/api/chat-stream`), {
     method: "POST",
@@ -53,7 +65,13 @@ export async function sendMessageStream(
       "Content-Type": "application/json",
       Accept: "text/event-stream",
     },
-    body: JSON.stringify({ message, session_id: sessionId, participant_group: participantGroup }),
+    body: JSON.stringify({
+      message,
+      session_id: sessionId,
+      participant_group: participantGroup,
+      participant_id: participantId,
+      page_url: typeof window !== "undefined" ? window.location.href : undefined,
+    }),
   });
   if (!res.ok || !res.body) {
     throw new Error(`Stream error ${res.status}`);

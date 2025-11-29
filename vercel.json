@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "builds": [
     { "src": "web/package.json", "use": "@vercel/next" },
     {
@@ -10,11 +11,7 @@
     }
   ],
   "routes": [
-    { "src": "^/api/chat$", "dest": "/server/api/chat.py" },
-    { "src": "^/api/chat-stream$", "dest": "/server/api/chat_stream.py" },
-    { "src": "^/api/interaction$", "dest": "/server/api/interaction.py" },
-    { "src": "^/api/participants$", "dest": "/server/api/participants.py" },
-    { "src": "^/api/messages$", "dest": "/server/api/messages.py" },
+    { "src": "^/api/(.*)$", "dest": "/server/api/$1.py" },
     { "src": "/(.*)", "dest": "web/$1" }
   ]
 }

@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 from pydantic import BaseModel
 
 
@@ -6,6 +6,8 @@ class ChatRequest(BaseModel):
     message: str
     session_id: Optional[str] = None
     participant_group: Optional[str] = None
+    participant_id: Optional[str] = None
+    page_url: Optional[str] = None
 
 
 class ChatResponse(BaseModel):
@@ -25,7 +27,7 @@ class InteractionEvent(BaseModel):
     label: Optional[str] = None
     value: Optional[str] = None
     duration_ms: Optional[int] = None
-    client_ts: Optional[str] = None  # ISO string
+    client_ts: Optional[Union[str, int]] = None  # ISO string or epoch ms
     page_url: Optional[str] = None
     user_agent: Optional[str] = None
     meta: Optional[dict] = None

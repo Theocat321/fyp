@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from datetime import datetime, timezone
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -35,32 +36,28 @@ async def interaction(req: Request):
     if not events_raw:
         return JSONResponse({"ok": True, "stored": 0, "skipped": 0}, status_code=202)
 
-    # compact interaction
+    # Ignore compact interaction shape; interactions table is deprecated
     if len(events_raw) == 1 and isinstance(events_raw[0], dict) and {
         "group",
         "input",
         "output",
     }.issubset(set(events_raw[0].keys())):
-        rows = [
-            {
-                "group": str(events_raw[0].get("group"))[:2],
-                "input": str(events_raw[0].get("input"))[:4000],
-                "output": str(events_raw[0].get("output"))[:4000],
-            }
-        ]
-        try:
-            import logging
-            logging.getLogger(__name__).info("/api/interaction (fn) compact rows=%d configured=%s", len(rows), store.is_configured())
-        except Exception:
-            pass
-        stored, code = store.insert_rows("interactions", rows)
-        status = 200 if stored else (code if code else 202)
-        return JSONResponse({"ok": True, "stored": stored}, status_code=status)
+        return JSONResponse({"ok": True, "stored": 0, "skipped": 1}, status_code=202)
 
     rows = []
     for e in events_raw:
         if not isinstance(e, dict) or not e.get("session_id"):
             continue
+        # Normalize client_ts (accept epoch ms or ISO string)
+        ct = e.get("client_ts")
+        if isinstance(ct, (int, float)):
+            ts = float(ct)
+            if ts > 1e12:
+                ts = ts / 1000.0
+            try:
+                ct = datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
+            except Exception:
+                ct = None
         rows.append(
             {
                 "session_id": e.get("session_id"),
@@ -71,7 +68,7 @@ async def interaction(req: Request):
                 "label": e.get("label"),
                 "value": e.get("value"),
                 "duration_ms": e.get("duration_ms"),
-                "client_ts": e.get("client_ts"),
+                "client_ts": ct,
                 "page_url": e.get("page_url"),
                 "user_agent": e.get("user_agent"),
                 "meta": e.get("meta"),
@@ -81,7 +78,7 @@ async def interaction(req: Request):
         return JSONResponse({"ok": True, "stored": 0, "skipped": len(events_raw)}, status_code=202)
     try:
         import logging
-        logging.getLogger(__name__).info("/api/interaction (fn) verbose rows=%d configured=%s", len(rows), store.is_configured())
+        logging.getLogger(__name__).warning("/api/interaction (fn) verbose rows=%d configured=%s", len(rows), store.is_configured())
     except Exception:
         pass
     stored, code = store.insert_rows("interaction_events", rows)

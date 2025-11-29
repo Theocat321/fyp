@@ -27,6 +27,7 @@ export default function ChatWindow() {
   const [participantId, setParticipantId] = useState<string | undefined>(undefined);
   const [started, setStarted] = useState<boolean>(false);
   const [typingStartAt, setTypingStartAt] = useState<number | null>(null);
+  const [lastSendAt, setLastSendAt] = useState<number | null>(null);
 
   useEffect(() => {
     if (!listRef.current) return;
@@ -89,7 +90,8 @@ export default function ChatWindow() {
         participant_group: participantGroup,
         event: "submit",
         component: "start_chat_form",
-        label: "Start Chat",
+        label: "start_chat",
+        value: participantGroup,
         client_ts: Date.now(),
         page_url: typeof window !== "undefined" ? window.location.href : undefined,
       });
@@ -128,8 +130,9 @@ export default function ChatWindow() {
           participant_group: participantGroup || undefined,
           event: "typing_end",
           component: "text_input",
+          label: "text_input",
+          value: String(trimmed.length),
           duration_ms: dur,
-          value: undefined,
           client_ts: Date.now(),
           page_url: typeof window !== "undefined" ? window.location.href : undefined,
           meta: { length: trimmed.length },
@@ -139,13 +142,28 @@ export default function ChatWindow() {
     setTypingStartAt(null);
     // Log message send
     try {
+      const now = Date.now();
+      setLastSendAt(now);
+      // Generic 'send' event for funnel
+      await logEvent({
+        session_id: sid,
+        participant_id: participantId,
+        participant_group: participantGroup || undefined,
+        event: "send",
+        component: "composer",
+        label: "send",
+        value: String(trimmed.length),
+        client_ts: now,
+        page_url: typeof window !== "undefined" ? window.location.href : undefined,
+      });
+      // Legacy/message-specific event
       await logEvent({
         session_id: sid,
         participant_id: participantId,
         participant_group: participantGroup || undefined,
         event: "message_send",
         component: "send_action",
-        label: "Send",
+        label: "send",
         client_ts: Date.now(),
         page_url: typeof window !== "undefined" ? window.location.href : undefined,
         meta: { length: trimmed.length },
@@ -203,7 +221,7 @@ export default function ChatWindow() {
           },
           onDone: async (finalText) => {
             setBusy(false);
-            // Persist assistant message and compact interaction via Python backend (best-effort)
+            // Persist assistant message via Python backend (best-effort)
             try {
               const pid = ensureParticipantId();
               await fetch("/api/messages", {
@@ -218,15 +236,23 @@ export default function ChatWindow() {
                   participant_group: participantGroup,
                 }),
               });
-              await fetch("/api/interaction", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  group: participantGroup,
-                  input: trimmed,
-                  output: finalText,
-                }),
-              });
+              // Client-side response event for funnel
+              try {
+                const now = Date.now();
+                const dur = lastSendAt ? now - lastSendAt : undefined;
+                await logEvent({
+                  session_id: sidLocal ?? sid,
+                  participant_id: participantId,
+                  participant_group: participantGroup || undefined,
+                  event: "response",
+                  component: "chat_stream",
+                  label: "assistant",
+                  value: String(finalText.length),
+                  duration_ms: dur,
+                  client_ts: now,
+                  page_url: typeof window !== "undefined" ? window.location.href : undefined,
+                });
+              } catch {}
             } catch {}
           },
           onError: () => {
@@ -236,9 +262,9 @@ export default function ChatWindow() {
               { role: "assistant", text: "Sorry—something went wrong. Please try again." },
             ]);
           },
-        }, participantGroup);
+        }, participantGroup, participantId || ensureParticipantId());
       } else {
-        const resp: ChatResponse = await sendMessage(trimmed, sid, participantGroup);
+        const resp: ChatResponse = await sendMessage(trimmed, sid, participantGroup, participantId || ensureParticipantId());
         setSessionId(resp.session_id);
         try {
           const pid = ensureParticipantId();
@@ -249,7 +275,7 @@ export default function ChatWindow() {
           });
         } catch {}
         setMessages((m) => [...m, { role: "assistant", text: resp.reply }]);
-        // Persist assistant message and compact interaction via Python backend (best-effort)
+        // Persist assistant message via Python backend (best-effort)
         try {
           const pid = ensureParticipantId();
           await fetch("/api/messages", {
@@ -264,15 +290,23 @@ export default function ChatWindow() {
               participant_group: participantGroup,
             }),
           });
-          await fetch("/api/interaction", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              group: participantGroup,
-              input: trimmed,
-              output: resp.reply,
-            }),
-          });
+          // Client-side response event for funnel (non-stream)
+          try {
+            const now = Date.now();
+            const dur = lastSendAt ? now - lastSendAt : undefined;
+            await logEvent({
+              session_id: resp.session_id,
+              participant_id: participantId,
+              participant_group: participantGroup || undefined,
+              event: "response",
+              component: "chat",
+              label: "assistant",
+              value: String(resp.reply.length),
+              duration_ms: dur,
+              client_ts: now,
+              page_url: typeof window !== "undefined" ? window.location.href : undefined,
+            });
+          } catch {}
         } catch {}
         setBusy(false);
       }
@@ -357,6 +391,8 @@ export default function ChatWindow() {
                   participant_group: participantGroup || undefined,
                   event: "typing_start",
                   component: "text_input",
+                  label: "text_input",
+                  value: String(val.length),
                   client_ts: startedAt,
                   page_url: typeof window !== "undefined" ? window.location.href : undefined,
                 });
@@ -373,6 +409,8 @@ export default function ChatWindow() {
                 participant_group: participantGroup || undefined,
                 event: "focus",
                 component: "text_input",
+                label: "text_input",
+                value: "focus",
                 client_ts: Date.now(),
                 page_url: typeof window !== "undefined" ? window.location.href : undefined,
               });
@@ -388,6 +426,8 @@ export default function ChatWindow() {
                   participant_group: participantGroup || undefined,
                   event: "blur",
                   component: "text_input",
+                  label: "text_input",
+                  value: "blur",
                   client_ts: Date.now(),
                   page_url: typeof window !== "undefined" ? window.location.href : undefined,
                 });
@@ -409,7 +449,8 @@ export default function ChatWindow() {
                 participant_group: participantGroup || undefined,
                 event: "click",
                 component: "send_button",
-                label: "Send",
+                label: "send",
+                value: String(input.trim().length),
                 client_ts: Date.now(),
                 page_url: typeof window !== "undefined" ? window.location.href : undefined,
               });

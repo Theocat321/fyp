@@ -2,9 +2,11 @@ import asyncio
 import json
 from typing import AsyncGenerator
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from datetime import datetime, timezone
 import logging
 from fastapi.responses import StreamingResponse
+import time
 from fastapi.middleware.cors import CORSMiddleware
 
 from server.app.agent import SupportAgent
@@ -25,7 +27,7 @@ agent = SupportAgent()
 
 @app.post("/")
 @app.post("/api/chat-stream")
-async def chat_stream(req: dict):
+async def chat_stream(req: dict, request: Request):
     """SSE stream compatible with the web client.
     Mirrors server/app/main.py:chat_stream but mounted at function root.
     """
@@ -56,9 +58,37 @@ async def chat_stream(req: dict):
             },
             ensure_ascii=False,
         )
+        # Server-side telemetry: reply_init
+        try:
+            from server.app.storage import SupabaseStore
+            ua = request.headers.get("user-agent") if request else None
+            SupabaseStore().insert_rows(
+                "interaction_events",
+                [
+                    {
+                        "session_id": sid,
+                        "participant_group": req.get("participant_group"),
+                        "participant_id": req.get("participant_id"),
+                        "event": "reply_init",
+                        "component": "chat_stream",
+                        "label": "stream_init",
+                        "value": None,
+                        "duration_ms": None,
+                        "client_ts": datetime.now(timezone.utc).isoformat(),
+                        "page_url": req.get("page_url"),
+                        "user_agent": ua,
+                        "meta": {"engine": ("openai" if agent._llm_client else "error"), "escalate": escalate},
+                    }
+                ],
+            )
+        except Exception:
+            logger.exception("Failed to persist reply_init event (fn)")
+
         yield sse("init", init_payload)
 
         full_reply: str = ""
+        stream_start = time.perf_counter()
+        first_token_sent = False
 
         # Stream via OpenAI when configured; otherwise return error text
         if agent._llm_client is not None:
@@ -85,6 +115,32 @@ async def chat_stream(req: dict):
                         token = None
                     if token:
                         full_reply += token
+                        if not first_token_sent:
+                            first_token_sent = True
+                            try:
+                                from server.app.storage import SupabaseStore
+                                ttft_ms = int((time.perf_counter() - stream_start) * 1000)
+                                SupabaseStore().insert_rows(
+                                    "interaction_events",
+                                    [
+                                        {
+                                            "session_id": sid,
+                                            "participant_group": req.get("participant_group"),
+                                            "participant_id": req.get("participant_id"),
+                                            "event": "first_token",
+                                            "component": "chat_stream",
+                                            "label": "first_token",
+                                            "value": str(ttft_ms),
+                                            "duration_ms": ttft_ms,
+                                            "client_ts": datetime.now(timezone.utc).isoformat(),
+                                            "page_url": req.get("page_url"),
+                                            "user_agent": ua,
+                                            "meta": None,
+                                        }
+                                    ],
+                                )
+                            except Exception:
+                                logger.exception("Failed to persist first_token event (fn)")
                         yield sse("token", token)
                         await asyncio.sleep(0)
             except Exception:
@@ -105,6 +161,31 @@ async def chat_stream(req: dict):
 
         # Save assistant reply to history and send done
         agent.sessions[sid].append(("assistant", full_reply))
+        # Server-side telemetry: reply_done
+        try:
+            from server.app.storage import SupabaseStore
+            total_ms = int((time.perf_counter() - stream_start) * 1000) if stream_start else None
+            SupabaseStore().insert_rows(
+                "interaction_events",
+                [
+                    {
+                        "session_id": sid,
+                        "participant_group": req.get("participant_group"),
+                        "participant_id": req.get("participant_id"),
+                        "event": "reply_done",
+                        "component": "chat_stream",
+                        "label": "stream_done",
+                        "value": f"chars={len(full_reply)}",
+                        "duration_ms": total_ms,
+                        "client_ts": datetime.now(timezone.utc).isoformat(),
+                        "page_url": req.get("page_url"),
+                        "user_agent": ua,
+                        "meta": {"chars": len(full_reply)},
+                    }
+                ],
+            )
+        except Exception:
+            logger.exception("Failed to persist reply_done event (fn)")
         done_payload = json.dumps({"reply": full_reply}, ensure_ascii=False)
         yield sse("done", done_payload)
 
