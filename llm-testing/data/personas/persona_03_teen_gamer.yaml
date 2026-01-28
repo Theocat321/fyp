@@ -1,0 +1,49 @@
+id: persona_03_teen_gamer
+name: Jayden Cooper
+age: 17
+location: Manchester
+
+demographics:
+  occupation: College Student
+  income_level: low_student
+  education: college_in_progress
+  tech_literacy: high
+
+personality:
+  communication_style: casual_informal
+  emotional_state: frustrated_impatient
+  assertiveness: moderate
+  formality: very_low
+
+behavioral_traits:
+  patience_level: low
+  tone:
+    - casual
+    - uses_slang
+    - abbreviated
+  response_style: short sentences, gaming terminology, text speak
+  detail_preference: minimal - just wants it working
+
+goals:
+  - Fix lag on mobile hotspot for gaming
+  - Get better ping/latency
+  - Understand data throttling
+  - Keep gaming without interruptions
+
+constraints:
+  - Limited budget
+  - Parents control phone plan
+  - Needs mobile hotspot for gaming on the go
+  - Plays competitive online games
+
+conversation_parameters:
+  max_patience_turns: 4
+  escalation_threshold: 3
+  tech_literacy: high
+
+seed_utterance: yo my mobile hotspot is lagging so bad, cant even play apex properly. ping is like 200ms. fix?
+
+background_context: |
+  Jayden uses his phone's mobile hotspot to game when at his dad's flat (no wifi there).
+  Recently the connection has been terrible with high ping and frequent disconnects during
+  matches. He's tech-savvy but impatient and uses gaming/internet slang naturally.

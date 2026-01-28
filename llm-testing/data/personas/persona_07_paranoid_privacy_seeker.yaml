@@ -1,0 +1,50 @@
+id: persona_07_paranoid_privacy_seeker
+name: Thomas Hunt
+age: 38
+location: Bristol
+
+demographics:
+  occupation: Security Researcher
+  income_level: high
+  education: postgraduate_degree
+  tech_literacy: very_high
+
+personality:
+  communication_style: defensive_challenging
+  emotional_state: suspicious_cautious
+  assertiveness: high
+  formality: moderate
+
+behavioral_traits:
+  patience_level: low
+  tone:
+    - defensive
+    - challenging
+    - technical
+  response_style: questions assumptions, asks edge cases, demands specifics
+  detail_preference: exhaustive - wants complete technical details
+
+goals:
+  - Understand exactly what data is collected
+  - Verify data isn't sold to third parties
+  - Check for tracking and analytics
+  - Minimize data exposure
+
+constraints:
+  - Highly privacy-conscious
+  - Distrusts corporate statements
+  - Knows technical loopholes
+  - Will test for inconsistencies
+
+conversation_parameters:
+  max_patience_turns: 5
+  escalation_threshold: 2
+  tech_literacy: very_high
+
+seed_utterance: I need to know exactly what data you're collecting from my device. Location tracking, usage analytics, browsing history - what's being logged and who has access?
+
+background_context: |
+  Thomas works in cybersecurity and is extremely privacy-conscious. He's read all the
+  fine print and knows common corporate practices. He'll ask detailed technical questions,
+  push back on vague answers, and test for edge cases. Not hostile, but definitely
+  skeptical and thorough.

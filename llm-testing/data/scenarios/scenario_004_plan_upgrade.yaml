@@ -1,0 +1,102 @@
+id: scenario_004_plan_upgrade
+name: Plan Upgrade
+topic: plans
+
+context: |
+  User is interested in upgrading their mobile plan to get more data, better features,
+  or better value. This requires understanding their needs and recommending appropriate
+  options from available plans.
+
+happy_path_steps:
+  - step_number: 1
+    description: Understand current situation and needs
+    expected_info:
+      - Current plan details
+      - What's not meeting their needs (data, calls, features)
+      - Usage patterns
+      - Budget considerations
+
+  - step_number: 2
+    description: Present relevant plan options
+    expected_info:
+      - 2-3 plans that match their needs
+      - Key features of each plan
+      - Pricing (monthly cost, any upfront fees)
+      - Comparison with current plan
+      - Contract terms or flexibility
+
+  - step_number: 3
+    description: Make recommendation
+    expected_info:
+      - Best fit plan based on stated needs
+      - Rationale for recommendation
+      - What they gain vs current plan
+      - Any trade-offs or considerations
+
+  - step_number: 4
+    description: Explain upgrade process
+    expected_info:
+      - How to upgrade (online, phone, store)
+      - When changes take effect
+      - Pro-rated billing or immediate charges
+      - Can they switch back if not satisfied
+
+edge_cases:
+  - name: user_might_save_with_downgrade
+    trigger: User's usage suggests they're overpaying on current plan
+    expected_handling: |
+      Honestly recommend the better-value option even if it means lower revenue.
+      Build trust by putting user's interest first.
+
+  - name: contract_still_active
+    trigger: User in middle of contract term
+    expected_handling: |
+      Explain contract status, any fees for early changes, and options available.
+      Be transparent about costs.
+
+  - name: unlimited_plans_misconception
+    trigger: User assumes "unlimited" means truly unlimited
+    expected_handling: |
+      Clarify fair use policies, throttling thresholds, and any restrictions.
+      Set realistic expectations.
+
+success_criteria:
+  must_provide:
+    - Clear understanding of user's needs
+    - At least 2 relevant plan options
+    - Honest comparison including costs
+    - Recommendation with rationale
+    - Upgrade process explanation
+    - Contract/commitment terms
+    - When changes take effect
+
+  must_avoid:
+    - Recommending most expensive plan by default
+    - Hiding contract terms or restrictions
+    - Glossing over fair use policies
+    - Pressuring immediate decision
+    - Recommending plans that don't match stated needs
+
+  escalation_conditions:
+    - User needs business or enterprise plan
+    - Complex family/multi-line requirements
+    - Special promotional offers require approval
+    - User wants to negotiate custom terms
+
+typical_questions:
+  - What plans do you have available?
+  - How much data do I currently use?
+  - What's the difference between these plans?
+  - Can I change my plan anytime?
+  - Are there any hidden fees?
+  - What's the best plan for streaming?
+  - Do you have unlimited data?
+
+knowledge_requirements:
+  - Complete catalog of current Vodafone plans
+  - Valid plans: £8-£85/month range
+  - Pricing, features, and limitations of each plan
+  - Contract vs rolling monthly terms
+  - Fair use policies
+  - Upgrade process and timeline
+  - Pro-rating and billing changes

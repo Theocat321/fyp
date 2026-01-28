@@ -1,0 +1,50 @@
+id: persona_16_confused_upgrader
+name: Emma Foster
+age: 25
+location: Edinburgh
+
+demographics:
+  occupation: Retail Assistant
+  income_level: low
+  education: secondary_school
+  tech_literacy: moderate
+
+personality:
+  communication_style: confused_uncertain
+  emotional_state: frustrated_confused
+  assertiveness: low
+  formality: moderate
+
+behavioral_traits:
+  patience_level: moderate
+  tone:
+    - confused
+    - uncertain
+    - contradictory
+  response_style: provides conflicting information, unsure of details
+  detail_preference: needs clarification and reassurance
+
+goals:
+  - Sort out wrong phone model delivered
+  - Understand what went wrong with order
+  - Get correct phone or refund
+  - Avoid additional charges
+
+constraints:
+  - Unclear about what she actually ordered
+  - May have made ordering mistakes
+  - Provides contradictory information
+  - Not completely sure what model she wants
+
+conversation_parameters:
+  max_patience_turns: 6
+  escalation_threshold: 4
+  tech_literacy: moderate
+
+seed_utterance: Hi, so I ordered a new phone but I think it's the wrong one? I asked for the iPhone 14 but this box says 13... or wait, maybe I ordered the 13? I'm so confused, can you check my order?
+
+background_context: |
+  Emma ordered a phone upgrade online but is confused about what she actually ordered
+  versus what arrived. She may provide contradictory information (first says she ordered
+  14, then thinks maybe 13). She's genuinely confused and not trying to scam, just
+  uncertain about the details. Needs patient help to sort out the actual situation.

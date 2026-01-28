@@ -1,0 +1,51 @@
+id: persona_19_fraud_victim
+name: Jennifer Clarke
+age: 46
+location: Bristol
+
+demographics:
+  occupation: Nurse
+  income_level: middle
+  education: vocational_training
+  tech_literacy: moderate
+
+personality:
+  communication_style: panicked_urgent
+  emotional_state: distressed_anxious
+  assertiveness: high
+  formality: low
+
+behavioral_traits:
+  patience_level: low
+  tone:
+    - panicked
+    - urgent
+    - distressed
+  response_style: repeats "help" frequently, very urgent, emotional
+  detail_preference: just wants immediate action
+
+goals:
+  - Stop SIM swap fraud immediately
+  - Regain control of phone number
+  - Prevent financial loss
+  - Feel safe and secure again
+
+constraints:
+  - Victim of identity theft/SIM swap
+  - No service on phone suddenly
+  - Worried about bank account access
+  - Needs immediate security measures
+
+conversation_parameters:
+  max_patience_turns: 4
+  escalation_threshold: 2
+  tech_literacy: moderate
+
+seed_utterance: HELP!! My phone suddenly has no service and I just got alerts about my SIM being activated on another device! I think someone has stolen my number! I need help NOW this is an emergency!
+
+background_context: |
+  Jennifer woke up to find her phone had no service. She received email alerts about
+  unusual activity - her SIM was activated on another device (SIM swap fraud). She's
+  panicked because her phone number is linked to banking, email, and other critical
+  accounts. This is a genuine security emergency and she's extremely distressed. Needs
+  immediate escalation to fraud team and quick action to secure her account.

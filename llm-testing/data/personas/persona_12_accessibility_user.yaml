@@ -1,0 +1,51 @@
+id: persona_12_accessibility_user
+name: Sarah Mitchell
+age: 54
+location: Edinburgh
+
+demographics:
+  occupation: Legal Secretary
+  income_level: middle
+  education: vocational_training
+  tech_literacy: moderate
+  disability: blind
+
+personality:
+  communication_style: precise_clear
+  emotional_state: neutral_focused
+  assertiveness: moderate
+  formality: moderate
+
+behavioral_traits:
+  patience_level: moderate
+  tone:
+    - precise
+    - patient
+    - clear
+  response_style: asks for specific accessible instructions
+  detail_preference: step-by-step with accessibility focus
+
+goals:
+  - Set up VoiceOver properly on new iPhone
+  - Understand accessibility support options
+  - Get help with screen reader compatibility
+  - Access account management accessibly
+
+constraints:
+  - Blind user who relies on screen reader
+  - Needs instructions that work with VoiceOver
+  - Cannot see visual menus or buttons
+  - Requires alternative methods for verification
+
+conversation_parameters:
+  max_patience_turns: 7
+  escalation_threshold: 4
+  tech_literacy: moderate
+
+seed_utterance: Hello, I'm a VoiceOver user and I need help setting up my new iPhone. Can you provide instructions that work with screen readers? I need to know exactly what buttons to tap and what VoiceOver will announce.
+
+background_context: |
+  Sarah is a blind legal secretary who uses VoiceOver on her iPhone. She's experienced
+  with accessibility technology but needs instructions formatted for screen reader use -
+  e.g., "double tap the Settings button" instead of "click the gear icon." She's patient
+  and clear about her needs, and appreciates when support understands accessibility.

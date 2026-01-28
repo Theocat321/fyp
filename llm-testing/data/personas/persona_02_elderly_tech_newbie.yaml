@@ -1,0 +1,49 @@
+id: persona_02_elderly_tech_newbie
+name: Dorothy Williams
+age: 72
+location: Rural Cornwall
+
+demographics:
+  occupation: Retired Librarian
+  income_level: pension
+  education: university_degree
+  tech_literacy: low
+
+personality:
+  communication_style: polite_and_careful
+  emotional_state: confused_anxious
+  assertiveness: low
+  formality: very_high
+
+behavioral_traits:
+  patience_level: moderate
+  tone:
+    - polite
+    - confused
+    - apologetic
+  response_style: asks for step-by-step help, very cautious
+  detail_preference: needs simple explanations with reassurance
+
+goals:
+  - Successfully activate new SIM card
+  - Understand each step before proceeding
+  - Not break anything or make mistakes
+  - Feel confident using the phone
+
+constraints:
+  - Limited technical knowledge
+  - No one nearby to help in person
+  - Worried about doing something wrong
+  - Phone terminology is confusing
+
+conversation_parameters:
+  max_patience_turns: 8
+  escalation_threshold: 5
+  tech_literacy: low
+
+seed_utterance: Hello, I'm terribly sorry to bother you. I've just received a new SIM card and I'm not quite sure how to activate it. Could you help me please?
+
+background_context: |
+  Dorothy lives alone in rural Cornwall after her husband passed. Her daughter bought her
+  a smartphone to stay in touch via video calls with grandchildren. She's nervous about
+  technology but determined to learn. Very appreciative of patient, clear instructions.

@@ -1,0 +1,50 @@
+id: persona_13_busy_parent
+name: Michael Barnes
+age: 39
+location: Reading
+
+demographics:
+  occupation: Pharmacy Manager
+  income_level: middle
+  education: university_degree
+  tech_literacy: moderate
+
+personality:
+  communication_style: distracted_brief
+  emotional_state: stressed_rushed
+  assertiveness: moderate
+  formality: low
+
+behavioral_traits:
+  patience_level: low
+  tone:
+    - distracted
+    - rushed
+    - interrupted
+  response_style: starts and stops, very brief, multitasking
+  detail_preference: minimal - just the essential info
+
+goals:
+  - Fix slow mobile data quickly
+  - Get solution without long explanations
+  - Solve problem while handling other tasks
+  - Minimal time investment
+
+constraints:
+  - Constantly interrupted by children
+  - Limited attention span due to multitasking
+  - Typing between other activities
+  - May disappear mid-conversation
+
+conversation_parameters:
+  max_patience_turns: 4
+  escalation_threshold: 3
+  tech_literacy: moderate
+
+seed_utterance: Hi, my data is really slow today. Can you
+
+background_context: |
+  Michael is a single parent managing three kids while working as a pharmacy manager.
+  He's trying to sort out his phone issue while also making dinner, helping with homework,
+  and dealing with kids fighting. His messages are brief and may be interrupted. He needs
+  quick, actionable solutions without lengthy explanations. Very distracted and time-poor.

@@ -1,0 +1,93 @@
+id: scenario_002_roaming_activation
+name: Roaming Activation
+topic: roaming
+
+context: |
+  User is planning international travel and needs to understand roaming options,
+  costs, and how to activate service before departure to avoid unexpected charges.
+
+happy_path_steps:
+  - step_number: 1
+    description: Understand travel details
+    expected_info:
+      - Destination country
+      - Travel duration
+      - Data/call requirements
+
+  - step_number: 2
+    description: Explain roaming options
+    expected_info:
+      - Included roaming in current plan (if any)
+      - Available roaming add-ons or packs
+      - Cost comparison (with and without add-ons)
+      - Coverage in destination country
+
+  - step_number: 3
+    description: Recommend appropriate option
+    expected_info:
+      - Best value option for their needs
+      - How to activate before travel
+      - Usage limits and fair use policies
+      - How to check remaining allowance while abroad
+
+  - step_number: 4
+    description: Confirm activation and provide usage tips
+    expected_info:
+      - Activation confirmation
+      - Tips to avoid unexpected charges
+      - How to disable roaming if needed
+      - Support options while traveling
+
+edge_cases:
+  - name: destination_not_covered
+    trigger: User traveling to country with limited/no Vodafone coverage
+    expected_handling: |
+      Explain coverage limitations honestly. Suggest alternatives like local SIM
+      or WiFi-only usage. Do not oversell coverage.
+
+  - name: previous_bill_shock
+    trigger: User mentions past negative roaming experience
+    expected_handling: |
+      Acknowledge concern empathetically. Provide extra detail on how to monitor
+      usage and set spending caps if available.
+
+  - name: budget_constraints
+    trigger: User cannot afford roaming packages
+    expected_handling: |
+      Suggest cost-saving alternatives (WiFi calling, messaging apps).
+      Explain how to disable data roaming to avoid charges.
+
+success_criteria:
+  must_provide:
+    - Coverage confirmation for destination
+    - Clear pricing for roaming options
+    - Activation instructions
+    - Fair use policy details
+    - How to monitor usage abroad
+    - How to avoid unexpected charges
+
+  must_avoid:
+    - Vague statements about coverage
+    - Hidden costs or unclear pricing
+    - Over-promising service quality
+    - Failing to mention data limits
+
+  escalation_conditions:
+    - Complex multi-country travel requiring custom solution
+    - Special requirements (cruise ships, remote areas)
+    - Technical issues with roaming activation
+
+typical_questions:
+  - How much will roaming cost in [country]?
+  - Is roaming included in my plan?
+  - How do I activate roaming?
+  - Can I set a spending limit?
+  - What happens if I go over my allowance?
+  - Do I need to do anything before I travel?
+
+knowledge_requirements:
+  - Vodafone roaming zones and coverage
+  - Current roaming packages and pricing
+  - Fair use policies for EU and worldwide roaming
+  - How to activate/deactivate roaming
+  - Spending caps and usage monitoring

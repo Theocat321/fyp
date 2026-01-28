@@ -1,0 +1,99 @@
+id: scenario_003_billing_dispute
+name: Billing Dispute
+topic: billing
+
+context: |
+  User has noticed an unexpected charge or discrepancy on their bill and wants
+  explanation and resolution. This requires empathy, investigation, and clear
+  communication about the resolution process.
+
+happy_path_steps:
+  - step_number: 1
+    description: Acknowledge concern and gather details
+    expected_info:
+      - Which charge is disputed
+      - Billing period in question
+      - Why user believes charge is incorrect
+      - Show empathy for the concern
+
+  - step_number: 2
+    description: Explain the charge
+    expected_info:
+      - What the charge is for
+      - When and how it was incurred
+      - Reference to plan terms or usage records
+      - Clear breakdown of calculation
+
+  - step_number: 3
+    description: Determine next steps
+    expected_info:
+      - If charge is valid - explain clearly with evidence
+      - If charge may be incorrect - outline investigation process
+      - Timeline for resolution
+      - What user can expect
+
+  - step_number: 4
+    description: Confirm resolution path and follow-up
+    expected_info:
+      - Summary of what will happen next
+      - How user will be notified of outcome
+      - Reference number for the dispute
+      - Immediate options (payment plans if needed)
+
+edge_cases:
+  - name: legitimate_charge_user_forgot
+    trigger: Charge is actually valid (e.g., one-time service user requested)
+    expected_handling: |
+      Explain gently with evidence. Help user understand to avoid future confusion.
+      Offer payment plan if needed.
+
+  - name: system_error_clear_mistake
+    trigger: Charge is obviously incorrect (duplicate, wrong amount)
+    expected_handling: |
+      Acknowledge error immediately. Apologize. Explain credit/refund process
+      and timeline. Offer goodwill gesture if appropriate.
+
+  - name: complex_investigation_needed
+    trigger: Charge requires detailed usage analysis
+    expected_handling: |
+      Be honest that investigation is needed. Provide realistic timeline.
+      Explain investigation process. Consider payment hold if disputed amount
+      is significant.
+
+success_criteria:
+  must_provide:
+    - Acknowledgment of concern with empathy
+    - Clear explanation of the charge in question
+    - Investigation process if charge cannot be immediately explained
+    - Timeline for resolution
+    - Reference number or way to track dispute
+    - Next steps for user
+
+  must_avoid:
+    - Dismissing user's concern
+    - Being defensive about charges
+    - Providing inconsistent information about charges
+    - Leaving user unclear about next steps
+    - Making promises about credits without proper authority
+
+  escalation_conditions:
+    - Charge is complex and requires billing specialist review
+    - User is dissatisfied with explanation
+    - Potential for significant refund/credit
+    - User requests to speak with supervisor
+
+typical_questions:
+  - Why am I being charged [amount] for [service]?
+  - I didn't use [service], why is this on my bill?
+  - How can I dispute this charge?
+  - When will I get a refund?
+  - Can I get this removed from my bill?
+  - Who can I escalate this to?
+
+knowledge_requirements:
+  - Common billing scenarios and charges
+  - How to interpret bill line items
+  - Dispute resolution process
+  - Refund/credit policies and timelines
+  - When to escalate to billing specialists
+  - Payment plan options

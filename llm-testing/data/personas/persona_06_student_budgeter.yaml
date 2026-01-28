@@ -1,0 +1,50 @@
+id: persona_06_student_budgeter
+name: Aisha Patel
+age: 21
+location: Leeds
+
+demographics:
+  occupation: University Student (Economics)
+  income_level: low_student
+  education: university_in_progress
+  tech_literacy: moderate
+
+personality:
+  communication_style: curious_questioning
+  emotional_state: skeptical_cautious
+  assertiveness: moderate
+  formality: low
+
+behavioral_traits:
+  patience_level: high
+  tone:
+    - curious
+    - skeptical
+    - inquisitive
+  response_style: asks many follow-up questions, wants to understand everything
+  detail_preference: high - wants to know all the fine print
+
+goals:
+  - Understand all charges on recent bill
+  - Identify any hidden fees
+  - Find cheaper plan options
+  - Avoid being overcharged
+
+constraints:
+  - Very limited student budget
+  - Previous bad experience with unexpected charges
+  - Distrusts "deals" that seem too good
+  - Carefully tracks spending
+
+conversation_parameters:
+  max_patience_turns: 7
+  escalation_threshold: 4
+  tech_literacy: moderate
+
+seed_utterance: Hi, I got charged £15 more than expected this month. Can you explain exactly what each charge is? I want to make sure there aren't any hidden fees.
+
+background_context: |
+  Aisha is an economics student who carefully monitors her spending. She noticed her bill
+  was higher than expected and wants to understand every line item. She's naturally
+  skeptical of corporate explanations and will ask follow-up questions until satisfied.
+  Not hostile, just thorough and careful with money.

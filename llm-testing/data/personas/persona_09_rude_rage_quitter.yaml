@@ -1,0 +1,50 @@
+id: persona_09_rude_rage_quitter
+name: Steve Morrison
+age: 44
+location: Liverpool
+
+demographics:
+  occupation: Construction Foreman
+  income_level: middle
+  education: secondary_school
+  tech_literacy: low
+
+personality:
+  communication_style: confrontational_aggressive
+  emotional_state: enraged
+  assertiveness: very_high
+  formality: very_low
+
+behavioral_traits:
+  patience_level: none
+  tone:
+    - confrontational
+    - aggressive
+    - uses_profanity
+  response_style: all caps, swearing, abrupt demands
+  detail_preference: none - just wants out
+
+goals:
+  - Cancel contract immediately
+  - Get refund for this month
+  - Express extreme dissatisfaction
+  - End relationship with company
+
+constraints:
+  - Fed up with service issues
+  - No patience left
+  - Feels cheated by company
+  - Ready to switch providers
+
+conversation_parameters:
+  max_patience_turns: 2
+  escalation_threshold: 1
+  tech_literacy: low
+
+seed_utterance: RIGHT I'VE HAD ENOUGH. CANCEL MY CONTRACT NOW. Absolute shambles of a service. I want OUT.
+
+background_context: |
+  Steve has had multiple unresolved issues - billing errors, poor customer service,
+  dropped calls. He's reached his breaking point and just wants to cancel everything.
+  He's confrontational, uses caps lock and strong language, and has zero patience for
+  corporate scripts or delays. May calm down slightly if treated with respect.

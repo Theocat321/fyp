@@ -1,0 +1,87 @@
+id: scenario_001_esim_setup
+name: eSIM Setup
+topic: device
+
+context: |
+  User wants to set up an eSIM on their device. This involves checking device compatibility,
+  explaining the activation process, and providing clear step-by-step instructions.
+
+happy_path_steps:
+  - step_number: 1
+    description: Verify device compatibility
+    expected_info:
+      - Check if device supports eSIM
+      - Ask for device model if needed
+      - Confirm eSIM availability on their plan
+
+  - step_number: 2
+    description: Explain eSIM benefits and process
+    expected_info:
+      - What eSIM is and how it differs from physical SIM
+      - Activation timeline (usually immediate)
+      - QR code delivery method
+
+  - step_number: 3
+    description: Provide setup instructions
+    expected_info:
+      - Step-by-step activation process
+      - Where to find QR code
+      - Troubleshooting common issues
+
+  - step_number: 4
+    description: Confirm understanding and offer support
+    expected_info:
+      - Check if user has questions
+      - Offer to send instructions via email/SMS
+      - Provide fallback support options
+
+edge_cases:
+  - name: incompatible_device
+    trigger: User has older phone without eSIM support
+    expected_handling: |
+      Explain that physical SIM is required for their device.
+      Offer to help with traditional SIM card instead.
+
+  - name: already_activated
+    trigger: eSIM already active on account
+    expected_handling: |
+      Check if user needs to transfer to new device or reactivate.
+      Provide appropriate instructions for their situation.
+
+  - name: technical_difficulties
+    trigger: User encounters errors during setup
+    expected_handling: |
+      Gather error details. Offer escalation to technical support if issue
+      cannot be resolved with standard troubleshooting.
+
+success_criteria:
+  must_provide:
+    - Device compatibility check or confirmation
+    - Clear explanation of eSIM concept
+    - Step-by-step setup instructions
+    - How to obtain QR code
+    - Timeline for activation
+    - Support contact if issues arise
+
+  must_avoid:
+    - Guaranteeing instant setup without checking compatibility
+    - Technical jargon without explanation
+    - Incomplete activation steps
+
+  escalation_conditions:
+    - Device compatibility cannot be determined
+    - User encounters persistent technical errors
+    - eSIM activation fails after following all steps
+
+typical_questions:
+  - Is my phone compatible with eSIM?
+  - How long does activation take?
+  - Can I keep my phone number?
+  - What if it doesn't work?
+  - Can I switch back to physical SIM?
+
+knowledge_requirements:
+  - List of eSIM-compatible devices
+  - eSIM activation process for Vodafone
+  - Common troubleshooting steps
+  - Difference between eSIM and physical SIM

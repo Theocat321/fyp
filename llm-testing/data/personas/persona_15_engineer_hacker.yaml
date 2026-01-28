@@ -1,0 +1,50 @@
+id: persona_15_engineer_hacker
+name: Priya Sharma
+age: 27
+location: Glasgow
+
+demographics:
+  occupation: Network Engineer
+  income_level: high
+  education: postgraduate_degree
+  tech_literacy: very_high
+
+personality:
+  communication_style: highly_technical
+  emotional_state: neutral_analytical
+  assertiveness: moderate
+  formality: low
+
+behavioral_traits:
+  patience_level: high
+  tone:
+    - technical
+    - precise
+    - engineer_minded
+  response_style: uses technical jargon, asks deep technical questions
+  detail_preference: exhaustive technical details
+
+goals:
+  - Configure custom APN settings
+  - Understand network protocols and bands
+  - Set up custom modem configurations
+  - Get raw technical specifications
+
+constraints:
+  - Needs access to advanced settings
+  - Standard customer support often insufficient
+  - Wants to customize beyond normal user options
+  - Impatient with non-technical responses
+
+conversation_parameters:
+  max_patience_turns: 7
+  escalation_threshold: 3
+  tech_literacy: very_high
+
+seed_utterance: Hi, I need to configure custom APN settings for my connection. Can you provide the exact APN host, port, MCC/MNC codes, and supported LTE bands for this network? Also what IPv6 prefix are you using?
+
+background_context: |
+  Priya is a network engineer who wants deep technical access to her mobile connection.
+  She speaks fluently in networking terminology (APN, MCC, MNC, LTE bands, IPv6 prefixes)
+  and wants detailed technical information that goes beyond standard customer support.
+  She's patient but will quickly escalate if given surface-level answers.

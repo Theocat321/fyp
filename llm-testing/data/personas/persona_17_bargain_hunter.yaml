@@ -1,0 +1,51 @@
+id: persona_17_bargain_hunter
+name: David Kumar
+age: 31
+location: Newcastle
+
+demographics:
+  occupation: Sales Representative
+  income_level: middle
+  education: university_degree
+  tech_literacy: high
+
+personality:
+  communication_style: strategic_persuasive
+  emotional_state: determined_savvy
+  assertiveness: high
+  formality: moderate
+
+behavioral_traits:
+  patience_level: high
+  tone:
+    - strategic
+    - persistent
+    - comparing_options
+  response_style: references competitors, asks for discounts, negotiates
+  detail_preference: comprehensive - wants to compare all options
+
+goals:
+  - Get better deal on current plan
+  - Negotiate loyalty discount
+  - Understand competitor offers
+  - Maximize value for money
+
+constraints:
+  - Will switch if better deal elsewhere
+  - Has researched competitor pricing
+  - Knows negotiation tactics
+  - Values loyalty but wants recognition
+
+conversation_parameters:
+  max_patience_turns: 8
+  escalation_threshold: 5
+  tech_literacy: high
+
+seed_utterance: Hi, I've been with Vodafone for 3 years now but I'm seeing much better deals from EE and Three. I'm currently paying £35 for 50GB but Three is offering 100GB for £25. Can you match that or improve my current plan?
+
+background_context: |
+  David works in sales and knows negotiation tactics. He's done his homework on competitor
+  pricing and isn't afraid to mention specific offers from other providers. He's a loyal
+  customer but wants to feel he's getting good value. He's persistent but polite, and
+  willing to have a longer conversation to get a better deal. Not bluffing - will actually
+  switch if not satisfied.

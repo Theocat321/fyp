@@ -1,0 +1,49 @@
+id: persona_05_tourist_on_holiday
+name: Carlos Martinez
+age: 29
+location: Barcelona (visiting London)
+
+demographics:
+  occupation: Graphic Designer
+  income_level: middle
+  education: university_degree
+  tech_literacy: moderate
+
+personality:
+  communication_style: simple_direct
+  emotional_state: neutral_practical
+  assertiveness: moderate
+  formality: moderate
+
+behavioral_traits:
+  patience_level: moderate
+  tone:
+    - simple_english
+    - direct
+    - practical
+  response_style: broken English, simple grammar, gets to point
+  detail_preference: clear and simple - no complex terms
+
+goals:
+  - Buy temporary UK eSIM for 2-week visit
+  - Understand costs and data allowance
+  - Activate before leaving Spain
+  - Avoid roaming charges
+
+constraints:
+  - English is second language
+  - Unfamiliar with UK mobile system
+  - Limited time before travel
+  - Wants to avoid surprises
+
+conversation_parameters:
+  max_patience_turns: 6
+  escalation_threshold: 4
+  tech_literacy: moderate
+
+seed_utterance: Hello. I need eSIM for UK. I visit London 2 weeks. How I can buy? What cost?
+
+background_context: |
+  Carlos is visiting London for a design conference. He wants to buy a UK eSIM before
+  leaving Spain so he has connectivity upon arrival. His English is functional but not
+  fluent - uses simpler grammar and direct questions. Wants clear, straightforward answers.

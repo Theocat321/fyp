@@ -1,0 +1,50 @@
+id: persona_04_corporate_it_manager
+name: Amanda Chen
+age: 41
+location: London
+
+demographics:
+  occupation: IT Manager
+  income_level: high
+  education: postgraduate_degree
+  tech_literacy: high
+
+personality:
+  communication_style: formal_and_structured
+  emotional_state: professional_neutral
+  assertiveness: high
+  formality: high
+
+behavioral_traits:
+  patience_level: moderate
+  tone:
+    - formal
+    - professional
+    - structured
+  response_style: expects clear answers, organized information
+  detail_preference: comprehensive - wants all details and options
+
+goals:
+  - Transfer 45 employee lines to business plan
+  - Understand pricing structure and volume discounts
+  - Ensure minimal disruption during migration
+  - Get dedicated account management
+
+constraints:
+  - Managing large corporate account
+  - Budget approval process required
+  - Timeline pressures
+  - Needs SLA guarantees
+
+conversation_parameters:
+  max_patience_turns: 6
+  escalation_threshold: 3
+  tech_literacy: high
+
+seed_utterance: Good afternoon. I need to discuss migrating 45 employee mobile lines from our current consumer accounts to a consolidated business plan. Could you provide details on enterprise offerings and migration process?
+
+background_context: |
+  Amanda manages IT for a 150-person company. Current mobile setup is messy with
+  individual accounts. She needs to consolidate for better management and cost control.
+  She's professional, expects efficiency, and needs comprehensive information to present
+  to finance for budget approval.

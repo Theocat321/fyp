@@ -1,0 +1,110 @@
+id: scenario_005_network_issue
+name: Network Issue
+topic: network
+
+context: |
+  User is experiencing network connectivity problems (no signal, slow data, dropped calls).
+  This requires systematic troubleshooting, empathy for frustration, and escalation if
+  basic steps don't resolve the issue.
+
+happy_path_steps:
+  - step_number: 1
+    description: Acknowledge issue and gather symptoms
+    expected_info:
+      - Show empathy for inconvenience
+      - What exactly is the problem (no signal, slow data, calls dropping)
+      - When it started
+      - Location(s) where it occurs
+      - Whether it's constant or intermittent
+
+  - step_number: 2
+    description: Check for known issues
+    expected_info:
+      - Are there reported outages in user's area
+      - Any planned maintenance
+      - Network status for their location
+      - Be transparent about known issues
+
+  - step_number: 3
+    description: Guide through troubleshooting
+    expected_info:
+      - Basic steps appropriate to issue (restart device, toggle airplane mode)
+      - Check account status and settings
+      - Progressive troubleshooting if basic steps don't work
+      - Confirm results of each step
+
+  - step_number: 4
+    description: Resolution or escalation
+    expected_info:
+      - If resolved - confirm working and offer monitoring period
+      - If not resolved - explain escalation to technical team
+      - Timeline for follow-up
+      - Compensation if appropriate for service disruption
+      - Reference number for tracking
+
+edge_cases:
+  - name: widespread_outage
+    trigger: Known outage affecting many customers
+    expected_handling: |
+      Be upfront about outage. Provide estimated resolution time if available.
+      Apologize for impact. Cannot troubleshoot during active outage.
+
+  - name: account_or_payment_issue
+    trigger: Service suspended due to payment or account status
+    expected_handling: |
+      Sensitively explain the situation. Help resolve account issue first
+      before troubleshooting network.
+
+  - name: device_problem_not_network
+    trigger: Issue appears to be device-related not network
+    expected_handling: |
+      Explain findings diplomatically. Suggest device troubleshooting or
+      manufacturer support. Offer to help with device settings if possible.
+
+  - name: chronic_poor_coverage
+    trigger: User in area with known poor coverage
+    expected_handling: |
+      Be honest about coverage limitations. Discuss options (WiFi calling,
+      signal booster, plan change). Don't make false promises about improvement.
+
+success_criteria:
+  must_provide:
+    - Empathy for frustration and inconvenience
+    - Check for known issues/outages
+    - Systematic troubleshooting steps
+    - Clear explanation of each step
+    - Escalation path if unresolved
+    - Timeline for resolution or follow-up
+    - Tracking reference
+
+  must_avoid:
+    - Dismissing user's reported problem
+    - Blaming user or their device immediately
+    - Endless troubleshooting without escalation
+    - Leaving unresolved issue without follow-up plan
+    - Making promises about coverage improvements
+
+  escalation_conditions:
+    - Basic troubleshooting doesn't resolve issue
+    - Issue appears to be network-side problem
+    - User reports consistent issues over time
+    - Technical investigation required
+    - Possible compensation needed for service disruption
+
+typical_questions:
+  - Why is my signal so weak?
+  - Is there an outage in my area?
+  - Why is my data so slow?
+  - When will this be fixed?
+  - Can I get compensation for this?
+  - I've tried restarting, what else can I do?
+  - Is this going to keep happening?
+
+knowledge_requirements:
+  - Network status and outage information
+  - Common troubleshooting steps for various issues
+  - How to check account and service status
+  - Coverage maps and known weak coverage areas
+  - Escalation process to technical support
+  - Compensation policies for service disruptions
+  - Device settings that affect connectivity

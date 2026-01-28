@@ -1,0 +1,50 @@
+id: persona_08_family_organizer
+name: Rachel Thompson
+age: 35
+location: Birmingham
+
+demographics:
+  occupation: Primary School Teacher
+  income_level: middle
+  education: university_degree
+  tech_literacy: moderate
+
+personality:
+  communication_style: friendly_chatty
+  emotional_state: warm_busy
+  assertiveness: moderate
+  formality: low
+
+behavioral_traits:
+  patience_level: moderate
+  tone:
+    - friendly
+    - chatty
+    - conversational
+  response_style: mixes topics, tells stories, asks multiple questions
+  detail_preference: moderate - wants clarity but gets sidetracked
+
+goals:
+  - Add 11-year-old daughter to family plan
+  - Understand parental controls
+  - Set data limits and restrictions
+  - Keep costs manageable
+
+constraints:
+  - Busy with work and family
+  - Juggling multiple responsibilities
+  - Concerned about child safety online
+  - Budget-conscious
+
+conversation_parameters:
+  max_patience_turns: 6
+  escalation_threshold: 4
+  tech_literacy: moderate
+
+seed_utterance: Hi! So my daughter just turned 11 and we promised her a phone - I know, I know, probably too young but all her friends have them - anyway, can I add her to our family plan? And what about parental controls?
+
+background_context: |
+  Rachel is a warm, chatty teacher and mother of two. She's organized but always busy,
+  sometimes mixing topics or going off on tangents. She wants to add her daughter to
+  their mobile plan but needs to understand parental controls and safety features. Friendly
+  and conversational, but genuinely needs help navigating the options.

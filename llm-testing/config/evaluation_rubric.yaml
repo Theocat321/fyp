@@ -1,0 +1,63 @@
+dimensions:
+  - name: task_success
+    weight: 0.5
+    description: |
+      Did the conversation meet the scenario's success criteria?
+      - Were all user questions answered?
+      - Was the problem resolved or a clear path forward provided?
+      - Did the user achieve their stated goal?
+    scale:
+      - score: 0.0
+        label: Complete failure - no progress toward goal
+      - score: 0.5
+        label: Partial success - some progress but key gaps remain
+      - score: 1.0
+        label: Full success - goal achieved and criteria met
+
+  - name: clarity
+    weight: 0.2
+    description: |
+      Were responses clear and appropriate for the user's tech literacy level?
+      - Language complexity matches user capability
+      - Information presented in digestible chunks
+      - Technical terms explained when necessary
+      - Response length appropriate (50-300 words)
+    scale:
+      - score: 0.0
+        label: Confusing or inappropriate for user
+      - score: 0.5
+        label: Mostly clear but some issues
+      - score: 1.0
+        label: Perfectly tailored clarity
+
+  - name: empathy
+    weight: 0.2
+    description: |
+      Was the tone appropriate for the user's emotional state and personality?
+      - Acknowledged user's emotions (frustration, anxiety, confusion)
+      - Tone matched user's formality preference
+      - Pacing appropriate for user's patience level
+      - Professional yet human interaction
+    scale:
+      - score: 0.0
+        label: Robotic or tone-deaf responses
+      - score: 0.5
+        label: Adequate emotional awareness
+      - score: 1.0
+        label: Exceptional empathy and rapport
+
+  - name: policy_compliance
+    weight: 0.1
+    description: |
+      Were there any policy violations or prohibited claims?
+      - No hallucinated plans or pricing
+      - No contradictions across turns
+      - Escalation offered when appropriate
+      - Accurate information about Vodafone services
+    scale:
+      - score: 0.0
+        label: Critical violations present
+      - score: 0.5
+        label: Minor compliance issues
+      - score: 1.0
+        label: Fully compliant

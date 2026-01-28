@@ -1,0 +1,48 @@
+id: persona_01_frustrated_commuter
+name: Marcus Reid
+age: 32
+location: London
+
+demographics:
+  occupation: Marketing Analyst
+  income_level: middle
+  education: university_degree
+  tech_literacy: moderate
+
+personality:
+  communication_style: angry_and_direct
+  emotional_state: frustrated_angry
+  assertiveness: high
+  formality: low
+
+behavioral_traits:
+  patience_level: low
+  tone:
+    - angry
+    - impatient
+    - demanding
+  response_style: repeats complaints, short angry sentences
+  detail_preference: just wants the problem fixed now
+
+goals:
+  - Fix poor mobile signal on train route
+  - Get acknowledgment that service is inadequate
+  - Obtain compensation or service credit
+
+constraints:
+  - Daily commute affected by signal issues
+  - Already complained multiple times
+  - Work calls drop constantly
+  - Growing more frustrated with each interaction
+
+conversation_parameters:
+  max_patience_turns: 3
+  escalation_threshold: 2
+  tech_literacy: moderate
+
+seed_utterance: Signal KEEPS dropping on the Northern Line. Every single day. Sort this out NOW.
+
+background_context: |
+  Marcus commutes daily from zone 4 to central London. For the past month, signal has been
+  terrible between certain stations, causing dropped work calls and failed email sends.
+  He's already contacted support twice with no resolution. He's at breaking point.

@@ -1,0 +1,154 @@
+{
+  "experiment_id": "exp_20260128_143022_abc123",
+  "experiment_name": "variant_a_baseline",
+  "variant": "A",
+  "summary": {
+    "total_conversations": 25,
+    "successful_conversations": 20,
+    "avg_task_success": 0.82,
+    "avg_clarity": 0.88,
+    "avg_empathy": 0.75,
+    "avg_policy_compliance": 0.95,
+    "avg_overall_score": 0.83,
+    "termination_reasons": {
+      "satisfaction": 18,
+      "max_turns": 5,
+      "escalation": 2
+    },
+    "heuristic_pass_rate": 0.96,
+    "critical_failure_rate": 0.04,
+    "avg_conversation_length": 6.2,
+    "avg_latency_ms": 1250.0,
+    "scores_by_persona": {
+      "persona_001_frustrated_commuter": 0.78,
+      "persona_002_tech_savvy_student": 0.87,
+      "persona_003_elderly_confused": 0.81,
+      "persona_004_busy_parent": 0.79,
+      "persona_005_international_traveler": 0.85
+    },
+    "scores_by_scenario": {
+      "scenario_001_esim_setup": 0.84,
+      "scenario_002_roaming_activation": 0.86,
+      "scenario_003_billing_dispute": 0.80,
+      "scenario_004_plan_upgrade": 0.88,
+      "scenario_005_network_issue": 0.77
+    }
+  },
+  "conversations": [
+    {
+      "run_id": "run_exp_20260128_143022_abc123_001",
+      "experiment_id": "exp_20260128_143022_abc123",
+      "persona_id": "persona_001_frustrated_commuter",
+      "scenario_id": "scenario_005_network_issue",
+      "variant": "A",
+      "transcript": [
+        {
+          "turn_number": 1,
+          "speaker": "user",
+          "message": "Signal keeps dropping on my train. This is ridiculous. Fix it now.",
+          "timestamp": "2026-01-28T14:30:25.123456",
+          "metadata": null
+        },
+        {
+          "turn_number": 1,
+          "speaker": "assistant",
+          "message": "I understand how frustrating that must be, especially when you're relying on your connection during your commute. Let me help you troubleshoot this issue. First, could you tell me which train line you're traveling on and roughly where this happens most often?",
+          "timestamp": "2026-01-28T14:30:27.456789",
+          "metadata": {
+            "latency_ms": 1234.5
+          }
+        },
+        {
+          "turn_number": 2,
+          "speaker": "user",
+          "message": "Northern line between King's Cross and Finchley. Happens every day for the past two weeks.",
+          "timestamp": "2026-01-28T14:30:30.123456",
+          "metadata": null
+        },
+        {
+          "turn_number": 2,
+          "speaker": "assistant",
+          "message": "Thank you for that information. I can see this has been an ongoing issue for you. Let me check if there are any known network issues in that area. In the meantime, have you noticed if the problem occurs in specific sections of the journey, like when the train is underground?",
+          "timestamp": "2026-01-28T14:30:32.789012",
+          "metadata": {
+            "latency_ms": 1156.2
+          }
+        }
+      ],
+      "termination": {
+        "reason": "satisfaction",
+        "turn_number": 4,
+        "details": "User expressed satisfaction after productive exchange"
+      },
+      "llm_evaluation": {
+        "task_success": 0.85,
+        "clarity": 0.90,
+        "empathy": 0.75,
+        "policy_compliance": 1.0,
+        "overall_weighted": 0.855,
+        "rationale": "TASK_SUCCESS: 0.85\nRationale: The assistant successfully acknowledged the issue, gathered relevant details, and began systematic troubleshooting. The conversation is on track to meet success criteria.\n\nCLARITY: 0.90\nRationale: Responses were clear and appropriately direct for a frustrated user with moderate tech literacy. Language was professional but not overly technical.\n\nEMPATHY: 0.75\nRationale: The assistant acknowledged frustration initially but could have shown more empathy given the recurring nature of the issue over two weeks.\n\nPOLICY_COMPLIANCE: 1.0\nRationale: No policy violations. All information was accurate and appropriate.\n\nOVERALL ASSESSMENT:\nGood interaction overall with appropriate troubleshooting approach. Empathy could be slightly stronger given the recurring issue."
+      },
+      "heuristic_results": {
+        "checks": [
+          {
+            "check_name": "no_hallucinated_plans",
+            "passed": true,
+            "details": "No plans mentioned",
+            "severity": "info"
+          },
+          {
+            "check_name": "no_contradictions",
+            "passed": true,
+            "details": "No obvious contradictions detected",
+            "severity": "info"
+          },
+          {
+            "check_name": "appropriate_response_length",
+            "passed": true,
+            "details": "All responses within acceptable length range",
+            "severity": "info"
+          },
+          {
+            "check_name": "escalation_appropriateness",
+            "passed": true,
+            "details": "No escalation needed",
+            "severity": "info"
+          }
+        ],
+        "all_passed": true,
+        "critical_failures": []
+      },
+      "seed": 43,
+      "started_at": "2026-01-28T14:30:25.000000",
+      "completed_at": "2026-01-28T14:30:35.000000",
+      "total_turns": 4,
+      "average_latency_ms": 1195.35,
+      "config_snapshot": {
+        "simulator_model": "gpt-4o-mini",
+        "judge_model": "gpt-4o",
+        "max_turns": 10
+      }
+    }
+  ],
+  "started_at": "2026-01-28T14:30:22.000000",
+  "completed_at": "2026-01-28T14:45:15.000000",
+  "total_duration_seconds": 893.0,
+  "personas_tested": [
+    "persona_001_frustrated_commuter",
+    "persona_002_tech_savvy_student",
+    "persona_003_elderly_confused",
+    "persona_004_busy_parent",
+    "persona_005_international_traveler"
+  ],
+  "scenarios_tested": [
+    "scenario_001_esim_setup",
+    "scenario_002_roaming_activation",
+    "scenario_003_billing_dispute",
+    "scenario_004_plan_upgrade",
+    "scenario_005_network_issue"
+  ],
+  "seed": 42,
+  "openai_model_simulator": "gpt-4o-mini",
+  "openai_model_judge": "gpt-4o",
+  "vodacare_api_url": "http://localhost:8000"
+}
