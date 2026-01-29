@@ -6,9 +6,16 @@ from src.artifacts.models import ConversationTurn, HeuristicCheckResult
 
 logger = logging.getLogger(__name__)
 
-# Valid Vodafone plans (based on plan catalog)
+# Valid Vodafone plans (based on plan catalog in sys_prompt_a.txt and sys_prompt_b.txt)
 VALID_PLANS = [
-    "8", "10", "12", "15", "20", "25", "30", "40", "50", "85"
+    "8",   # Lite Mobile
+    "15",  # Everyday Mobile
+    "25",  # Streamer Plan
+    "32",  # Unlimited Core
+    "42",  # Unlimited Max
+    "55",  # Family Connect
+    "70",  # Pro+ Mobile
+    "85"   # International Traveller
 ]
 
 
