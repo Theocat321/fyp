@@ -92,10 +92,16 @@ class HumanTranscriptEvaluator:
         """
         logger.info("Fetching messages from Supabase...")
 
-        # Fetch all messages (we'll filter in Python)
+        # Build query params for efficient filtering
+        params = {}
+        if session_id:
+            params['session_id'] = session_id
+        if participant_group:
+            params['participant_group'] = participant_group
+
         messages, status = self.store.select_rows(
             table="messages",
-            params={},
+            params=params,
             select="*",
             order="created_at.asc"
         )
@@ -103,26 +109,13 @@ class HumanTranscriptEvaluator:
         if status != 200:
             raise RuntimeError(f"Failed to fetch messages (status {status})")
 
-        logger.info(f"Fetched {len(messages)} total messages")
+        logger.info(f"Fetched {len(messages)} messages")
 
-        # Filter out simulated conversations
+        # Filter out simulated conversations (those with session_id starting with 'sim_')
         real_messages = [
             msg for msg in messages
             if not msg.get('session_id', '').startswith('sim_')
         ]
-
-        # Apply filters
-        if session_id:
-            real_messages = [
-                msg for msg in real_messages
-                if msg.get('session_id') == session_id
-            ]
-
-        if participant_group:
-            real_messages = [
-                msg for msg in real_messages
-                if msg.get('participant_group') == participant_group
-            ]
 
         logger.info(f"Filtered to {len(real_messages)} real user messages")
         return real_messages

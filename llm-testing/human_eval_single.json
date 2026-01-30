@@ -1,0 +1,146 @@
+{
+  "experiment_id": "human_transcripts_20260130_170721",
+  "experiment_name": "human_transcript_evaluation",
+  "variant": "mixed",
+  "conversations": [
+    {
+      "run_id": "human_00a98697384c41159c60dd2b776eeb94",
+      "experiment_id": "human_transcripts",
+      "persona_id": "real_user",
+      "scenario_id": "real_conversation",
+      "variant": "A",
+      "transcript": [
+        {
+          "turn_number": 1,
+          "speaker": "user",
+          "message": "Im looking to get a new sim",
+          "timestamp": "2026-01-30T17:00:04.280552Z",
+          "metadata": null
+        },
+        {
+          "turn_number": 1,
+          "speaker": "assistant",
+          "message": "I understand how exciting it can be to look for a new SIM card, but it can also feel a bit overwhelming with all the options available. \n\nLet\u2019s explore this together! Could you share what you primarily use your phone for? Are you a light user, or do you stream videos and use data frequently? This will help us find the best plan for your needs.",
+          "timestamp": "2026-01-30T17:00:08.866577Z",
+          "metadata": null
+        },
+        {
+          "turn_number": 2,
+          "speaker": "user",
+          "message": "I use it for calls only",
+          "timestamp": "2026-01-30T17:00:17.296036Z",
+          "metadata": null
+        },
+        {
+          "turn_number": 2,
+          "speaker": "assistant",
+          "message": "Thank you for sharing that! It\u2019s completely okay to have specific needs when it comes to your phone usage. \n\nSince you primarily use your phone for calls, you might want to consider a plan that offers good call minutes without unnecessary extras. Here are a couple of options that might suit you:\n\n### Lite Mobile\n- **Cost:** \u00a38/month\n- **Includes:** 200 minutes of calls, unlimited texts, and 2GB of data (mostly for Wi-Fi use).\n- **Limitations:** No roaming; speeds may slow after 2GB.\n\n### Everyday Mobile\n- **Cost:** \u00a315/month\n- **Includes:** Unlimited calls, unlimited texts, and 10GB of data (with basic EU roaming).\n- **Limitations:** No hotspot usage outside the UK.\n\nThe **Lite Mobile** plan could be a good fit if you don\u2019t need many call minutes, while the **Everyday Mobile** plan offers unlimited calls and might be a nice option if you want a little more flexibility. \n\nHow do these options sound to you?",
+          "timestamp": "2026-01-30T17:00:24.195867Z",
+          "metadata": null
+        },
+        {
+          "turn_number": 3,
+          "speaker": "user",
+          "message": "I like lite mobile, thank you",
+          "timestamp": "2026-01-30T17:00:46.054935Z",
+          "metadata": null
+        },
+        {
+          "turn_number": 3,
+          "speaker": "assistant",
+          "message": "I\u2019m so glad to hear that you like the Lite Mobile plan! It sounds like a great fit for your needs. \n\nIf you have any questions about how to get started with it or if you need help with anything else, feel free to ask. You\u2019re doing a wonderful job by taking this step for your communication needs!",
+          "timestamp": "2026-01-30T17:00:49.380135Z",
+          "metadata": null
+        }
+      ],
+      "termination": {
+        "reason": "natural_end",
+        "turn_number": 3,
+        "details": "Real user conversation ended naturally"
+      },
+      "llm_evaluation": {
+        "task_success": 1.0,
+        "clarity": 1.0,
+        "empathy": 1.0,
+        "policy_compliance": 1.0,
+        "overall_weighted": 0.9999999999999999,
+        "rationale": "TASK_SUCCESS: 1.0  \nRationale: The conversation successfully met the scenario's success criteria. The user wanted to get a new SIM, and the assistant provided two clear options tailored to the user's stated need of using the phone primarily for calls. The user expressed satisfaction with the Lite Mobile plan, indicating that their goal was achieved.\n\nCLARITY: 1.0  \nRationale: The assistant's responses were clear and appropriate for the user's tech literacy level, which was unknown. The assistant used simple language and presented information in digestible chunks. There were no technical terms that required explanation, and the response length was appropriate.\n\nEMPATHY: 1.0  \nRationale: The assistant demonstrated empathy by acknowledging the user's specific needs and expressing excitement about helping them find a suitable plan. The tone was friendly and supportive, matching the user's informal style and potentially unknown patience level.\n\nPOLICY_COMPLIANCE: 1.0  \nRationale: There were no policy violations or prohibited claims. The plans and pricing offered appeared reasonable and consistent across turns. There was no need for escalation, and the information provided was accurate and relevant to the user's request.\n\nOVERALL ASSESSMENT:  \nThe conversation was of high quality, effectively addressing the user's request for a new SIM card. The assistant provided tailored options based on the user's needs, communicated clearly and empathetically, and adhered to policy guidelines. The user left the interaction satisfied with a clear path forward, indicating a successful resolution."
+      },
+      "heuristic_results": {
+        "checks": [
+          {
+            "check_name": "no_hallucinated_plans",
+            "passed": true,
+            "details": "All mentioned prices are valid: 15, 8",
+            "severity": "info"
+          },
+          {
+            "check_name": "no_contradictions",
+            "passed": true,
+            "details": "No obvious contradictions detected",
+            "severity": "info"
+          },
+          {
+            "check_name": "appropriate_response_length",
+            "passed": true,
+            "details": "All responses within acceptable length range",
+            "severity": "info"
+          },
+          {
+            "check_name": "escalation_appropriateness",
+            "passed": true,
+            "details": "No escalation needed",
+            "severity": "info"
+          }
+        ],
+        "all_passed": true,
+        "critical_failures": []
+      },
+      "seed": 0,
+      "started_at": "2026-01-30T17:00:04.280552Z",
+      "completed_at": "2026-01-30T17:00:49.380135Z",
+      "total_turns": 3,
+      "average_latency_ms": 0.0,
+      "config_snapshot": {
+        "source": "human_transcript",
+        "judge_model": "gpt-4o",
+        "scenario_id": "unknown"
+      }
+    }
+  ],
+  "summary": {
+    "total_conversations": 1,
+    "successful_conversations": 1,
+    "avg_task_success": 1.0,
+    "avg_clarity": 1.0,
+    "avg_empathy": 1.0,
+    "avg_policy_compliance": 1.0,
+    "avg_overall_score": 0.9999999999999999,
+    "termination_reasons": {
+      "natural_end": 1
+    },
+    "heuristic_pass_rate": 1.0,
+    "critical_failure_rate": 0.0,
+    "avg_conversation_length": 3.0,
+    "avg_latency_ms": 0.0,
+    "scores_by_persona": {
+      "A": 0.9999999999999999
+    },
+    "scores_by_scenario": {
+      "real_conversation": 0.9999999999999999
+    }
+  },
+  "started_at": "2026-01-30T17:07:21.952863",
+  "completed_at": "2026-01-30T17:07:21.952864",
+  "total_duration_seconds": 0.0,
+  "personas_tested": [
+    "real_user"
+  ],
+  "scenarios_tested": [
+    "real_conversation"
+  ],
+  "seed": 0,
+  "openai_model_simulator": "N/A",
+  "openai_model_judge": "gpt-4o",
+  "vodacare_api_url": "N/A"
+}
