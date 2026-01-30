@@ -132,3 +132,10 @@ export async function fetchMessages(sessionId: string): Promise<{ messages: { ro
   if (!res.ok) throw new Error(`fetch messages error ${res.status}`);
   return res.json();
 }
+
+export async function fetchScenarios(): Promise<{ scenarios: Array<{ id: string; name: string; topic: string; description: string; context: string }> }> {
+  const url = apiUrl(`/api/scenarios`);
+  const res = await fetch(url, { method: "GET" });
+  if (!res.ok) throw new Error(`fetch scenarios error ${res.status}`);
+  return res.json();
+}

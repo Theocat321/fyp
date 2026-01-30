@@ -139,3 +139,39 @@ If `SUPABASE_*` server vars are not set, events are accepted but not stored (ret
 
 - In‑memory by default; restarting the API clears history.
 - Local dev setup only.
+
+## Human-LLM Testing Alignment
+
+This project includes aligned testing frameworks for both LLM-simulated and human testing.
+
+### Features
+- Scenario-guided human testing matching LLM framework
+- Rubric-aligned feedback collection (Task Success, Clarity, Empathy, Accuracy)
+- LLM-as-Judge evaluation of human transcripts
+- Unified comparison reports
+
+### Documentation
+See [docs/human-llm-testing-alignment.md](docs/human-llm-testing-alignment.md) for full details.
+
+### Quick Start
+
+**Run LLM Testing:**
+```bash
+cd llm-testing
+python run_experiment.py --variant A --personas all --scenarios all
+```
+
+**Evaluate Human Transcripts:**
+```bash
+cd llm-testing
+python evaluate_human_transcripts.py --all --output human_evals.json
+```
+
+**Generate Comparison Report:**
+```bash
+cd llm-testing
+python generate_comparison_report.py \
+  --llm-results "outputs/exp_*.json" \
+  --human-results "human_evals.json" \
+  --output "report.html"
+```

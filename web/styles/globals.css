@@ -155,3 +155,51 @@ select.select::-ms-expand { display: none; }
 .bubble.assistant .md code { background: #f1f5f9; padding: 0.1rem 0.3rem; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.9em; }
 .bubble.assistant .md pre { background: #0f172a; color: #e2e8f0; padding: 0.6rem; border-radius: 8px; overflow: auto; }
 .bubble.assistant .md a { color: #2563eb; text-decoration: underline; }
+
+.scenario-context {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #0066cc;
+}
+
+.scenario-context strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.scenario-context p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Rubric section */
+.rubric-section {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.rubric-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.rubric-section .field-row {
+  margin-bottom: 1rem;
+}
+
+.rubric-section .field-row:last-child {
+  margin-bottom: 0;
+}
+
+.rubric-section .label {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}

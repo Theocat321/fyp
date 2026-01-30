@@ -13,6 +13,12 @@ from .models import ChatRequest, ChatResponse, InteractionEvent, ParticipantInse
 from .agent import SupportAgent
 from .storage import SupabaseStore
 
+# Import scenarios router
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from api import scenarios as scenarios_router
+
 
 app = FastAPI(title="VodaCare Support API", version="0.1.0")
 logger = logging.getLogger(__name__)
@@ -24,6 +30,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Register API routers
+app.include_router(scenarios_router.router, prefix="/api", tags=["scenarios"])
 
 agent = SupportAgent()
 store = SupabaseStore()

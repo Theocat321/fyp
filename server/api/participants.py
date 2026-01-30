@@ -36,6 +36,7 @@ def upsert_participant(p: dict):
         "name": name,
         "group": group,
         "session_id": session_id,
+        "scenario_id": p.get("scenario_id"),
     }
     stored, code = store.insert_rows("participants", [row], upsert=True, on_conflict="participant_id")
     status = 200 if stored else (code if code else 202)

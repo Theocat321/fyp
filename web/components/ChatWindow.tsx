@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
-import { sendMessage, ChatResponse, sendMessageStream, fetchMessages } from "../lib/api";
+import { sendMessage, ChatResponse, sendMessageStream, fetchMessages, fetchScenarios } from "../lib/api";
 import { logEvent } from "../lib/telemetry";
 
 type Msg = { role: "user" | "assistant"; text: string };
@@ -26,6 +26,10 @@ export default function ChatWindow() {
   const [participantGroup, setParticipantGroup] = useState<"A" | "B" | "">("");
   const [participantId, setParticipantId] = useState<string | undefined>(undefined);
   const [started, setStarted] = useState<boolean>(false);
+  // Scenario selection
+  const [scenarios, setScenarios] = useState<any[]>([]);
+  const [selectedScenario, setSelectedScenario] = useState<string>("");
+  const [scenarioContext, setScenarioContext] = useState<string>("");
   const [typingStartAt, setTypingStartAt] = useState<number | null>(null);
   const [lastSendAt, setLastSendAt] = useState<number | null>(null);
   // Feedback modal state
@@ -36,6 +40,10 @@ export default function ChatWindow() {
     rating_overall: 0,
     rating_helpfulness: 0,
     rating_friendliness: 0,
+    rating_task_success: 0,
+    rating_clarity: 0,
+    rating_empathy: 0,
+    rating_accuracy: 0,
     resolved: "",
     time_to_resolution: "",
     issues: [] as string[],
@@ -96,14 +104,28 @@ export default function ChatWindow() {
       const group = (localStorage.getItem("vc_participant_group") || "") as "A" | "B" | "";
       const pid = localStorage.getItem("vc_participant_id") || undefined;
       const sid = localStorage.getItem("vc_session_id") || undefined;
+      const scenarioId = localStorage.getItem("vc_scenario_id") || "";
       if (name && (group === "A" || group === "B")) {
         setParticipantName(name);
         setParticipantGroup(group);
         if (pid) setParticipantId(pid);
         if (sid) setSessionId(sid);
+        if (scenarioId) setSelectedScenario(scenarioId);
         setStarted(true);
       }
     } catch {}
+  }, []);
+
+  // Load scenarios
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchScenarios();
+        setScenarios(data.scenarios || []);
+      } catch (e) {
+        console.error("Failed to load scenarios:", e);
+      }
+    })();
   }, []);
 
   function ensureParticipantId(): string {
@@ -132,6 +154,7 @@ export default function ChatWindow() {
     try {
       localStorage.setItem("vc_participant_name", participantName.trim());
       localStorage.setItem("vc_participant_group", participantGroup);
+      localStorage.setItem("vc_scenario_id", selectedScenario);
     } catch {}
     const pid = ensureParticipantId();
     const sid = ensureSessionId();
@@ -147,6 +170,7 @@ export default function ChatWindow() {
         value: participantGroup,
         client_ts: Date.now(),
         page_url: typeof window !== "undefined" ? window.location.href : undefined,
+        meta: { scenario_id: selectedScenario || null },
       });
     } catch {}
     // Participant upsert via Python backend
@@ -159,6 +183,7 @@ export default function ChatWindow() {
           name: participantName.trim(),
           group: participantGroup,
           session_id: sid,
+          scenario_id: selectedScenario || null,
         }),
       });
     } catch {}
@@ -397,6 +422,31 @@ export default function ChatWindow() {
                 <option value="B">B</option>
               </select>
             </div>
+            <div className="field-row">
+              <label htmlFor="participant-scenario" className="label">Scenario (Optional)</label>
+              <select
+                id="participant-scenario"
+                className="select"
+                value={selectedScenario}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedScenario(val);
+                  const scenario = scenarios.find((s) => s.id === val);
+                  setScenarioContext(scenario?.context || "");
+                }}
+              >
+                <option value="">None (free conversation)</option>
+                {scenarios.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
+              {scenarioContext && (
+                <div className="scenario-context">
+                  <strong>Scenario Context:</strong>
+                  <p>{scenarioContext}</p>
+                </div>
+              )}
+            </div>
             <button className="send-btn" type="submit" disabled={!participantName.trim() || !(participantGroup === "A" || participantGroup === "B")}>Start Chat</button>
           </form>
           <p className="consent-note">By starting, you consent to your inputs being used for research. Do not share sensitive information.</p>
@@ -557,9 +607,14 @@ export default function ChatWindow() {
                       session_id: sid,
                       participant_id: pid,
                       participant_group: participantGroup || null,
+                      scenario_id: selectedScenario || null,
                       rating_overall: form.rating_overall || null,
                       rating_helpfulness: form.rating_helpfulness || null,
                       rating_friendliness: form.rating_friendliness || null,
+                      rating_task_success: form.rating_task_success || null,
+                      rating_clarity: form.rating_clarity || null,
+                      rating_empathy: form.rating_empathy || null,
+                      rating_accuracy: form.rating_accuracy || null,
                       resolved: form.resolved === "yes" ? true : form.resolved === "no" ? false : null,
                       time_to_resolution: form.time_to_resolution || null,
                       issues: form.issues,
@@ -632,6 +687,90 @@ export default function ChatWindow() {
                         ))}
                       </div>
                     </div>
+                  </div>
+
+                  <div className="rubric-section">
+                    <h4 className="rubric-heading">Help us improve: Rate the conversation quality</h4>
+                    <p className="muted">These ratings help us understand how well the assistant performed.</p>
+
+                    <div className="field-row">
+                      <label className="label">
+                        Task Success: Did the assistant help you accomplish your goal?
+                      </label>
+                      <div className="rating-stars" aria-label="Task success rating">
+                        {[1,2,3,4,5].map((n) => (
+                          <button
+                            key={n}
+                            type="button"
+                            className={"star" + (form.rating_task_success >= n ? " filled" : "")}
+                            onClick={() => setForm({ ...form, rating_task_success: n })}
+                            aria-label={`${n} star${n>1?"s":""}`}
+                          >
+                            ★
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="field-row">
+                      <label className="label">
+                        Clarity: How clear and understandable were the responses?
+                      </label>
+                      <div className="rating-stars" aria-label="Clarity rating">
+                        {[1,2,3,4,5].map((n) => (
+                          <button
+                            key={n}
+                            type="button"
+                            className={"star" + (form.rating_clarity >= n ? " filled" : "")}
+                            onClick={() => setForm({ ...form, rating_clarity: n })}
+                            aria-label={`${n} star${n>1?"s":""}`}
+                          >
+                            ★
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="field-row">
+                      <label className="label">
+                        Empathy: How well did the assistant acknowledge your situation/feelings?
+                      </label>
+                      <div className="rating-stars" aria-label="Empathy rating">
+                        {[1,2,3,4,5].map((n) => (
+                          <button
+                            key={n}
+                            type="button"
+                            className={"star" + (form.rating_empathy >= n ? " filled" : "")}
+                            onClick={() => setForm({ ...form, rating_empathy: n })}
+                            aria-label={`${n} star${n>1?"s":""}`}
+                          >
+                            ★
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="field-row">
+                      <label className="label">
+                        Information Accuracy: Did the assistant provide accurate information without making unsupported claims?
+                      </label>
+                      <div className="rating-stars" aria-label="Accuracy rating">
+                        {[1,2,3,4,5].map((n) => (
+                          <button
+                            key={n}
+                            type="button"
+                            className={"star" + (form.rating_accuracy >= n ? " filled" : "")}
+                            onClick={() => setForm({ ...form, rating_accuracy: n })}
+                            aria-label={`${n} star${n>1?"s":""}`}
+                          >
+                            ★
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid-2">
                     <div className="field-row">
                       <label className="label">Was your issue resolved?</label>
                       <div className="seg" role="group" aria-label="Resolution">

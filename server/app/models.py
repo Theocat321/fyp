@@ -38,6 +38,7 @@ class ParticipantInsert(BaseModel):
     name: Optional[str] = None
     group: Optional[str] = None  # 'A' | 'B'
     session_id: Optional[str] = None
+    scenario_id: Optional[str] = None  # NEW: Track which scenario human is testing
 
 
 class MessageInsert(BaseModel):
@@ -53,9 +54,15 @@ class FeedbackInsert(BaseModel):
     session_id: Optional[str] = None
     participant_id: Optional[str] = None
     participant_group: Optional[str] = None
+    scenario_id: Optional[str] = None  # NEW
     rating_overall: Optional[int] = None
     rating_helpfulness: Optional[int] = None
     rating_friendliness: Optional[int] = None
+    # NEW: Rubric-aligned ratings (1-5 scale)
+    rating_task_success: Optional[int] = None
+    rating_clarity: Optional[int] = None
+    rating_empathy: Optional[int] = None
+    rating_accuracy: Optional[int] = None
     resolved: Optional[bool] = None
     time_to_resolution: Optional[str] = None
     issues: Optional[list[str]] = []
