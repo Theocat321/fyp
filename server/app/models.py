@@ -54,24 +54,14 @@ class FeedbackInsert(BaseModel):
     session_id: Optional[str] = None
     participant_id: Optional[str] = None
     participant_group: Optional[str] = None
-    scenario_id: Optional[str] = None  # NEW
+    scenario_id: Optional[str] = None
+    # Core ratings matching LLM evaluation rubric
     rating_overall: Optional[int] = None
-    rating_helpfulness: Optional[int] = None
-    rating_friendliness: Optional[int] = None
-    # NEW: Rubric-aligned ratings (1-5 scale)
-    rating_task_success: Optional[int] = None
-    rating_clarity: Optional[int] = None
-    rating_empathy: Optional[int] = None
-    rating_accuracy: Optional[int] = None
-    resolved: Optional[bool] = None
-    time_to_resolution: Optional[str] = None
-    issues: Optional[list[str]] = []
-    comments_positive: Optional[str] = None
-    comments_negative: Optional[str] = None
-    comments_other: Optional[str] = None
-    would_use_again: Optional[str] = None
-    recommend_nps: Optional[int] = None
-    contact_ok: Optional[bool] = None
-    contact_email: Optional[str] = None
+    rating_task_success: Optional[int] = None  # 50% weight in rubric
+    rating_clarity: Optional[int] = None  # 20% weight in rubric
+    rating_empathy: Optional[int] = None  # 20% weight in rubric
+    rating_accuracy: Optional[int] = None  # 10% weight (policy compliance)
+    resolved: Optional[bool] = None  # Yes/No/Partial resolution status
+    comments_other: Optional[str] = None  # Optional feedback text
     user_agent: Optional[str] = None
     page_url: Optional[str] = None

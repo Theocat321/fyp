@@ -20,29 +20,19 @@ export async function POST(request: NextRequest) {
     // Create Supabase client
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Prepare feedback row matching database schema
+    // Prepare feedback row matching condensed database schema
     const feedbackRow = {
       session_id: body.session_id || null,
       participant_id: body.participant_id || null,
       participant_group: body.participant_group || null,
       scenario_id: body.scenario_id || null,
       rating_overall: body.rating_overall || null,
-      rating_helpfulness: body.rating_helpfulness || null,
-      rating_friendliness: body.rating_friendliness || null,
       rating_task_success: body.rating_task_success || null,
       rating_clarity: body.rating_clarity || null,
       rating_empathy: body.rating_empathy || null,
       rating_accuracy: body.rating_accuracy || null,
       resolved: body.resolved === 'yes' ? true : body.resolved === 'no' ? false : null,
-      time_to_resolution: body.time_to_resolution || null,
-      issues: body.issues || [],
-      comments_positive: body.comments_positive || null,
-      comments_negative: body.comments_negative || null,
       comments_other: body.comments_other || null,
-      would_use_again: body.would_use_again || null,
-      recommend_nps: body.recommend_nps || null,
-      contact_ok: body.contact_ok ? true : false,
-      contact_email: body.contact_email || null,
       user_agent: body.user_agent || request.headers.get('user-agent') || null,
       page_url: body.page_url || null,
     };
