@@ -21,21 +21,21 @@ const SCENARIOS = [
     name: "Billing Dispute",
     topic: "billing",
     description: "Resolve an issue with your bill",
-    context: "You've noticed unexpected charges on your bill and want them explained or corrected."
+    context: "You've noticed unexpected charges on your bill and want them explained or corrected. You've been charged $24 dollars more than required."
   },
   {
     id: "scenario_004_plan_upgrade",
     name: "Plan Upgrade",
     topic: "plans",
     description: "Find the best plan for your needs",
-    context: "Your current plan isn't meeting your needs and you want to explore upgrade options."
+    context: "Your current plan isn't meeting your needs and you want to explore upgrade options. You're on the LITE plan and want to upgrade."
   },
   {
     id: "scenario_005_network_issue",
     name: "Network Issue",
     topic: "network",
     description: "Fix connectivity or signal problems",
-    context: "You're experiencing poor signal or connection issues and need troubleshooting help."
+    context: "You're experiencing poor signal or connection issues everywhere you go and need troubleshooting help. Ask the bot for some good advice."
   }
 ];
 
