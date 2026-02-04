@@ -42,6 +42,7 @@ body { background: var(--bg); color: var(--ink); font-family: system-ui, sans-se
 
 .input-row { display: flex; gap: 8px; padding: 10px; border-top: 1px solid #e5e7eb; }
 .text-input { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid #d1d5db; }
+.text-input:disabled { background-color: #f9fafb; color: #9ca3af; cursor: not-allowed; }
 .send-btn { background: var(--brand); color: white; border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; }
 .send-btn:disabled { background: #fca5a5; cursor: not-allowed; }
 .finish-btn { background: #f3f4f6; color: #111827; border: 1px solid #e5e7eb; padding: 10px 12px; border-radius: 8px; cursor: pointer; }
@@ -156,23 +157,67 @@ select.select::-ms-expand { display: none; }
 .bubble.assistant .md pre { background: #0f172a; color: #e2e8f0; padding: 0.6rem; border-radius: 8px; overflow: auto; }
 .bubble.assistant .md a { color: #2563eb; text-decoration: underline; }
 
-.scenario-context {
-  margin-top: 0.75rem;
-  padding: 0.75rem;
-  background: #f8f9fa;
-  border-radius: 6px;
-  border-left: 3px solid #0066cc;
+.scenario-help {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0.5rem 0;
+  line-height: 1.4;
 }
 
-.scenario-context strong {
+.scenario-wrapper {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scenario-role {
+  padding: 0.75rem;
+  background: #dbeafe;
+  border-radius: 6px;
+  border-left: 3px solid #3b82f6;
+}
+
+.scenario-role strong {
   display: block;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #1e40af;
+  font-size: 0.875rem;
 }
 
-.scenario-context p {
+.scenario-role p {
   margin: 0;
   font-size: 0.9rem;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.scenario-instructions {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #fef3c7;
+  border-radius: 6px;
+  border-left: 3px solid #f59e0b;
+}
+
+.scenario-instructions strong {
+  color: #92400e;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.scenario-end {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: #dcfce7;
+  border-radius: 6px;
+  border-left: 3px solid #22c55e;
+}
+
+.scenario-end strong {
+  color: #166534;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
 }
 
 /* Rubric section */

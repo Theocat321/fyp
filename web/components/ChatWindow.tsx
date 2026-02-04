@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import MessageBubble from "./MessageBubble";
 import { sendMessage, ChatResponse, sendMessageStream, fetchMessages, fetchScenarios } from "../lib/api";
 import { logEvent } from "../lib/telemetry";
@@ -8,10 +9,11 @@ import { logEvent } from "../lib/telemetry";
 type Msg = { role: "user" | "assistant"; text: string };
 
 export default function ChatWindow() {
+  const router = useRouter();
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: "assistant",
-      text: "Hi, I’m VodaCare Support. How can I help?",
+      text: "Hi, I'm VodaCare Support. How can I help?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -26,6 +28,7 @@ export default function ChatWindow() {
   const [participantGroup, setParticipantGroup] = useState<"A" | "B" | "">("");
   const [participantId, setParticipantId] = useState<string | undefined>(undefined);
   const [started, setStarted] = useState<boolean>(false);
+  const [hasStoredParticipant, setHasStoredParticipant] = useState<boolean>(false);
   // Scenario selection
   const [scenarios, setScenarios] = useState<any[]>([]);
   const [selectedScenario, setSelectedScenario] = useState<string>("");
@@ -108,10 +111,14 @@ export default function ChatWindow() {
       if (name && (group === "A" || group === "B")) {
         setParticipantName(name);
         setParticipantGroup(group);
+        setHasStoredParticipant(true);
         if (pid) setParticipantId(pid);
-        if (sid) setSessionId(sid);
-        if (scenarioId) setSelectedScenario(scenarioId);
-        setStarted(true);
+        if (sid) {
+          setSessionId(sid);
+          if (scenarioId) setSelectedScenario(scenarioId);
+          // Only auto-start if they have an active session
+          setStarted(true);
+        }
       }
     } catch {}
   }, []);
@@ -408,22 +415,36 @@ export default function ChatWindow() {
       <div className="prechat-shell">
         <div className="prechat-card">
           <h2>Study Enrollment</h2>
-          <p className="muted">Enter your details to start the research chat.</p>
+          <p className="muted">{hasStoredParticipant ? "Start a new conversation" : "Enter your details to start the research chat."}</p>
           <form onSubmit={onStartStudy} className="prechat-form">
             <div className="field-row">
               <label htmlFor="participant-name" className="label">Name</label>
-              <input id="participant-name" className="text-input" placeholder="Your name" value={participantName} onChange={(e) => setParticipantName(e.target.value)} />
+              <input
+                id="participant-name"
+                className="text-input"
+                placeholder="Your name"
+                value={participantName}
+                onChange={(e) => setParticipantName(e.target.value)}
+                disabled={hasStoredParticipant}
+              />
             </div>
             <div className="field-row">
               <label htmlFor="participant-group" className="label">Group</label>
-              <select id="participant-group" className="select" value={participantGroup} onChange={(e) => setParticipantGroup(e.target.value as any)}>
+              <select
+                id="participant-group"
+                className="select"
+                value={participantGroup}
+                onChange={(e) => setParticipantGroup(e.target.value as any)}
+                disabled={hasStoredParticipant}
+              >
                 <option value="">Select group…</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
               </select>
             </div>
             <div className="field-row">
-              <label htmlFor="participant-scenario" className="label">Scenario (Optional)</label>
+              <label htmlFor="participant-scenario" className="label">Choose Your Scenario (Optional)</label>
+              <p className="scenario-help">Select a scenario to roleplay a specific customer support situation. You'll act as the customer with a particular issue.</p>
               <select
                 id="participant-scenario"
                 className="select"
@@ -441,9 +462,17 @@ export default function ChatWindow() {
                 ))}
               </select>
               {scenarioContext && (
-                <div className="scenario-context">
-                  <strong>Scenario Context:</strong>
-                  <p>{scenarioContext}</p>
+                <div className="scenario-wrapper">
+                  <div className="scenario-role">
+                    <strong>📋 Your Role in This Scenario:</strong>
+                    <p>{scenarioContext}</p>
+                  </div>
+                  <div className="scenario-instructions">
+                    <strong>What to do:</strong> Start the conversation by asking the support agent for help with this issue. Respond naturally as if you're a real customer experiencing this situation.
+                  </div>
+                  <div className="scenario-end">
+                    <strong>When to end:</strong> Click the "Finish" button once your issue is resolved, you've received the information you need, or you feel the conversation has reached a natural conclusion. You can also end if you're not getting helpful responses after 3+ attempts.
+                  </div>
                 </div>
               )}
             </div>
@@ -591,7 +620,6 @@ export default function ChatWindow() {
           <div className="feedback-modal">
             <div className="feedback-header">
               <h3>Finish Conversation</h3>
-              <button className="feedback-close" onClick={() => setShowFeedback(false)} aria-label="Close feedback">×</button>
             </div>
             {!feedbackDone ? (
               <form
@@ -652,7 +680,16 @@ export default function ChatWindow() {
                         meta: payload,
                       });
                     } catch {}
-                    setFeedbackDone(true);
+
+                    // Clear session and scenario from localStorage to allow new conversation
+                    try {
+                      localStorage.removeItem('vc_session_id');
+                      localStorage.removeItem('vc_scenario_id');
+                    } catch {}
+
+                    // Redirect to home page (enrollment form will be pre-filled)
+                    // Using window.location for immediate redirect
+                    window.location.href = '/';
                   } catch (err) {
                     alert("Sorry—could not save feedback. Please try again.");
                   } finally {
@@ -853,7 +890,6 @@ export default function ChatWindow() {
                   </div>
                 </div>
                 <div className="feedback-actions">
-                  <button type="button" className="btn-secondary" onClick={() => setShowFeedback(false)} disabled={submittingFeedback}>Cancel</button>
                   <button type="submit" className="send-btn" disabled={submittingFeedback}>{submittingFeedback ? "Submitting…" : "Submit feedback"}</button>
                 </div>
               </form>
@@ -861,7 +897,15 @@ export default function ChatWindow() {
               <div className="feedback-done">
                 <h4>Thanks for your feedback!</h4>
                 <p className="muted">We really appreciate you taking the time. Your responses help us improve VodaCare support.</p>
-                <button className="send-btn" onClick={() => { setShowFeedback(false); }}>Close</button>
+                <button className="send-btn" onClick={() => {
+                  // Clear session and scenario from localStorage to allow new conversation
+                  try {
+                    localStorage.removeItem('vc_session_id');
+                    localStorage.removeItem('vc_scenario_id');
+                  } catch {}
+                  // Redirect to home page
+                  window.location.href = '/';
+                }}>Close</button>
               </div>
             )}
           </div>
