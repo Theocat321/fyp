@@ -698,195 +698,69 @@ export default function ChatWindow() {
                 }}
               >
                 <div className="feedback-body">
-                  <p className="muted">Thanks for chatting with VodaCare. A few quick questions to wrap up your support session.</p>
-                  <div className="grid-2">
-                    <div className="field-row">
-                      <label className="label">Overall, how satisfied are you?</label>
-                      <div className="rating-stars" aria-label="Overall satisfaction">
-                        {[1,2,3,4,5].map((n) => (
-                          <button key={n} type="button" className={"star" + (form.rating_overall >= n ? " filled" : "")} onClick={() => setForm({ ...form, rating_overall: n })} aria-label={`${n} star${n>1?"s":""}`}>★</button>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="field-row">
-                      <label className="label">How helpful was the support?</label>
-                      <div className="rating-stars" aria-label="Helpfulness rating">
-                        {[1,2,3,4,5].map((n) => (
-                          <button key={n} type="button" className={"star" + (form.rating_helpfulness >= n ? " filled" : "")} onClick={() => setForm({ ...form, rating_helpfulness: n })} aria-label={`${n} star${n>1?"s":""}`}>★</button>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="field-row">
-                      <label className="label">How friendly/professional did the support feel?</label>
-                      <div className="rating-stars" aria-label="Friendliness rating">
-                        {[1,2,3,4,5].map((n) => (
-                          <button key={n} type="button" className={"star" + (form.rating_friendliness >= n ? " filled" : "")} onClick={() => setForm({ ...form, rating_friendliness: n })} aria-label={`${n} star${n>1?"s":""}`}>★</button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                  <p className="muted">Thanks for chatting! Please rate your experience on these key dimensions (matches our AI evaluation criteria).</p>
 
-                  <div className="rubric-section">
-                    <h4 className="rubric-heading">Help us improve: Rate the conversation quality</h4>
-                    <p className="muted">These ratings help us understand how well the assistant performed.</p>
-
-                    <div className="field-row">
-                      <label className="label">
-                        Task Success: Did the assistant help you accomplish your goal?
-                      </label>
-                      <div className="rating-stars" aria-label="Task success rating">
-                        {[1,2,3,4,5].map((n) => (
-                          <button
-                            key={n}
-                            type="button"
-                            className={"star" + (form.rating_task_success >= n ? " filled" : "")}
-                            onClick={() => setForm({ ...form, rating_task_success: n })}
-                            aria-label={`${n} star${n>1?"s":""}`}
-                          >
-                            ★
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="field-row">
-                      <label className="label">
-                        Clarity: How clear and understandable were the responses?
-                      </label>
-                      <div className="rating-stars" aria-label="Clarity rating">
-                        {[1,2,3,4,5].map((n) => (
-                          <button
-                            key={n}
-                            type="button"
-                            className={"star" + (form.rating_clarity >= n ? " filled" : "")}
-                            onClick={() => setForm({ ...form, rating_clarity: n })}
-                            aria-label={`${n} star${n>1?"s":""}`}
-                          >
-                            ★
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="field-row">
-                      <label className="label">
-                        Empathy: How well did the assistant acknowledge your situation/feelings?
-                      </label>
-                      <div className="rating-stars" aria-label="Empathy rating">
-                        {[1,2,3,4,5].map((n) => (
-                          <button
-                            key={n}
-                            type="button"
-                            className={"star" + (form.rating_empathy >= n ? " filled" : "")}
-                            onClick={() => setForm({ ...form, rating_empathy: n })}
-                            aria-label={`${n} star${n>1?"s":""}`}
-                          >
-                            ★
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="field-row">
-                      <label className="label">
-                        Information Accuracy: Did the assistant provide accurate information without making unsupported claims?
-                      </label>
-                      <div className="rating-stars" aria-label="Accuracy rating">
-                        {[1,2,3,4,5].map((n) => (
-                          <button
-                            key={n}
-                            type="button"
-                            className={"star" + (form.rating_accuracy >= n ? " filled" : "")}
-                            onClick={() => setForm({ ...form, rating_accuracy: n })}
-                            aria-label={`${n} star${n>1?"s":""}`}
-                          >
-                            ★
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid-2">
-                    <div className="field-row">
-                      <label className="label">Was your issue resolved?</label>
-                      <div className="seg" role="group" aria-label="Resolution">
-                        {[
-                          {v:"yes", t:"Yes"},
-                          {v:"no", t:"No"},
-                          {v:"partial", t:"Partially"},
-                        ].map((opt) => (
-                          <button key={opt.v} type="button" className={form.resolved === opt.v ? "active" : ""} onClick={() => setForm({ ...form, resolved: opt.v })}>{opt.t}</button>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="field-row">
-                      <label className="label">Time to resolution</label>
-                      <select className="select" value={form.time_to_resolution} onChange={(e) => setForm({ ...form, time_to_resolution: e.target.value })}>
-                        <option value="">Select…</option>
-                        <option value="<5m">Under 5 minutes</option>
-                        <option value="5-15m">5–15 minutes</option>
-                        <option value=">15m">Over 15 minutes</option>
-                        <option value="na">Not resolved</option>
-                      </select>
-                    </div>
-                  </div>
                   <div className="field-row">
-                    <label className="label">What did you need help with? (select all that apply)</label>
-                    <div className="checkbox-grid">
-                      {["Plans","Balance","Billing","Roaming","Network","Device","Other"].map((k) => {
-                        const active = form.issues.includes(k);
-                        return (
-                          <button type="button" key={k} className={"chip-toggle" + (active ? " active" : "")} onClick={() => {
-                            const next = new Set(form.issues);
-                            if (active) next.delete(k); else next.add(k);
-                            setForm({ ...form, issues: Array.from(next) });
-                          }}>{k}</button>
-                        );
-                      })}
+                    <label className="label">Overall Satisfaction</label>
+                    <div className="rating-stars" aria-label="Overall satisfaction">
+                      {[1,2,3,4,5].map((n) => (
+                        <button key={n} type="button" className={"star" + (form.rating_overall >= n ? " filled" : "")} onClick={() => setForm({ ...form, rating_overall: n })} aria-label={`${n} star${n>1?"s":""}`}>★</button>
+                      ))}
                     </div>
                   </div>
-                  <div className="grid-2">
-                    <div className="field-row">
-                      <label className="label">What went well?</label>
-                      <textarea className="textarea" placeholder="Tell us what worked for you" value={form.comments_positive} onChange={(e) => setForm({ ...form, comments_positive: e.target.value })} />
-                    </div>
-                    <div className="field-row">
-                      <label className="label">What could be better?</label>
-                      <textarea className="textarea" placeholder="Anything confusing or frustrating?" value={form.comments_negative} onChange={(e) => setForm({ ...form, comments_negative: e.target.value })} />
-                    </div>
-                  </div>
+
                   <div className="field-row">
-                    <label className="label">Anything else you'd like us to know?</label>
-                    <textarea className="textarea" placeholder="Your suggestions and ideas" value={form.comments_other} onChange={(e) => setForm({ ...form, comments_other: e.target.value })} />
-                  </div>
-                  <div className="grid-2">
-                    <div className="field-row">
-                      <label className="label">Would you use VodaCare support again?</label>
-                      <select className="select" value={form.would_use_again} onChange={(e) => setForm({ ...form, would_use_again: e.target.value })}>
-                        <option value="">Select…</option>
-                        <option value="definitely">Definitely</option>
-                        <option value="probably">Probably</option>
-                        <option value="not_sure">Not sure</option>
-                        <option value="probably_not">Probably not</option>
-                        <option value="definitely_not">Definitely not</option>
-                      </select>
-                    </div>
-                    <div className="field-row">
-                      <label className="label">How likely are you to recommend us to a friend? (0–10)</label>
-                      <input type="number" min={0} max={10} className="text-input" value={form.recommend_nps}
-                        onChange={(e) => setForm({ ...form, recommend_nps: Number(e.target.value) })} />
+                    <label className="label">Task Success: Did the assistant help you accomplish your goal?</label>
+                    <div className="rating-stars" aria-label="Task success rating">
+                      {[1,2,3,4,5].map((n) => (
+                        <button key={n} type="button" className={"star" + (form.rating_task_success >= n ? " filled" : "")} onClick={() => setForm({ ...form, rating_task_success: n })} aria-label={`${n} star${n>1?"s":""}`}>★</button>
+                      ))}
                     </div>
                   </div>
-                  <div className="grid-2">
-                    <div className="field-row">
-                      <label className="label"><input type="checkbox" checked={form.contact_ok} onChange={(e) => setForm({ ...form, contact_ok: e.target.checked })} /> OK to contact me for follow-up</label>
+
+                  <div className="field-row">
+                    <label className="label">Clarity: Were the responses clear and easy to understand?</label>
+                    <div className="rating-stars" aria-label="Clarity rating">
+                      {[1,2,3,4,5].map((n) => (
+                        <button key={n} type="button" className={"star" + (form.rating_clarity >= n ? " filled" : "")} onClick={() => setForm({ ...form, rating_clarity: n })} aria-label={`${n} star${n>1?"s":""}`}>★</button>
+                      ))}
                     </div>
-                    <div className="field-row">
-                      <label className="label">Email (optional)</label>
-                      <input type="email" className="text-input" placeholder="you@example.com" value={form.contact_email}
-                        onChange={(e) => setForm({ ...form, contact_email: e.target.value })} />
+                  </div>
+
+                  <div className="field-row">
+                    <label className="label">Empathy: Did the assistant acknowledge your situation appropriately?</label>
+                    <div className="rating-stars" aria-label="Empathy rating">
+                      {[1,2,3,4,5].map((n) => (
+                        <button key={n} type="button" className={"star" + (form.rating_empathy >= n ? " filled" : "")} onClick={() => setForm({ ...form, rating_empathy: n })} aria-label={`${n} star${n>1?"s":""}`}>★</button>
+                      ))}
                     </div>
+                  </div>
+
+                  <div className="field-row">
+                    <label className="label">Accuracy: Was the information accurate and reliable?</label>
+                    <div className="rating-stars" aria-label="Accuracy rating">
+                      {[1,2,3,4,5].map((n) => (
+                        <button key={n} type="button" className={"star" + (form.rating_accuracy >= n ? " filled" : "")} onClick={() => setForm({ ...form, rating_accuracy: n })} aria-label={`${n} star${n>1?"s":""}`}>★</button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="field-row">
+                    <label className="label">Was your issue resolved?</label>
+                    <div className="seg" role="group" aria-label="Resolution">
+                      {[
+                        {v:"yes", t:"Yes"},
+                        {v:"no", t:"No"},
+                        {v:"partial", t:"Partially"},
+                      ].map((opt) => (
+                        <button key={opt.v} type="button" className={form.resolved === opt.v ? "active" : ""} onClick={() => setForm({ ...form, resolved: opt.v })}>{opt.t}</button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="field-row">
+                    <label className="label">Additional comments (optional)</label>
+                    <textarea className="textarea" placeholder="Any feedback, suggestions, or concerns?" value={form.comments_other} onChange={(e) => setForm({ ...form, comments_other: e.target.value })} rows={3} />
                   </div>
                 </div>
                 <div className="feedback-actions">
