@@ -23,6 +23,7 @@ const nextConfig = {
       { source: "/api/participants", destination: `${target}/api/participants` },
       { source: "/api/messages", destination: `${target}/api/messages` },
       { source: "/api/feedback", destination: `${target}/api/feedback` },
+      { source: "/api/scenarios", destination: `${target}/api/scenarios` },
     ];
   },
 };
