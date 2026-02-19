@@ -88,6 +88,13 @@ def parse_args():
         help="Logging level"
     )
 
+    parser.add_argument(
+        "--seed-offset",
+        type=int,
+        default=0,
+        help="Offset for participant ID seeds (e.g., 200 for llm_test_200+)"
+    )
+
     return parser.parse_args()
 
 
@@ -246,6 +253,8 @@ def main():
     logger.info("API health check passed")
 
     # Initialize runner
+    # Use seed_offset if provided, otherwise use settings.experiment_seed
+    base_seed = args.seed_offset if args.seed_offset else settings.experiment_seed
     runner = ExperimentRunner(
         openai_api_key=settings.openai_api_key,
         vodacare_api_url=settings.vodacare_api_base_url,
@@ -253,7 +262,7 @@ def main():
         openai_model_judge=settings.openai_model_judge,
         api_timeout=settings.api_timeout,
         max_turns=settings.max_turns,
-        base_seed=settings.experiment_seed,
+        base_seed=base_seed,
         rubric=settings.rubric
     )
 
