@@ -48,7 +48,6 @@ class SupabaseStore:
         if resp.status_code == 409:
             return 0, 200
         try:
-            # Log brief error context to aid debugging
             from logging import getLogger
 
             logger = getLogger(__name__)

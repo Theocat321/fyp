@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import MessageBubble from "./MessageBubble";
 import { sendMessage, ChatResponse, sendMessageStream, fetchMessages, fetchScenarios } from "../lib/api";
 import { logEvent } from "../lib/telemetry";
@@ -9,7 +8,6 @@ import { logEvent } from "../lib/telemetry";
 type Msg = { role: "user" | "assistant"; text: string };
 
 export default function ChatWindow() {
-  const router = useRouter();
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: "assistant",
@@ -21,7 +19,6 @@ export default function ChatWindow() {
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const [atBottom, setAtBottom] = useState(true);
-  // Default to streaming unless explicitly disabled
   const useStreaming = process.env.NEXT_PUBLIC_USE_STREAMING !== "false";
   // Research participant gate
   const [participantName, setParticipantName] = useState<string>("");
@@ -100,7 +97,6 @@ export default function ChatWindow() {
     })();
   }, [sessionId]);
 
-  // Load participant from localStorage
   useEffect(() => {
     try {
       const name = localStorage.getItem("vc_participant_name") || "";
@@ -123,7 +119,6 @@ export default function ChatWindow() {
     } catch {}
   }, []);
 
-  // Load scenarios
   useEffect(() => {
     (async () => {
       try {
@@ -165,7 +160,6 @@ export default function ChatWindow() {
     } catch {}
     const pid = ensureParticipantId();
     const sid = ensureSessionId();
-    // Log enrollment submit
     try {
       await logEvent({
         session_id: sid,
@@ -200,12 +194,10 @@ export default function ChatWindow() {
   async function onSend(text: string) {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
-    // Gate: require participant info before chatting
     if (!started || !participantName.trim() || !(participantGroup === "A" || participantGroup === "B")) return;
     setBusy(true);
     const sid = ensureSessionId();
     if (!sessionId) setSessionId(sid);
-    // Log typing end with duration if any
     try {
       if (typingStartAt) {
         const dur = Date.now() - typingStartAt;
@@ -225,7 +217,6 @@ export default function ChatWindow() {
       }
     } catch {}
     setTypingStartAt(null);
-    // Log message send
     try {
       const now = Date.now();
       setLastSendAt(now);
@@ -274,7 +265,6 @@ export default function ChatWindow() {
     setInput("");
     try {
       if (useStreaming) {
-        // Insert a placeholder assistant message for streaming updates
         setMessages((m) => [...m, { role: "assistant", text: "" }]);
         let assistantText = "";
         let sidLocal: string | undefined = sid;
@@ -297,7 +287,6 @@ export default function ChatWindow() {
             const formatted = formatStreamingText(assistantText);
             setMessages((m) => {
               const next = [...m];
-              // Update last message (assistant placeholder)
               const idx = next.length - 1;
               if (idx >= 0 && next[idx].role === "assistant") {
                 next[idx] = { ...next[idx], text: formatted } as Msg;
@@ -681,14 +670,12 @@ export default function ChatWindow() {
                       });
                     } catch {}
 
-                    // Clear session and scenario from localStorage to allow new conversation
                     try {
                       localStorage.removeItem('vc_session_id');
                       localStorage.removeItem('vc_scenario_id');
                     } catch {}
 
                     // Redirect to home page (enrollment form will be pre-filled)
-                    // Using window.location for immediate redirect
                     window.location.href = '/';
                   } catch (err) {
                     alert("Sorry—could not save feedback. Please try again.");
@@ -772,12 +759,10 @@ export default function ChatWindow() {
                 <h4>Thanks for your feedback!</h4>
                 <p className="muted">We really appreciate you taking the time. Your responses help us improve VodaCare support.</p>
                 <button className="send-btn" onClick={() => {
-                  // Clear session and scenario from localStorage to allow new conversation
                   try {
                     localStorage.removeItem('vc_session_id');
                     localStorage.removeItem('vc_scenario_id');
                   } catch {}
-                  // Redirect to home page
                   window.location.href = '/';
                 }}>Close</button>
               </div>

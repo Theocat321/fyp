@@ -85,7 +85,6 @@ export async function sendMessageStream(
       const { value, done } = await reader.read();
       if (done) break;
       buffer += decoder.decode(value, { stream: true });
-      // Parse complete SSE events
       let idx: number;
       while ((idx = buffer.indexOf("\n\n")) !== -1) {
         const rawEvent = buffer.slice(0, idx);

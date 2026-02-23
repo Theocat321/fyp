@@ -36,7 +36,6 @@ async def chat_stream(req: dict, request: Request):
         def sse(event: str, data: str) -> bytes:
             return f"event: {event}\ndata: {data}\n\n".encode("utf-8")
 
-        # Ensure session and record user message
         sid = agent._ensure_session(req.get("session_id"))
         user_message = str(req.get("message", ""))
         agent.sessions[sid].append(("user", user_message))
@@ -58,7 +57,6 @@ async def chat_stream(req: dict, request: Request):
             },
             ensure_ascii=False,
         )
-        # Server-side telemetry: reply_init
         try:
             from server.app.storage import SupabaseStore
             ua = request.headers.get("user-agent") if request else None
@@ -151,7 +149,6 @@ async def chat_stream(req: dict, request: Request):
                     yield sse("token", part)
                     await asyncio.sleep(0)
         else:
-            # No LLM configured: send error text
             logger.warning("LLM client not configured (function); sending error text")
             reply = "There’s a problem — the chat service isn’t working right now. Please try again later."
             for part in _chunk_text_for_stream(reply):
@@ -159,9 +156,7 @@ async def chat_stream(req: dict, request: Request):
                 yield sse("token", part)
                 await asyncio.sleep(0)
 
-        # Save assistant reply to history and send done
         agent.sessions[sid].append(("assistant", full_reply))
-        # Server-side telemetry: reply_done
         try:
             from server.app.storage import SupabaseStore
             total_ms = int((time.perf_counter() - stream_start) * 1000) if stream_start else None

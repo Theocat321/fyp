@@ -50,7 +50,6 @@ class TerminationChecker:
         if turn_number < 2:
             return False, None, None
 
-        # Get last user and assistant messages
         last_user_msg = None
         last_assistant_msg = None
 
@@ -149,7 +148,6 @@ class TerminationChecker:
         Returns:
             Tuple of (is_stalemate, reason)
         """
-        # Get last 3 user messages
         user_messages = [
             msg["content"].lower()
             for msg in conversation_history
@@ -161,7 +159,6 @@ class TerminationChecker:
 
         last_three = user_messages[-3:]
 
-        # Check for repetitive user messages (user keeps asking same thing)
         repetition_indicators = [
             "i already asked", "i said", "like i said", "as i mentioned",
             "i told you", "i need", "still", "again"
@@ -175,7 +172,6 @@ class TerminationChecker:
         if repetition_count >= 2:
             return True, "User repeatedly asking similar questions"
 
-        # Check for frustration escalation
         frustration_words = [
             "ridiculous", "useless", "waste", "pathetic",
             "terrible", "awful", "horrible", "worst"

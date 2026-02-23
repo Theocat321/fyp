@@ -17,7 +17,6 @@ class ScenarioLoader:
                           Defaults to data/scenarios/ relative to project root.
         """
         if scenarios_dir is None:
-            # Default to data/scenarios relative to project root
             project_root = Path(__file__).parent.parent.parent
             scenarios_dir = project_root / "data" / "scenarios"
 
@@ -43,18 +42,15 @@ class ScenarioLoader:
             FileNotFoundError: If scenario file doesn't exist
             ValueError: If YAML is invalid
         """
-        # Check cache first
         if scenario_id in self._cache:
             return self._cache[scenario_id]
 
-        # Find the YAML file
         scenario_file = self.scenarios_dir / f"{scenario_id}.yaml"
         if not scenario_file.exists():
             raise FileNotFoundError(
                 f"Scenario file not found: {scenario_file}"
             )
 
-        # Load and validate
         with open(scenario_file, 'r') as f:
             data = yaml.safe_load(f)
 
@@ -65,7 +61,6 @@ class ScenarioLoader:
                 f"Invalid scenario YAML in {scenario_file}: {e}"
             ) from e
 
-        # Cache and return
         self._cache[scenario_id] = scenario
         return scenario
 

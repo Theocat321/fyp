@@ -13,7 +13,6 @@ from .models import ChatRequest, ChatResponse, InteractionEvent, ParticipantInse
 from .agent import SupportAgent
 from .storage import SupabaseStore
 
-# Import scenarios router
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -31,7 +30,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register API routers
 app.include_router(scenarios_router.router, prefix="/api", tags=["scenarios"])
 
 agent = SupportAgent()
@@ -54,9 +52,7 @@ def to_iso_ts(value: Any) -> Optional[str]:
             if ts > 1e12:
                 ts = ts / 1000.0
             return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
-        # If string, try parse; otherwise return as-is
         if isinstance(value, str):
-            # Accept ISO-like strings
             return value
         return None
     except Exception:
@@ -111,7 +107,6 @@ async def interaction(req: Request):
     }.issubset(set(events_raw[0].keys())):
         return JSONResponse({"ok": True, "stored": 0, "skipped": 1}, status_code=202)
 
-    # Otherwise log verbose to interaction_events
     rows = []
     for e in events:
         rows.append(
@@ -213,7 +208,6 @@ def insert_feedback(fb: FeedbackInsert, request: Request):
     stored, code = store.insert_rows("support_feedback", [row])
     status = 200 if stored else (code if code else 202)
 
-    # Emit a clear log line about the write result
     try:
         logger.warning(
             "/api/feedback write status=%s stored=%s configured=%s", status, stored, store.is_configured()
@@ -222,7 +216,6 @@ def insert_feedback(fb: FeedbackInsert, request: Request):
         pass
 
     if not stored:
-        # Surface more actionable messages
         if not store.is_configured():
             return JSONResponse({"ok": False, "error": "supabase_not_configured"}, status_code=500)
         return JSONResponse({"ok": False, "error": "insert_failed", "status": code}, status_code=500)
@@ -265,7 +258,6 @@ async def chat_stream(req: ChatRequest, request: Request):
         def sse(event: str, data: str) -> bytes:
             return f"event: {event}\ndata: {data}\n\n".encode("utf-8")
 
-        # Ensure session and record user message
         sid = agent._ensure_session(req.session_id)
         agent.sessions[sid].append(("user", req.message))
 
@@ -276,7 +268,6 @@ async def chat_stream(req: ChatRequest, request: Request):
             w in req.message.lower() for w in ["agent", "human", "person", "escalate"]
         )
 
-        # Send init metadata first
         init_payload = json.dumps(
             {
                 "session_id": sid,
@@ -287,7 +278,6 @@ async def chat_stream(req: ChatRequest, request: Request):
             },
             ensure_ascii=False,
         )
-        # Log reply_init event (server-side telemetry)
         try:
             ua = request.headers.get("user-agent") if request else None
             store.insert_rows(
@@ -318,7 +308,6 @@ async def chat_stream(req: ChatRequest, request: Request):
         stream_start = time.perf_counter()
         first_token_sent = False
 
-        # Stream via OpenAI when configured; otherwise return error text
         if agent._llm_client is not None:
             try:
                 system = agent._system_prompt(getattr(req, "participant_group", None))
@@ -373,14 +362,12 @@ async def chat_stream(req: ChatRequest, request: Request):
                         await asyncio.sleep(0)  # let event loop flush
             except Exception:
                 logger.exception("OpenAI streaming failed")
-                # Error text when LLM streaming fails
                 reply = "There’s a problem — the chat service isn’t working right now. Please try again later."
                 for part in _chunk_text_for_stream(reply):
                     full_reply += part
                     yield sse("token", part)
                     await asyncio.sleep(0)
         else:
-            # No LLM configured: send error text
             logger.warning("LLM client not configured; sending error text in stream")
             reply = "There’s a problem — the chat service isn’t working right now. Please try again later."
             for part in _chunk_text_for_stream(reply):
@@ -388,9 +375,7 @@ async def chat_stream(req: ChatRequest, request: Request):
                 yield sse("token", part)
                 await asyncio.sleep(0)
 
-        # Save assistant reply to history and send done
         agent.sessions[sid].append(("assistant", full_reply))
-        # Server-side telemetry: reply_done
         try:
             total_ms = int((time.perf_counter() - stream_start) * 1000) if stream_start else None
             store.insert_rows(

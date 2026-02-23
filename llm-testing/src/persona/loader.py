@@ -17,7 +17,6 @@ class PersonaLoader:
                          Defaults to data/personas/ relative to project root.
         """
         if personas_dir is None:
-            # Default to data/personas relative to project root
             project_root = Path(__file__).parent.parent.parent
             personas_dir = project_root / "data" / "personas"
 
@@ -43,18 +42,15 @@ class PersonaLoader:
             FileNotFoundError: If persona file doesn't exist
             ValueError: If YAML is invalid
         """
-        # Check cache first
         if persona_id in self._cache:
             return self._cache[persona_id]
 
-        # Find the YAML file
         persona_file = self.personas_dir / f"{persona_id}.yaml"
         if not persona_file.exists():
             raise FileNotFoundError(
                 f"Persona file not found: {persona_file}"
             )
 
-        # Load and validate
         with open(persona_file, 'r') as f:
             data = yaml.safe_load(f)
 
@@ -65,7 +61,6 @@ class PersonaLoader:
                 f"Invalid persona YAML in {persona_file}: {e}"
             ) from e
 
-        # Cache and return
         self._cache[persona_id] = persona
         return persona
 

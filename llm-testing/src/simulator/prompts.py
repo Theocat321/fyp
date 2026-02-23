@@ -105,7 +105,6 @@ def format_conversation_for_simulator(
         {"role": "system", "content": system_prompt}
     ]
 
-    # Add conversation history
     messages.extend(conversation_history)
 
     return messages

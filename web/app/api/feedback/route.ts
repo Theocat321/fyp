@@ -5,7 +5,6 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Get Supabase credentials from environment
     const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -17,7 +16,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create Supabase client
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Prepare feedback row matching condensed database schema
@@ -37,7 +35,6 @@ export async function POST(request: NextRequest) {
       page_url: body.page_url || null,
     };
 
-    // Insert into Supabase
     const { data, error } = await supabase
       .from('support_feedback')
       .insert([feedbackRow])

@@ -78,7 +78,6 @@ class VodaCareClient:
             data = response.json()
             assistant_reply = data.get("reply", "")
 
-            # Store user message to database
             self._store_message(
                 session_id=session_id,
                 role="user",
@@ -87,7 +86,6 @@ class VodaCareClient:
                 participant_group=participant_group
             )
 
-            # Store assistant response to database
             self._store_message(
                 session_id=session_id,
                 role="assistant",

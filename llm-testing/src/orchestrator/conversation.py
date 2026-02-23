@@ -1,6 +1,5 @@
 """Conversation orchestrator for running multi-turn interactions."""
 import logging
-import uuid
 from datetime import datetime
 from typing import Dict, List, Any
 
@@ -92,7 +91,6 @@ class ConversationOrchestrator:
                 turn_number += 1
                 logger.info(f"--- Turn {turn_number} ---")
 
-                # Generate user message
                 user_message = self.user_simulator.generate_response(
                     persona=persona,
                     scenario=scenario,
@@ -102,7 +100,6 @@ class ConversationOrchestrator:
 
                 logger.info(f"User: {user_message[:100]}...")
 
-                # Record user turn
                 user_turn = ConversationTurn(
                     turn_number=turn_number,
                     speaker="user",
@@ -117,7 +114,6 @@ class ConversationOrchestrator:
                     "content": user_message
                 })
 
-                # Get assistant response
                 try:
                     api_response = self.api_client.send_message(
                         message=user_message,
@@ -141,7 +137,6 @@ class ConversationOrchestrator:
                     assistant_message = f"[ERROR: {str(e)}]"
                     latency = 0
 
-                # Record assistant turn
                 assistant_turn = ConversationTurn(
                     turn_number=turn_number,
                     speaker="assistant",
@@ -157,7 +152,6 @@ class ConversationOrchestrator:
                     "content": assistant_message
                 })
 
-                # Check termination conditions
                 should_end, reason, details = self.termination_checker.should_terminate(
                     persona=persona,
                     conversation_history=conversation_history,
@@ -184,7 +178,6 @@ class ConversationOrchestrator:
 
         completed_at = datetime.now()
 
-        # Calculate average latency
         avg_latency = sum(latencies) / len(latencies) if latencies else 0
 
         logger.info(

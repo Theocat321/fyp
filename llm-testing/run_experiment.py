@@ -10,7 +10,6 @@ Usage:
 import argparse
 import logging
 import sys
-from pathlib import Path
 
 from config.settings import settings
 from src.persona.loader import PersonaLoader
@@ -253,7 +252,6 @@ def main():
     logger.info("API health check passed")
 
     # Initialize runner
-    # Use seed_offset if provided, otherwise use settings.experiment_seed
     base_seed = args.seed_offset if args.seed_offset else settings.experiment_seed
     runner = ExperimentRunner(
         openai_api_key=settings.openai_api_key,

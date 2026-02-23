@@ -20,9 +20,7 @@ class SupportAgent:
         self._logger = logging.getLogger(__name__)
         self.provider = get_provider_name()
         self.mode = get_assistant_mode()  # 'open' or 'strict'
-        # In-memory chat history per session
         self.sessions: Dict[str, List[Tuple[str, str]]] = {}
-        # LLM client (optional)
         self._llm_client = None
         self._llm_model = get_openai_model()
         api_key = get_openai_api_key()
@@ -41,7 +39,6 @@ class SupportAgent:
                 self._logger.exception("Failed to initialize OpenAI client")
                 self._llm_client = None
 
-        # Minimal knowledge base with topic -> details
         self.knowledge: Dict[str, Dict] = {
             "plans": {
                 "desc": "Plans and upgrades",
@@ -164,16 +161,13 @@ class SupportAgent:
 
     def _detect_topic(self, text: str) -> str:
         t = text.lower().strip()
-        # Check if it's a quick chip exact match
         if text in self.quick_map:
             return self.quick_map[text]
-        # Keyword based intent detection
         for topic, info in self.knowledge.items():
             for kw in info["keywords"]:
                 # word boundary rough check
                 if re.search(rf"\b{re.escape(kw)}\b", t):
                     return topic
-        # Fallback
         return "unknown"
 
     def _llm_reply(self, user_text: str, topic: str, sid: str, participant_group: Optional[str] = None) -> str | None:
@@ -181,7 +175,6 @@ class SupportAgent:
             return None
         try:
             system = self._system_prompt(participant_group)
-            # Build short context using session last few turns
             messages = [{"role": "system", "content": system}]
             history = self.sessions.get(sid, [])
             for role, text in history[-6:]:

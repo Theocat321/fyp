@@ -5,9 +5,7 @@ from datetime import datetime
 from typing import List, Dict, Any
 from collections import defaultdict
 
-from src.persona.models import Persona
 from src.persona.loader import PersonaLoader
-from src.scenario.models import Scenario
 from src.scenario.loader import ScenarioLoader
 from src.simulator.user_simulator import UserSimulator
 from src.api.client import VodaCareClient
@@ -63,11 +61,9 @@ class ExperimentRunner:
         self.base_seed = base_seed
         self.rubric = rubric
 
-        # Initialize loaders
         self.persona_loader = PersonaLoader()
         self.scenario_loader = ScenarioLoader()
 
-        # Initialize components
         self.user_simulator = UserSimulator(
             api_key=openai_api_key,
             model=openai_model_simulator,
@@ -128,11 +124,9 @@ class ExperimentRunner:
         started_at = datetime.now()
         conversations: List[ConversationRun] = []
 
-        # Load personas and scenarios
         personas = [self.persona_loader.load(pid) for pid in persona_ids]
         scenarios = [self.scenario_loader.load(sid) for sid in scenario_ids]
 
-        # Run all persona x scenario combinations
         total = len(personas) * len(scenarios)
         current = 0
 
@@ -142,7 +136,6 @@ class ExperimentRunner:
                 logger.info(f"\n[{current}/{total}] Running: {persona.id} × {scenario.id}")
 
                 try:
-                    # Run conversation
                     conv_result = self.orchestrator.run_conversation(
                         persona=persona,
                         scenario=scenario,
@@ -150,19 +143,16 @@ class ExperimentRunner:
                         seed=self.base_seed + current
                     )
 
-                    # Evaluate with LLM judge
                     llm_scores = self.llm_judge.evaluate(
                         persona=persona,
                         scenario=scenario,
                         transcript=conv_result["transcript"]
                     )
 
-                    # Run heuristic checks
                     heuristic_checks = self.heuristic_evaluator.evaluate(
                         conv_result["transcript"]
                     )
 
-                    # Determine critical failures
                     critical_failures = [
                         check.check_name
                         for check in heuristic_checks
@@ -175,7 +165,6 @@ class ExperimentRunner:
                         critical_failures=critical_failures
                     )
 
-                    # Create conversation run record
                     run_id = f"run_{experiment_id}_{current:03d}"
 
                     conversation_run = ConversationRun(
@@ -222,10 +211,8 @@ class ExperimentRunner:
         logger.info(f"Experiment completed in {duration:.1f} seconds")
         logger.info(f"Successful conversations: {len(conversations)}/{total}")
 
-        # Compute summary statistics
         summary = self._compute_summary(conversations)
 
-        # Create experiment run record
         experiment_run = ExperimentRun(
             experiment_id=experiment_id,
             experiment_name=experiment_name,
@@ -275,7 +262,6 @@ class ExperimentRunner:
             if conv.llm_evaluation.task_success >= 0.7
         )
 
-        # Average scores
         avg_task_success = sum(
             conv.llm_evaluation.task_success for conv in conversations
         ) / total
@@ -296,12 +282,10 @@ class ExperimentRunner:
             conv.llm_evaluation.overall_weighted for conv in conversations
         ) / total
 
-        # Termination reasons
         termination_reasons = defaultdict(int)
         for conv in conversations:
             termination_reasons[conv.termination.reason] += 1
 
-        # Heuristic metrics
         heuristic_pass_rate = sum(
             1 for conv in conversations
             if conv.heuristic_results.all_passed
@@ -312,7 +296,6 @@ class ExperimentRunner:
             if conv.heuristic_results.critical_failures
         ) / total
 
-        # Performance metrics
         avg_length = sum(
             conv.total_turns for conv in conversations
         ) / total
@@ -321,7 +304,6 @@ class ExperimentRunner:
             conv.average_latency_ms for conv in conversations
         ) / total
 
-        # Scores by persona
         scores_by_persona = defaultdict(list)
         for conv in conversations:
             scores_by_persona[conv.persona_id].append(
@@ -333,7 +315,6 @@ class ExperimentRunner:
             for persona_id, scores in scores_by_persona.items()
         }
 
-        # Scores by scenario
         scores_by_scenario = defaultdict(list)
         for conv in conversations:
             scores_by_scenario[conv.scenario_id].append(

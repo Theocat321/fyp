@@ -41,7 +41,6 @@ class ArtifactWriter:
 
         logger.info(f"Writing experiment results to {filepath}")
 
-        # Convert to dict with proper serialization
         data = experiment.model_dump(mode='json')
 
         with open(filepath, 'w') as f:

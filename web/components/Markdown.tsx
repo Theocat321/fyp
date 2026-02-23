@@ -47,7 +47,6 @@ function parseBlocks(md: string): Block[] {
 
   while (i < lines.length) {
     const line = lines[i];
-    // Fenced code blocks ```
     if (line.trim().startsWith("```") && !inCode) {
       inCode = true;
       flushPara();
@@ -67,7 +66,6 @@ function parseBlocks(md: string): Block[] {
       continue;
     }
 
-    // Headings #, ##, ###
     const h = /^(#{1,6})\s+(.*)$/.exec(line);
     if (h) {
       flushPara();
@@ -78,7 +76,6 @@ function parseBlocks(md: string): Block[] {
       continue;
     }
 
-    // Ordered list
     const ol = /^\s*(\d+)\.\s+(.*)$/.exec(line);
     if (ol) {
       flushPara();
@@ -104,7 +101,6 @@ function parseBlocks(md: string): Block[] {
       continue;
     }
 
-    // Unordered list
     const ul = /^\s*[-*•]\s+(.*)$/.exec(line);
     if (ul) {
       flushPara();
@@ -136,7 +132,6 @@ function parseBlocks(md: string): Block[] {
       continue;
     }
 
-    // Paragraph accumulation
     para.push(line);
     i++;
   }
@@ -161,7 +156,6 @@ function renderInline(text: string, keyBase: string): React.ReactNode[] {
   // Escape first to avoid accidental HTML
   let safe = escapeHtml(text);
 
-  // Split by inline code `...`
   const parts = safe.split(/`/);
   const out: React.ReactNode[] = [];
   parts.forEach((p, idx) => {
@@ -170,7 +164,6 @@ function renderInline(text: string, keyBase: string): React.ReactNode[] {
         <code key={`${keyBase}-code-${idx}`}>{p}</code>
       );
     } else {
-      // Links [text](url)
       const nodes: React.ReactNode[] = [];
       let lastIndex = 0;
       const linkRe = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -194,7 +187,6 @@ function renderInline(text: string, keyBase: string): React.ReactNode[] {
       const rest = p.slice(lastIndex);
       if (rest) nodes.push(rest);
 
-      // Bold **text** and italic *text*
       const formatted = nodes.map((n, j) => {
         if (typeof n !== "string") return n;
         // Bold
