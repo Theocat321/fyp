@@ -12,7 +12,6 @@ import argparse
 import csv
 import sys
 from pathlib import Path
-import os
 
 # Add server app to path to use its storage module
 sys.path.insert(0, str(Path(__file__).parent.parent / "server"))
@@ -36,7 +35,7 @@ def export_real_conversations(output_path: Path, limit: int = None):
 
     print("Fetching messages from Supabase...")
 
-    # Fetch all messages (we'll filter in Python since PostgREST filtering is tricky)
+    # Fetch all messages and filter sim_ sessions in Python
     messages, status = store.select_rows(
         table="messages",
         params={},

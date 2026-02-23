@@ -23,10 +23,9 @@ import argparse
 import json
 import logging
 import sys
-import os
 from pathlib import Path
 from datetime import datetime
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional
 from collections import defaultdict
 
 # Add parent directory to path for imports
@@ -151,7 +150,6 @@ class HumanTranscriptEvaluator:
 
         logger.info(f"Fetched {len(feedback_records)} feedback records")
 
-        # Map by session_id
         feedback_map = {}
         for record in feedback_records:
             sid = record.get('session_id')
@@ -234,7 +232,6 @@ class HumanTranscriptEvaluator:
         Returns:
             List of ConversationTurn objects
         """
-        # Sort by timestamp
         sorted_messages = sorted(
             messages,
             key=lambda x: x.get('created_at', '')
@@ -248,13 +245,11 @@ class HumanTranscriptEvaluator:
             content = msg.get('content', '')
             created_at = msg.get('created_at')
 
-            # Parse timestamp
             try:
                 timestamp = datetime.fromisoformat(created_at) if created_at else datetime.now()
             except (ValueError, TypeError):
                 timestamp = datetime.now()
 
-            # Create turn
             turn = ConversationTurn(
                 turn_number=turn_number,
                 speaker=role,
@@ -263,7 +258,6 @@ class HumanTranscriptEvaluator:
             )
             transcript.append(turn)
 
-            # Increment turn after assistant response
             if role == 'assistant':
                 turn_number += 1
 

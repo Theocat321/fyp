@@ -2,7 +2,6 @@
 """Verify that experiment data is being saved to Supabase database."""
 import requests
 import os
-import json
 from pathlib import Path
 from dotenv import load_dotenv
 from collections import defaultdict

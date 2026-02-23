@@ -24,10 +24,6 @@ class HeuristicEvaluator:
     Performs deterministic heuristic checks on conversation quality.
     """
 
-    def __init__(self):
-        """Initialize the heuristic evaluator."""
-        pass
-
     def evaluate(self, transcript: List[ConversationTurn]) -> List[HeuristicCheckResult]:
         """
         Run all heuristic checks on a conversation.

@@ -61,7 +61,6 @@ class RealUserEvaluator:
         """
         logger.info(f"Loading conversations from {csv_path}")
 
-        # Read CSV
         rows = []
         with open(csv_path, 'r') as f:
             reader = csv.DictReader(f)
@@ -70,19 +69,15 @@ class RealUserEvaluator:
 
         logger.info(f"Loaded {len(rows)} messages from CSV")
 
-        # Group by session
         sessions = defaultdict(list)
         for row in rows:
             session_id = row['session_id']
             sessions[session_id].append(row)
 
-        # Convert to conversation format
         conversations = []
         for session_id, messages in sessions.items():
-            # Sort by timestamp
             messages.sort(key=lambda x: x.get('created_at', ''))
 
-            # Build transcript
             transcript = []
             turn_number = 1
             participant_group = None
@@ -92,22 +87,19 @@ class RealUserEvaluator:
                 role = msg['role']
                 content = msg['content']
 
-                # Track participant info
                 if not participant_group:
                     participant_group = msg.get('participant_group', 'unknown')
                 if not participant_id:
                     participant_id = msg.get('participant_id', 'unknown')
 
-                # Create turn (user and assistant share same turn number)
                 turn = ConversationTurn(
-                    turn_number=turn_number if role == 'user' else turn_number,
+                    turn_number=turn_number,
                     speaker=role,
                     message=content,
                     timestamp=datetime.fromisoformat(msg['created_at']) if msg.get('created_at') else datetime.now()
                 )
                 transcript.append(turn)
 
-                # Increment turn after assistant response
                 if role == 'assistant':
                     turn_number += 1
 

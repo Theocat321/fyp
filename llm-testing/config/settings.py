@@ -1,7 +1,6 @@
 """Configuration loader for LLM testing framework."""
 import os
 from pathlib import Path
-from typing import Optional
 from dotenv import load_dotenv
 import yaml
 

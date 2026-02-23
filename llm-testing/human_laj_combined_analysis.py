@@ -1,20 +1,13 @@
 #!/usr/bin/env python3
 """
-Combined Human Self-Ratings + LLM-as-Judge Analysis
-
-Fetches all human conversations, collects both:
-1. Human self-ratings from feedback table
-2. LLM-as-Judge evaluations of the conversations
-
-Separates results by Group A and B for A/B testing comparison.
-
-Usage:
-    python3 human_laj_combined_analysis.py
-    python3 human_laj_combined_analysis.py --output combined_report.json
+Combined Human Self-Ratings + LLM-as-Judge Analysis.
+Fetches human conversations, evaluates with LLM-as-Judge, and compares Group A vs B.
+Usage: python3 human_laj_combined_analysis.py [--output combined_report.json]
 """
 import argparse
 import json
 import logging
+import re
 import sys
 import os
 from pathlib import Path
@@ -214,8 +207,6 @@ OVERALL ASSESSMENT:
             evaluation_text = response.choices[0].message.content.strip()
 
             # Parse scores using same method as simulation
-            import re
-
             def extract_score(text: str, dimension: str) -> float:
                 pattern = rf"{dimension}:\s*([0-9]*\.?[0-9]+)"
                 match = re.search(pattern, text, re.IGNORECASE)
@@ -302,16 +293,6 @@ OVERALL ASSESSMENT:
 
             if group in group_data:
                 group_data[group].append(combined)
-
-        # Calculate summary statistics
-        def calc_stats(entries, key):
-            values = [e[key] for e in entries if key in e and e[key]]
-            return {
-                "count": len(values),
-                "avg": round(sum(values) / len(values), 3) if values else 0,
-                "min": round(min(values), 3) if values else 0,
-                "max": round(max(values), 3) if values else 0,
-            }
 
         report = {
             "analysis_type": "Human Self-Ratings + LLM-as-Judge Evaluation",

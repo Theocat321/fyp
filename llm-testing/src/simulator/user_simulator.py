@@ -1,6 +1,5 @@
 """LLM-based user simulator."""
 import logging
-import random
 from typing import List, Dict, Optional
 from openai import OpenAI
 
@@ -81,11 +80,6 @@ class UserSimulator:
             )
 
             user_response = response.choices[0].message.content.strip()
-
-            logger.info(
-                f"Turn {turn_number}: Generated response "
-                f"({len(user_response)} chars)"
-            )
 
             return user_response
 

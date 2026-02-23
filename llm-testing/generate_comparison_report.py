@@ -51,7 +51,6 @@ def load_llm_results(pattern: str) -> List[Dict[str, Any]]:
             with open(file_path, 'r') as f:
                 data = json.load(f)
                 results.append(data)
-                logger.debug(f"Loaded {file_path}")
         except Exception as e:
             logger.error(f"Failed to load {file_path}: {e}")
             continue
@@ -74,7 +73,6 @@ def load_human_results(file_path: str) -> Dict[str, Any]:
     try:
         with open(file_path, 'r') as f:
             data = json.load(f)
-            logger.debug(f"Loaded human results with {len(data.get('conversations', []))} conversations")
             return data
     except Exception as e:
         logger.error(f"Failed to load human results: {e}")
