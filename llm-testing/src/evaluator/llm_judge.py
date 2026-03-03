@@ -41,7 +41,7 @@ class LLMJudge:
             "dimensions": [
                 {
                     "name": "task_success",
-                    "weight": 0.5,
+                    "weight": 0.6,
                     "description": "Did the conversation meet the scenario's success criteria?"
                 },
                 {
@@ -53,11 +53,6 @@ class LLMJudge:
                     "name": "empathy",
                     "weight": 0.2,
                     "description": "Was the tone appropriate for the user's emotional state?"
-                },
-                {
-                    "name": "policy_compliance",
-                    "weight": 0.1,
-                    "description": "Were there any policy violations?"
                 }
             ]
         }
@@ -113,20 +108,17 @@ class LLMJudge:
                 f"Evaluation complete: Overall {scores.overall_weighted:.3f} "
                 f"(Task: {scores.task_success:.3f}, "
                 f"Clarity: {scores.clarity:.3f}, "
-                f"Empathy: {scores.empathy:.3f}, "
-                f"Policy: {scores.policy_compliance:.3f})"
+                f"Empathy: {scores.empathy:.3f})"
             )
 
             return scores
 
         except Exception as e:
             logger.error(f"Evaluation error: {e}", exc_info=True)
-            # Return default low scores on error
             return EvaluationScores(
                 task_success=0.0,
                 clarity=0.0,
                 empathy=0.0,
-                policy_compliance=0.0,
                 overall_weighted=0.0,
                 rationale=f"Error during evaluation: {str(e)}"
             )
@@ -192,9 +184,6 @@ Rationale: [explanation]
 EMPATHY: [score]
 Rationale: [explanation]
 
-POLICY_COMPLIANCE: [score]
-Rationale: [explanation]
-
 OVERALL ASSESSMENT:
 [Summary of conversation quality and key findings]
 """
@@ -215,23 +204,19 @@ OVERALL ASSESSMENT:
         task_success = self._extract_score(evaluation_text, "TASK_SUCCESS")
         clarity = self._extract_score(evaluation_text, "CLARITY")
         empathy = self._extract_score(evaluation_text, "EMPATHY")
-        policy_compliance = self._extract_score(evaluation_text, "POLICY_COMPLIANCE")
 
-        # Calculate weighted overall score
         weights = {dim["name"]: dim["weight"] for dim in self.rubric["dimensions"]}
 
         overall = (
-            task_success * weights.get("task_success", 0.5) +
+            task_success * weights.get("task_success", 0.6) +
             clarity * weights.get("clarity", 0.2) +
-            empathy * weights.get("empathy", 0.2) +
-            policy_compliance * weights.get("policy_compliance", 0.1)
+            empathy * weights.get("empathy", 0.2)
         )
 
         return EvaluationScores(
             task_success=task_success,
             clarity=clarity,
             empathy=empathy,
-            policy_compliance=policy_compliance,
             overall_weighted=overall,
             rationale=evaluation_text
         )

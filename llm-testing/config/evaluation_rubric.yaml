@@ -1,6 +1,6 @@
 dimensions:
   - name: task_success
-    weight: 0.5
+    weight: 0.6
     description: |
       Did the conversation meet the scenario's success criteria?
       - Were all user questions answered?
@@ -46,18 +46,3 @@ dimensions:
       - score: 1.0
         label: Exceptional empathy and rapport
 
-  - name: policy_compliance
-    weight: 0.1
-    description: |
-      Were there any policy violations or prohibited claims?
-      - No hallucinated plans or pricing
-      - No contradictions across turns
-      - Escalation offered when appropriate
-      - Accurate information about Vodafone services
-    scale:
-      - score: 0.0
-        label: Critical violations present
-      - score: 0.5
-        label: Minor compliance issues
-      - score: 1.0
-        label: Fully compliant

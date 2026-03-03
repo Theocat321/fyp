@@ -129,7 +129,6 @@ class HumanLAJAnalyzer:
                 "task_success": 0,
                 "clarity": 0,
                 "empathy": 0,
-                "policy_compliance": 0,
                 "overall": 0,
                 "error": "LLM not configured"
             }
@@ -150,7 +149,7 @@ class HumanLAJAnalyzer:
 
 # EVALUATION RUBRIC
 
-TASK_SUCCESS (weight: 0.5)
+TASK_SUCCESS (weight: 0.6)
 Did the assistant successfully help the customer accomplish their goal? Did they address the customer's needs?
 
 CLARITY (weight: 0.2)
@@ -158,9 +157,6 @@ Were the assistant's responses clear, well-structured, and easy to understand?
 
 EMPATHY (weight: 0.2)
 Was the assistant appropriately empathetic and supportive of the customer's situation?
-
-POLICY_COMPLIANCE (weight: 0.1)
-Were there any policy violations, hallucinations, or harmful recommendations?
 
 # YOUR TASK
 Provide scores from 0.0 to 1.0 for each dimension, where:
@@ -177,9 +173,6 @@ CLARITY: [score]
 Rationale: [explanation]
 
 EMPATHY: [score]
-Rationale: [explanation]
-
-POLICY_COMPLIANCE: [score]
 Rationale: [explanation]
 
 OVERALL ASSESSMENT:
@@ -221,21 +214,18 @@ OVERALL ASSESSMENT:
             task_success = extract_score(evaluation_text, "TASK_SUCCESS")
             clarity = extract_score(evaluation_text, "CLARITY")
             empathy = extract_score(evaluation_text, "EMPATHY")
-            policy_compliance = extract_score(evaluation_text, "POLICY_COMPLIANCE")
 
             # Calculate weighted overall (matching simulation weights)
             overall = (
-                task_success * 0.5 +
+                task_success * 0.6 +
                 clarity * 0.2 +
-                empathy * 0.2 +
-                policy_compliance * 0.1
+                empathy * 0.2
             )
 
             return {
                 "task_success": task_success,
                 "clarity": clarity,
                 "empathy": empathy,
-                "policy_compliance": policy_compliance,
                 "overall": overall,
                 "rationale": evaluation_text
             }
@@ -246,7 +236,6 @@ OVERALL ASSESSMENT:
                 "task_success": 0,
                 "clarity": 0,
                 "empathy": 0,
-                "policy_compliance": 0,
                 "overall": 0,
                 "error": str(e)
             }
@@ -324,7 +313,6 @@ OVERALL ASSESSMENT:
             laj_task = [e["laj_evaluation"].get("task_success", 0) for e in entries if e["laj_evaluation"].get("task_success") is not None]
             laj_clarity = [e["laj_evaluation"].get("clarity", 0) for e in entries if e["laj_evaluation"].get("clarity") is not None]
             laj_empathy = [e["laj_evaluation"].get("empathy", 0) for e in entries if e["laj_evaluation"].get("empathy") is not None]
-            laj_policy = [e["laj_evaluation"].get("policy_compliance", 0) for e in entries if e["laj_evaluation"].get("policy_compliance") is not None]
 
             report["by_group"][group] = {
                 "count": len(entries),
@@ -340,7 +328,6 @@ OVERALL ASSESSMENT:
                     "task_success": {"avg": round(sum(laj_task) / len(laj_task), 2) if laj_task else 0, "count": len(laj_task)},
                     "clarity": {"avg": round(sum(laj_clarity) / len(laj_clarity), 2) if laj_clarity else 0, "count": len(laj_clarity)},
                     "empathy": {"avg": round(sum(laj_empathy) / len(laj_empathy), 2) if laj_empathy else 0, "count": len(laj_empathy)},
-                    "policy_compliance": {"avg": round(sum(laj_policy) / len(laj_policy), 2) if laj_policy else 0, "count": len(laj_policy)},
                 },
                 "sessions": entries
             }

@@ -18,7 +18,6 @@ class EvaluationScores(BaseModel):
     task_success: float = Field(..., ge=0.0, le=1.0)
     clarity: float = Field(..., ge=0.0, le=1.0)
     empathy: float = Field(..., ge=0.0, le=1.0)
-    policy_compliance: float = Field(..., ge=0.0, le=1.0)
     overall_weighted: float = Field(..., ge=0.0, le=1.0)
     rationale: str = Field(..., description="Judge's explanation for scores")
 
@@ -87,7 +86,6 @@ class SummaryStatistics(BaseModel):
     avg_task_success: float
     avg_clarity: float
     avg_empathy: float
-    avg_policy_compliance: float
     avg_overall_score: float
 
     # Termination breakdown
@@ -146,7 +144,6 @@ class ExperimentRun(BaseModel):
                     "avg_task_success": 0.82,
                     "avg_clarity": 0.88,
                     "avg_empathy": 0.75,
-                    "avg_policy_compliance": 0.95,
                     "avg_overall_score": 0.83,
                     "termination_reasons": {
                         "satisfaction": 18,

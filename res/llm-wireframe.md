@@ -120,7 +120,7 @@
 
 ### 4.5 Evaluation Record
 
-* Scores: task_success, clarity, empathy, policy_compliance, overall
+* Scores: task_success, clarity, empathy, overall
 * Judge rationale (short paragraph)
 * Heuristics: steps_count, contains_apology (bool), escalation_offered (bool), forbidden_claims (bool), off_topic_ratio
 * Flags: needs_manual_review (bool), drift_suspected (bool)
@@ -140,10 +140,9 @@
 
 ## 6) Evaluation Rubric (scales 0.0–1.0)
 
-* **Task Success (50%)**: Did the dialogue meet the scenario’s success criteria?
+* **Task Success (60%)**: Did the dialogue meet the scenario’s success criteria?
 * **Clarity (20%)**: Steps concise, ordered, and understandable to the persona’s literacy level.
 * **Empathy (20%)**: Appropriate acknowledgment and tone for the persona’s state.
-* **Policy Compliance (10%)**: No prohibited claims; correct safety/privacy posture.
 
 **Heuristic gates (pass/fail)**
 

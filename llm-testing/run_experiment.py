@@ -135,7 +135,6 @@ def print_summary(experiment):
     print(f"  Task Success: {summary.avg_task_success:.3f}")
     print(f"  Clarity: {summary.avg_clarity:.3f}")
     print(f"  Empathy: {summary.avg_empathy:.3f}")
-    print(f"  Policy Compliance: {summary.avg_policy_compliance:.3f}")
     print(f"  Overall Weighted: {summary.avg_overall_score:.3f}")
     print()
 

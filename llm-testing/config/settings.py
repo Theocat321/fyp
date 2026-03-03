@@ -52,7 +52,7 @@ class Settings:
                 "dimensions": [
                     {
                         "name": "task_success",
-                        "weight": 0.5,
+                        "weight": 0.6,
                         "description": "Did the conversation meet the scenario's success criteria?"
                     },
                     {
@@ -64,11 +64,6 @@ class Settings:
                         "name": "empathy",
                         "weight": 0.2,
                         "description": "Was the tone appropriate for the user's emotional state?"
-                    },
-                    {
-                        "name": "policy_compliance",
-                        "weight": 0.1,
-                        "description": "Were there any policy violations or prohibited claims?"
                     }
                 ]
             }

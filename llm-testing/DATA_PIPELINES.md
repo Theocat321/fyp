@@ -219,11 +219,10 @@ Understanding how data flows from initial interaction → database storage → e
 │     Process:                                                        │
 │     - Builds evaluation prompt                                      │
 │     - Calls GPT-4                                                   │
-│     - Parses scores for 4 dimensions:                               │
+│     - Parses scores for 3 dimensions:                               │
 │       * Task Success (0.0-1.0)                                      │
 │       * Clarity (0.0-1.0)                                           │
 │       * Empathy (0.0-1.0)                                           │
-│       * Policy Compliance (0.0-1.0)                                 │
 │     - Calculates weighted overall score                             │
 │     - Extracts rationale                                            │
 │                                                                      │
@@ -389,7 +388,7 @@ GROUP BY user_type;
 ## Evaluation Rubric (Applied to Both)
 
 ```yaml
-Task Success (50% weight):
+Task Success (60% weight):
   - Did conversation achieve goal?
   - Were questions answered?
   - Clear path forward provided?
@@ -403,11 +402,6 @@ Empathy (20% weight):
   - Tone matched user's emotion?
   - Acknowledged frustration?
   - Professional yet human?
-
-Policy Compliance (10% weight):
-  - No hallucinated information?
-  - No contradictions?
-  - Appropriate escalation?
 ```
 
 ---
@@ -427,10 +421,10 @@ You can confidently claim:
 > "To ensure valid comparison between experimental conditions, both real
 > and simulated user conversations were evaluated using identical assessment
 > criteria. All conversations were scored by a GPT-4-based judge using a
-> standardized rubric (task success 50%, clarity 20%, empathy 20%, policy
-> compliance 10%), supplemented by deterministic heuristic safety checks.
-> This methodology eliminates evaluator bias and ensures statistical validity
-> when comparing system prompt variants."
+> standardized rubric (task success 60%, clarity 20%, empathy 20%),
+> supplemented by deterministic heuristic safety checks. This methodology
+> eliminates evaluator bias and ensures statistical validity when comparing
+> system prompt variants."
 
 ---
 

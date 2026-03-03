@@ -797,10 +797,10 @@ class FeedbackInsert(BaseModel):
 
     # Rubric-based ratings (1-5 scale)
     rating_overall: Optional[int]
-    rating_task_success: Optional[int]    # 50% weight in LAJ rubric
+    rating_task_success: Optional[int]    # 60% weight in LAJ rubric
     rating_clarity: Optional[int]          # 20% weight
     rating_empathy: Optional[int]          # 20% weight
-    rating_accuracy: Optional[int]         # 10% weight (policy compliance)
+    rating_accuracy: Optional[int]
 
     resolved: Optional[bool]              # Yes/No/Partial
     comments_other: Optional[str]

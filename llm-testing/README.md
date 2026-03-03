@@ -191,12 +191,11 @@ All outputs are saved to `./outputs/` directory:
 
 ### LLM Judge (GPT-4)
 
-Scores conversations on 4 dimensions (0.0-1.0 scale):
+Scores conversations on 3 dimensions (0.0-1.0 scale):
 
-1. **Task Success (50% weight)** - Did the conversation achieve the scenario's success criteria?
+1. **Task Success (60% weight)** - Did the conversation achieve the scenario's success criteria?
 2. **Clarity (20% weight)** - Were responses clear and appropriate for the user's tech literacy?
 3. **Empathy (20% weight)** - Was the tone appropriate for the user's emotional state?
-4. **Policy Compliance (10% weight)** - Were there any policy violations or hallucinated information?
 
 ### Heuristic Checks
 

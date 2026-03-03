@@ -13,10 +13,9 @@ This document describes the aligned testing framework that enables direct compar
 
 ### 2. Rubric-Aligned Feedback
 - Both human and LLM testing use identical evaluation criteria
-- **Task Success** (50% weight): Did assistant help accomplish goal?
+- **Task Success** (60% weight): Did assistant help accomplish goal?
 - **Clarity** (20% weight): How clear were responses?
 - **Empathy** (20% weight): How well did assistant acknowledge situation?
-- **Information Accuracy** (10% weight): Accurate info without unsupported claims?
 
 ### 3. LLM-as-Judge Evaluation
 - Human transcripts evaluated using same LAJ system as simulated conversations
@@ -158,6 +157,58 @@ Open `comparison_report.html` in browser to view results.
 2. Filter by variant (A/B) for targeted analysis
 3. Normalize sample sizes when comparing metrics
 4. Document testing conditions and participant demographics
+
+## Results (2026-02-24)
+
+> 83 sessions · 676 messages · 88 feedback entries. LAJ run: `human_laj_combined_analysis.py`.
+
+### Dataset
+
+| Group | Sessions | Messages | Feedback entries |
+|---|---|---|---|
+| A (Kindness prompt) | 52 | 388 | 52 |
+| B (Confirmation prompt) | 36 | 288 | 36 |
+| **Total** | **83** | **676** | **88** |
+
+### LLM-as-Judge Scores (0–1)
+
+| Metric | Group A | Group B | Δ (A − B) |
+|---|---|---|---|
+| **Overall** | **0.89** | **0.82** | +0.07 |
+| Task Success | 0.83 | 0.83 | ≈ equal |
+| Clarity | 0.91 | 0.89 | +0.02 |
+| **Empathy** | **0.94** | **0.65** | **+0.29** |
+
+### Human Self-Ratings (1–5)
+
+| Metric | Group A | Group B | Δ (A − B) |
+|---|---|---|---|
+| **Overall** | **3.90** | **3.91** | ≈ equal |
+| Task Success | 4.06 | 4.06 | ≈ equal |
+| Clarity | 4.04 | 3.91 | +0.13 |
+| **Empathy** | **4.14** | **4.33** | **−0.19** |
+| Accuracy | 4.04 | 3.88 | +0.16 |
+
+### LAJ vs Self-Rating Comparison (normalised to 0–1)
+
+| Metric | A — LAJ | A — Self | B — LAJ | B — Self |
+|---|---|---|---|---|
+| Overall | 0.89 | 0.78 | 0.82 | 0.78 |
+| Task Success | 0.83 | 0.81 | 0.83 | 0.81 |
+| Clarity | 0.91 | 0.81 | 0.89 | 0.78 |
+| **Empathy** | **0.94** | **0.83** | **0.65** | **0.87** |
+
+### Key Findings
+
+1. **Variant A outperforms Variant B overall** — LAJ overall gap of +0.07, driven almost entirely by empathy (+0.29).
+
+2. **Empathy paradox in Group B** — humans *self-rated* Group B empathy higher (4.33 vs 4.14), yet LAJ scored it much lower (0.65 vs 0.94). Suggests Variant B produces surface-level warmth that users perceive as empathetic but the judge does not detect as genuine understanding or personalisation.
+
+3. **Task Success is equal** — both groups achieve identical LAJ task success (0.83) and identical self-ratings (4.06/5). The prompt variant does not affect whether issues get resolved.
+
+4. **LAJ consistently rates higher than self-ratings** — LAJ overall ~0.82–0.89 vs self-rating ~0.78 normalised. LAJ may reward structured, complete responses more than users do subjectively.
+
+---
 
 ## Limitations
 

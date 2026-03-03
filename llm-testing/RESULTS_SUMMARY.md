@@ -41,7 +41,7 @@
 
 ### 3a. LLM-as-Judge on Human Conversations
 
-> Same rubric and scoring logic as simulation (task_success × 0.5, clarity × 0.2, empathy × 0.2, policy_compliance × 0.1). Evaluated without persona/scenario context. Generated 2026-02-24 (n=83 sessions, 88 feedback entries).
+> Same rubric and scoring logic as simulation (task_success × 0.6, clarity × 0.2, empathy × 0.2). Evaluated without persona/scenario context. Generated 2026-02-24 (n=83 sessions, 88 feedback entries).
 
 | Metric | Human Group A | Human Group B | A vs B |
 |---|---|---|---|

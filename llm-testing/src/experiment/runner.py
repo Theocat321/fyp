@@ -245,7 +245,6 @@ class ExperimentRunner:
                 avg_task_success=0.0,
                 avg_clarity=0.0,
                 avg_empathy=0.0,
-                avg_policy_compliance=0.0,
                 avg_overall_score=0.0,
                 termination_reasons={},
                 heuristic_pass_rate=0.0,
@@ -272,10 +271,6 @@ class ExperimentRunner:
 
         avg_empathy = sum(
             conv.llm_evaluation.empathy for conv in conversations
-        ) / total
-
-        avg_policy_compliance = sum(
-            conv.llm_evaluation.policy_compliance for conv in conversations
         ) / total
 
         avg_overall = sum(
@@ -332,7 +327,6 @@ class ExperimentRunner:
             avg_task_success=avg_task_success,
             avg_clarity=avg_clarity,
             avg_empathy=avg_empathy,
-            avg_policy_compliance=avg_policy_compliance,
             avg_overall_score=avg_overall,
             termination_reasons=dict(termination_reasons),
             heuristic_pass_rate=heuristic_pass_rate,

@@ -140,7 +140,7 @@ After running Test 3 (single conversation), verify:
 - [ ] Full experiment JSON has complete transcript with turns
 - [ ] Each turn has user and assistant messages
 - [ ] Termination info shows reason (satisfaction, max_turns, etc.)
-- [ ] LLM evaluation has scores for all 4 dimensions (0.0-1.0)
+- [ ] LLM evaluation has scores for all 3 dimensions (0.0-1.0)
 - [ ] LLM evaluation includes rationale text
 - [ ] Heuristic results show all 4 checks
 - [ ] No critical failures in heuristics (unless there's a real issue)
@@ -174,7 +174,6 @@ After running Test 3 (single conversation), verify:
     "task_success": 0.85,
     "clarity": 0.90,
     "empathy": 0.75,
-    "policy_compliance": 1.0,
     "overall_weighted": 0.855,
     "rationale": "..."
   },
@@ -224,7 +223,7 @@ After running Test 3 (single conversation), verify:
 
 ### Evaluation Flow
 1. LLM judge reviews full transcript
-2. Scores 4 dimensions based on rubric
+2. Scores 3 dimensions based on rubric
 3. Provides rationale for each score
 4. Heuristic checks validate safety constraints
 5. Results combined into ConversationRun artifact
@@ -251,7 +250,7 @@ This framework can now:
 - Simulate 5 distinct user personas with realistic behavior
 - Test 5 common support scenarios
 - Generate natural multi-turn conversations
-- Evaluate conversation quality across 4 dimensions
+- Evaluate conversation quality across 3 dimensions
 - Detect safety issues (hallucinated info, contradictions)
 - Produce detailed JSON artifacts for analysis
 - Run reproducible experiments with seeded randomness

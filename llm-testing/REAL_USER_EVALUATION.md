@@ -71,7 +71,6 @@ AVERAGE SCORES
   Task Success: 0.78
   Clarity: 0.82
   Empathy: 0.71
-  Policy Compliance: 0.94
   Overall Weighted: 0.79
 
 HEURISTIC CHECKS
@@ -135,11 +134,10 @@ sess_abc123,user_001,A,user,"When will I be charged?",2026-01-28T10:31:00
 Both real and simulated users go through:
 
 ### 1. LLM Judge (GPT-4)
-Evaluates on 4 dimensions (0.0-1.0):
-- **Task Success (50%)**: Did conversation achieve goal?
+Evaluates on 3 dimensions (0.0-1.0):
+- **Task Success (60%)**: Did conversation achieve goal?
 - **Clarity (20%)**: Clear and understandable?
 - **Empathy (20%)**: Appropriate tone?
-- **Policy Compliance (10%)**: No violations?
 
 ### 2. Heuristic Checks
 Deterministic safety checks:
@@ -169,8 +167,8 @@ import matplotlib.pyplot as plt
 # Plot score distributions
 fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 
-dimensions = ['avg_empathy', 'avg_clarity', 'avg_task_success', 'avg_policy_compliance']
-titles = ['Empathy', 'Clarity', 'Task Success', 'Policy Compliance']
+dimensions = ['avg_empathy', 'avg_clarity', 'avg_task_success']
+titles = ['Empathy', 'Clarity', 'Task Success']
 
 for ax, dim, title in zip(axes.flat, dimensions, titles):
     ax.bar(['Simulated', 'Real'],
@@ -303,9 +301,9 @@ print(f'Difference: {abs(sim[\"summary\"][\"avg_empathy\"] - real[\"summary\"][\
 This allows you to make claims like:
 
 > "Both simulated and real users were evaluated using identical criteria:
-> a GPT-4-based judge scoring on task success (50%), clarity (20%),
-> empathy (20%), and policy compliance (10%), plus deterministic heuristic
-> checks. This ensures fair comparison between experimental conditions."
+> a GPT-4-based judge scoring on task success (60%), clarity (20%),
+> and empathy (20%), plus deterministic heuristic checks. This ensures
+> fair comparison between experimental conditions."
 
 And:
 

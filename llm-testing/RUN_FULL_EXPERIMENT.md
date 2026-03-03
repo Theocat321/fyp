@@ -110,7 +110,6 @@ AVERAGE SCORES
   Task Success: 0.762
   Clarity: 0.831
   Empathy: 0.895
-  Policy Compliance: 0.943
   Overall Weighted: 0.823
 
 ...
@@ -364,7 +363,7 @@ python3 evaluate_real_users.py \
 
 You now have:
 - ✓ 60 simulated conversations
-- ✓ Evaluation scores for 4 dimensions
+- ✓ Evaluation scores for 3 dimensions
 - ✓ Breakdown by persona and scenario
 - ✓ Statistical comparison between variants
 - ✓ (Optional) Real user comparison

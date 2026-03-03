@@ -188,7 +188,6 @@ class RealUserEvaluator:
                 task_success=0.0,
                 clarity=0.0,
                 empathy=0.0,
-                policy_compliance=0.0,
                 overall_weighted=0.0,
                 rationale=f"Evaluation failed: {str(e)}"
             )
@@ -256,7 +255,6 @@ class RealUserEvaluator:
                 avg_task_success=0.0,
                 avg_clarity=0.0,
                 avg_empathy=0.0,
-                avg_policy_compliance=0.0,
                 avg_overall_score=0.0,
                 termination_reasons={},
                 heuristic_pass_rate=0.0,
@@ -277,7 +275,6 @@ class RealUserEvaluator:
         avg_task_success = sum(c.llm_evaluation.task_success for c in conversations) / total
         avg_clarity = sum(c.llm_evaluation.clarity for c in conversations) / total
         avg_empathy = sum(c.llm_evaluation.empathy for c in conversations) / total
-        avg_policy_compliance = sum(c.llm_evaluation.policy_compliance for c in conversations) / total
         avg_overall = sum(c.llm_evaluation.overall_weighted for c in conversations) / total
 
         # Termination reasons
@@ -314,7 +311,6 @@ class RealUserEvaluator:
             avg_task_success=avg_task_success,
             avg_clarity=avg_clarity,
             avg_empathy=avg_empathy,
-            avg_policy_compliance=avg_policy_compliance,
             avg_overall_score=avg_overall,
             termination_reasons=dict(termination_reasons),
             heuristic_pass_rate=heuristic_pass_rate,
@@ -433,7 +429,6 @@ def main():
     print(f"  Task Success: {summary.avg_task_success:.3f}")
     print(f"  Clarity: {summary.avg_clarity:.3f}")
     print(f"  Empathy: {summary.avg_empathy:.3f}")
-    print(f"  Policy Compliance: {summary.avg_policy_compliance:.3f}")
     print(f"  Overall Weighted: {summary.avg_overall_score:.3f}")
     print()
     print("HEURISTIC CHECKS")

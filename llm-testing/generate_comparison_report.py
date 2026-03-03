@@ -105,7 +105,6 @@ def calculate_llm_stats(llm_results: List[Dict[str, Any]]) -> Dict[str, Any]:
     task_success_scores = []
     clarity_scores = []
     empathy_scores = []
-    policy_scores = []
     overall_scores = []
     turn_counts = []
     heuristic_passes = []
@@ -119,7 +118,6 @@ def calculate_llm_stats(llm_results: List[Dict[str, Any]]) -> Dict[str, Any]:
         task_success_scores.append(eval_scores.get('task_success', 0))
         clarity_scores.append(eval_scores.get('clarity', 0))
         empathy_scores.append(eval_scores.get('empathy', 0))
-        policy_scores.append(eval_scores.get('policy_compliance', 0))
         overall_scores.append(eval_scores.get('overall_weighted', 0))
 
         turn_counts.append(conv.get('total_turns', 0))
@@ -143,8 +141,6 @@ def calculate_llm_stats(llm_results: List[Dict[str, Any]]) -> Dict[str, Any]:
         'std_clarity': stdev(clarity_scores) if len(clarity_scores) > 1 else 0,
         'avg_empathy': mean(empathy_scores),
         'std_empathy': stdev(empathy_scores) if len(empathy_scores) > 1 else 0,
-        'avg_policy_compliance': mean(policy_scores),
-        'std_policy_compliance': stdev(policy_scores) if len(policy_scores) > 1 else 0,
         'avg_overall': mean(overall_scores),
         'std_overall': stdev(overall_scores) if len(overall_scores) > 1 else 0,
         'avg_turns': mean(turn_counts),
@@ -184,7 +180,6 @@ def calculate_human_stats(human_results: Dict[str, Any]) -> Dict[str, Any]:
     task_success_scores = []
     clarity_scores = []
     empathy_scores = []
-    policy_scores = []
     overall_scores = []
     turn_counts = []
     heuristic_passes = []
@@ -206,7 +201,6 @@ def calculate_human_stats(human_results: Dict[str, Any]) -> Dict[str, Any]:
         task_success_scores.append(eval_scores.get('task_success', 0))
         clarity_scores.append(eval_scores.get('clarity', 0))
         empathy_scores.append(eval_scores.get('empathy', 0))
-        policy_scores.append(eval_scores.get('policy_compliance', 0))
         overall_scores.append(eval_scores.get('overall_weighted', 0))
 
         turn_counts.append(conv.get('total_turns', 0))
@@ -253,8 +247,6 @@ def calculate_human_stats(human_results: Dict[str, Any]) -> Dict[str, Any]:
             'std_clarity': stdev(clarity_scores) if len(clarity_scores) > 1 else 0,
             'avg_empathy': mean(empathy_scores),
             'std_empathy': stdev(empathy_scores) if len(empathy_scores) > 1 else 0,
-            'avg_policy_compliance': mean(policy_scores),
-            'std_policy_compliance': stdev(policy_scores) if len(policy_scores) > 1 else 0,
             'avg_overall': mean(overall_scores),
             'std_overall': stdev(overall_scores) if len(overall_scores) > 1 else 0,
         },
@@ -650,7 +642,6 @@ def generate_html_report(
         ('Task Success', 'task_success'),
         ('Clarity', 'clarity'),
         ('Empathy', 'empathy'),
-        ('Policy Compliance', 'policy_compliance'),
         ('Overall Score', 'overall')
     ]
 
