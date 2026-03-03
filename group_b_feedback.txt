@@ -1,0 +1,166 @@
+=== GROUP B HUMAN FEEDBACK ===
+Total feedback entries: 18
+
+--- Feedback 1 ---
+Session ID: 6d2ac557a39d483e92280207149aa49e
+Participant ID: 19ce3ecb-9538-4c28-9a3a-136d82c921a1
+Created At: 2026-02-04T17:14:19.700014+00:00
+Comment:
+I think some html syntax was coming through in the outputs when it shouldn't have, like &gt.
+
+================================================================================
+
+--- Feedback 2 ---
+Session ID: e175af2c5a4d44aeb2277b8519a84ecc
+Participant ID: 19ce3ecb-9538-4c28-9a3a-136d82c921a1
+Created At: 2026-02-04T17:19:00.52843+00:00
+Comment:
+When number listing it was just 1, 1, 1 rather than 1,2,3 
+
+================================================================================
+
+--- Feedback 3 ---
+Session ID: 321f66d9d46b4e4a962da2955a5fa9c8
+Participant ID: ceaa2c5e-55b3-4182-84ad-cbefeb5831e4
+Created At: 2026-02-04T21:57:08.496813+00:00
+Comment:
+Was hoping for specific info relating to VodaCare's services, rather than general advice.
+
+================================================================================
+
+--- Feedback 4 ---
+Session ID: a16e97cee9034458a2bb9ed305a8c102
+Participant ID: ceaa2c5e-55b3-4182-84ad-cbefeb5831e4
+Created At: 2026-02-04T21:59:03.319075+00:00
+Comment:
+All good. Told me what I needed, response format is a bit messy though.
+
+================================================================================
+
+--- Feedback 5 ---
+Session ID: 7edac0c6d92f4f99bbbc24bd456c7c84
+Participant ID: ceaa2c5e-55b3-4182-84ad-cbefeb5831e4
+Created At: 2026-02-04T22:01:30.120964+00:00
+Comment:
+Expected more specific information about VodaCare. Asked it about my actual provider, gave me the wrong number.
+
+================================================================================
+
+--- Feedback 6 ---
+Session ID: 56ab536ee2704f36825aff1d47d5087a
+Participant ID: 6242127e-74af-4c15-bfd2-2c22ac64545a
+Created At: 2026-02-09T13:11:16.20376+00:00
+Comment:
+There were a few errors with the text (lists didn’t say 1,2,3,4 they said 1,1,1,1 and it said &gt after instructions on how to reconfigure network settings.
+
+================================================================================
+
+--- Feedback 7 ---
+Session ID: 1993faecc025410399ada39707d478c1
+Participant ID: d12d8f93-3bc5-4738-82c0-6bda1b340f84
+Created At: 2026-02-09T14:06:18.646436+00:00
+Comment:
+it just gave me the same answers again and again- even when I tried to ask about airalo- wasn't tailored 
+
+
+================================================================================
+
+--- Feedback 8 ---
+Session ID: 503e34b35bea4e148da4b92d305c671a
+Participant ID: 80bb7c07-7e16-46e8-9bf3-673f5baac64b
+Created At: 2026-02-09T15:35:56.483845+00:00
+Comment:
+Some of the AI reponses run out mid-sentence as though the maximum characters have been used of the box size maximum has been reached.  So for example it says 'if you have any more questions, please'
+
+================================================================================
+
+--- Feedback 9 ---
+Session ID: 9cfb97c10b9f485eb0ea97a0e02b3b9b
+Participant ID: d12d8f93-3bc5-4738-82c0-6bda1b340f84
+Created At: 2026-02-09T15:40:34.851218+00:00
+Comment:
+I would say the advice/ suggestions that the bot gave was a bit vague as a non technical person 
+
+================================================================================
+
+--- Feedback 10 ---
+Session ID: 8c24f2b73c5648988bd0659ee72b7865
+Participant ID: 80bb7c07-7e16-46e8-9bf3-673f5baac64b
+Created At: 2026-02-09T15:43:19.442407+00:00
+Comment:
+Some bits of guidance are incomplete and all the plans on the list were labelled number one, but the information on the plans that had been completed was very clear.
+
+================================================================================
+
+--- Feedback 11 ---
+Session ID: 43af6243ea5e49ad8f1d9cceffd234ca
+Participant ID: 80bb7c07-7e16-46e8-9bf3-673f5baac64b
+Created At: 2026-02-09T15:55:48.791539+00:00
+Comment:
+I found this a bit more confusing.
+
+================================================================================
+
+--- Feedback 12 ---
+Session ID: 04ac6eb93dda469c84da67c3a0cb4710
+Participant ID: 80bb7c07-7e16-46e8-9bf3-673f5baac64b
+Created At: 2026-02-09T16:06:14.959603+00:00
+Comment:
+The plans are still all labelled 1.
+
+================================================================================
+
+--- Feedback 13 ---
+Session ID: 1735773488bb48fe8786c0f844ab007b
+Participant ID: 80bb7c07-7e16-46e8-9bf3-673f5baac64b
+Created At: 2026-02-09T16:18:11.864512+00:00
+Comment:
+Some of the information ran out mid sentence.  All numbered lists are labelled 1.  A wide range of options provided though, with some good things to try.
+
+================================================================================
+
+--- Feedback 14 ---
+Session ID: a0aebd63409447f98093bb8c93835883
+Participant ID: e6233853-960b-476a-b176-2c9bfdac6883
+Created At: 2026-02-13T10:51:17.967719+00:00
+Comment:
+some of the chat messages were only half finished
+
+================================================================================
+
+--- Feedback 15 ---
+Session ID: a52a6c395d17427c863c2a7955b9d8cc
+Participant ID: e6233853-960b-476a-b176-2c9bfdac6883
+Created At: 2026-02-13T10:53:42.211633+00:00
+Comment:
+spoke about plans but originally did not explain them
+
+================================================================================
+
+--- Feedback 16 ---
+Session ID: 2a8d8c7f366143a48cfaa843347cd161
+Participant ID: e6233853-960b-476a-b176-2c9bfdac6883
+Created At: 2026-02-13T11:06:19.798246+00:00
+Comment:
+The chat box gave broad help, but told me to get help from a manager or another chat box
+
+================================================================================
+
+--- Feedback 17 ---
+Session ID: 4af62cbfd24e49a88300f5bd5d30d79c
+Participant ID: 5c733829-7223-4b7b-8e0a-2a6c073e52b7
+Created At: 2026-02-23T16:45:18.286012+00:00
+Comment:
+Numering is always 1, the agent sometimes rndrd prematurely. Agent forgot context after leaving app for a bit ( excused because no propper auth )
+
+================================================================================
+
+--- Feedback 18 ---
+Session ID: 090cf610ad6b43e49f7bd75989e33b57
+Participant ID: b04a32cf-f72c-4074-8ae1-bc5066393a24
+Created At: 2026-02-23T16:57:50.920184+00:00
+Comment:
+Partial
+
+================================================================================
+
