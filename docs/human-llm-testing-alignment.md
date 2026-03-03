@@ -198,15 +198,84 @@ Open `comparison_report.html` in browser to view results.
 | Clarity | 0.91 | 0.81 | 0.89 | 0.78 |
 | **Empathy** | **0.94** | **0.83** | **0.65** | **0.87** |
 
-### Key Findings
+---
 
-1. **Variant A outperforms Variant B overall** — LAJ overall gap of +0.07, driven almost entirely by empathy (+0.29).
+### Human Feedback Analysis
 
-2. **Empathy paradox in Group B** — humans *self-rated* Group B empathy higher (4.33 vs 4.14), yet LAJ scored it much lower (0.65 vs 0.94). Suggests Variant B produces surface-level warmth that users perceive as empathetic but the judge does not detect as genuine understanding or personalisation.
+#### Rating distributions
 
-3. **Task Success is equal** — both groups achieve identical LAJ task success (0.83) and identical self-ratings (4.06/5). The prompt variant does not affect whether issues get resolved.
+**Group A** (50 rated sessions out of 52):
 
-4. **LAJ consistently rates higher than self-ratings** — LAJ overall ~0.82–0.89 vs self-rating ~0.78 normalised. LAJ may reward structured, complete responses more than users do subjectively.
+| Rating | Overall | Task Success | Clarity | Accuracy |
+|---|---|---|---|---|
+| 5 | 13 (26%) | 24 (48%) | 20 (41%) | 16 (33%) |
+| 4 | 25 (50%) | 11 (22%) | 18 (37%) | 24 (49%) |
+| 3 | 7 (14%) | 10 (20%) | 5 (10%) | 5 (10%) |
+| 2 | 4 (8%) | 4 (8%) | 5 (10%) | 3 (6%) |
+| 1 | 1 (2%) | 1 (2%) | 1 (2%) | 1 (2%) |
+
+76% of Group A users rated overall satisfaction 4 or 5. Task success is notably bimodal — nearly half gave 5 stars, but 30% gave 3 or below, reflecting the billing scenario limitation where users wanted a direct fix that wasn't possible.
+
+**Group B** (33 rated sessions out of 36):
+
+| Rating | Overall | Task Success | Clarity | Accuracy |
+|---|---|---|---|---|
+| 5 | 9 (27%) | 13 (39%) | 9 (27%) | 8 (24%) |
+| 4 | 17 (52%) | 12 (36%) | 15 (45%) | 15 (45%) |
+| 3 | 3 (9%) | 5 (15%) | 6 (18%) | 9 (27%) |
+| 2 | 3 (9%) | 3 (9%) | 3 (9%) | 0 (0%) |
+| 1 | 1 (3%) | 0 (0%) | 0 (0%) | 1 (3%) |
+
+79% of Group B users rated overall satisfaction 4 or 5 — almost identical to Group A. No user in Group B gave clarity or task success a 1-star rating, suggesting responses were perceived as at least minimally competent across the board.
+
+#### Where users were dissatisfied
+
+Both groups produced a small cluster of low-rated sessions (overall ≤ 2): 5 in Group A and 4 in Group B. These all share the same root cause: the assistant could not access account details to resolve a billing dispute or explain a specific unexpected charge. Users wanted a direct explanation or correction; the assistant instead provided generic steps and referred them to customer support. Users consistently rate this as a failure regardless of how well the assistant communicated.
+
+One notable pattern: in several of these low-rated sessions the LAJ still scored the overall interaction reasonably high (0.70–0.94), because the assistant followed correct procedure and was technically helpful. This is the most significant divergence between human and LAJ scoring. A user who wanted their bill fixed and was told to call support will give a 1–2 overall regardless of how clearly or empathetically the assistant delivered that message.
+
+#### What users actually valued
+
+Looking at where users awarded 5 stars on task success (48% in Group A, 39% in Group B), these are almost exclusively sessions where the assistant guided them step-by-step to a concrete outcome — eSIM activated, roaming confirmed, plan upgraded. The resolution itself drives the top rating; once the issue is resolved users are generous across all dimensions.
+
+The clarity and accuracy scores track closely with each other and with overall, suggesting users do not sharply distinguish between "the answer was right" and "I understood it." These two dimensions appear to capture the same perceived quality from a user's perspective.
+
+#### Empathy self-ratings
+
+The empathy rating is stored as a composite score and sits on a different numeric scale to the other dimensions — values in Group A reach 5.43, indicating the underlying field is not a simple 1–5 star rating. It appears to be an average of multiple sub-questions scaled differently. The summary averages (A: 4.14, B: 4.33) should be treated as directional rather than directly comparable to the 1–5 integer ratings above. Despite this, the direction is clear: users in Group B rated the assistant as *more* empathetic than users in Group A, which directly contradicts the LAJ empathy finding (0.94 vs 0.65). This divergence is discussed in the qualitative section below.
+
+---
+
+### Qualitative Analysis (from LAJ rationale)
+
+#### Task Success — both groups
+
+Task success failures are scenario-driven rather than variant-driven, which explains why the averages are identical (0.83). The pattern is consistent across both groups:
+
+- **Billing disputes** are the weakest scenario for both variants. The assistant cannot access account details, so it falls back to generic steps ("check your bill", "contact support"), leaving users without a concrete resolution. The judge consistently flags this: *"the assistant provided general guidance on how to address the unexpected charges but did not directly assist the user in resolving their specific issue."* Scores typically 0.4–0.5 for these sessions.
+- **eSIM setup, roaming, and plan upgrades** score highest (0.8–1.0) in both groups. The assistant's domain knowledge on these is strong and it guides users to successful outcomes.
+- **Network troubleshooting** scores moderately (0.7–0.9). The assistant provides actionable steps but cannot guarantee resolution, and the judge penalises when the user reports the problem persists without the assistant escalating or suggesting a SIM replacement.
+- In a small number of sessions (both groups), responses were cut off mid-explanation, leaving the user without complete information and capping task success at 0.8 regardless of quality.
+
+One Group B-specific task failure: a session where the assistant initially told the user to *"ask the customer"* about billing errors — confusing the roles of customer and support agent — before self-correcting. This produced a clarity score of 0.6 and indicates the confirmation-style prompt can produce confused output when the instruction context is ambiguous. Another Group B session gave contradictory data allowance figures (10 GB UK vs 5 GB roaming) without clearly reconciling them, again lowering clarity.
+
+#### Empathy — the key differentiator
+
+This is where the two variants diverge sharply (0.94 vs 0.65).
+
+**Group A** responses are characterised by explicit emotional acknowledgment throughout the conversation. The judge repeatedly cites language like *"I'm really sorry to hear that"*, *"I truly empathize with how frustrating this must be"*, *"It's completely understandable to feel overwhelmed"*, and active reassurance when users express confusion or distress. Across eSIM, billing, and network scenarios alike, Group A sessions score 0.9–1.0 on empathy because the assistant addresses not just the problem but the user's emotional state at each turn.
+
+**Group B** responses answer questions accurately and politely but consistently fail to acknowledge user frustration or uncertainty in a personal way. The judge's recurring verdict: *"responses felt more procedural than supportive"*, *"lack of warmth or personal connection"*, *"while the assistant was polite and confirmed understanding, there was a lack of personalised empathy"*. In billing disputes — where users are already frustrated — this is especially penalised: scores of 0.4 appear where the assistant processes the request competently but never validates the user's frustration. In roaming and plan sessions, Group B scores 0.5 even when task success is 1.0, because the assistant provides accurate information without acknowledging that travel or cost concerns might be stressful.
+
+The judge does not penalise Group B for being unhelpful — it penalises it for being impersonal.
+
+#### The empathy paradox
+
+Human self-raters gave Group B *higher* empathy scores (4.33/5) than Group A (4.14/5), inverting the LAJ finding (0.65 vs 0.94).
+
+The LAJ rationale suggests why: Group B's confirmation-style responses — structured acknowledgments, step-by-step confirmations, polite closings — read to human users as attentive and caring, even though the judge identifies the absence of genuine emotional engagement. Users appear to interpret *"I understand your concern"* followed by a clear procedural answer as empathetic, regardless of whether the assistant actually engaged with their emotional state. Group A's empathy is richer in content but may not feel dramatically different to a user who is primarily focused on getting their issue resolved.
+
+This divergence suggests that human self-ratings measure *perceived* empathy (did the interaction feel supportive?) while LAJ measures *substantive* empathy (did the assistant actively acknowledge and respond to the user's emotional state?). The two are not the same thing.
 
 ---
 
