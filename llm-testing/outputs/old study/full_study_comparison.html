@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM vs Human Testing Comparison Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card.human {
+            border-left-color: #f093fb;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-card.human .stat-value {
+            color: #f093fb;
+        }
+
+        .stat-detail {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .metric-name {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .score {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .score.good {
+            color: #28a745;
+        }
+
+        .score.medium {
+            color: #ffc107;
+        }
+
+        .score.poor {
+            color: #dc3545;
+        }
+
+        .delta {
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .delta.positive {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .delta.negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .delta.neutral {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .note-title {
+            font-weight: 700;
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .note-text {
+            color: #856404;
+            font-size: 0.9rem;
+        }
+
+        .methodology {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin: 2rem 0;
+        }
+
+        .methodology h3 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+
+        .methodology ul {
+            margin-left: 1.5rem;
+            color: #0d47a1;
+        }
+
+        .methodology li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .badge.llm {
+            background: #667eea;
+            color: white;
+        }
+
+        .badge.human {
+            background: #f093fb;
+            color: white;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LLM vs Human Testing Comparison</h1>
+            <p>Comparative Analysis of Simulated and Human Evaluations</p>
+            <p style="font-size: 0.875rem; margin-top: 0.5rem;">Generated: 2026-01-29 17:59:22</p>
+        </header>
+
+        <div class="content">
+            <!-- Overall Statistics -->
+            <div class="section">
+                <h2 class="section-title">Overall Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">LLM Conversations</div>
+                        <div class="stat-value">200</div>
+                        <div class="stat-detail">Simulated interactions</div>
+                    </div>
+                    <div class="stat-card human">
+                        <div class="stat-label">Human Conversations</div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-detail">Real user interactions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">LLM Success Rate</div>
+                        <div class="stat-value">12.0%</div>
+                        <div class="stat-detail">Task success >= 0.7</div>
+                    </div>
+                    <div class="stat-card human">
+                        <div class="stat-label">Human Success Rate</div>
+                        <div class="stat-value">50.0%</div>
+                        <div class="stat-detail">Task success >= 0.7</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rubric Scores Comparison -->
+            <div class="section">
+                <h2 class="section-title">Rubric Scores Comparison</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>LLM Average (0-1 scale)</th>
+                            <th>Human LAJ Average (0-1 scale)</th>
+                            <th>Human Self-Rating (1-5 scale)</th>
+                            <th>LAJ vs Human Delta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="metric-name">Task Success</td>
+                            <td><span class="score poor">0.349</span></td>
+                            <td><span class="score good">0.700</span></td>
+                            <td><span class="score medium">3.5</span></td>
+                            <td><span class="delta positive">+0.30</span></td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Clarity</td>
+                            <td><span class="score good">0.715</span></td>
+                            <td><span class="score good">0.825</span></td>
+                            <td><span class="score good">4.5</span></td>
+                            <td><span class="delta neutral">-0.20</span></td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Empathy</td>
+                            <td><span class="score medium">0.695</span></td>
+                            <td><span class="score good">0.775</span></td>
+                            <td><span class="score medium">3.5</span></td>
+                            <td><span class="delta positive">+0.60</span></td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Policy Compliance</td>
+                            <td><span class="score good">0.820</span></td>
+                            <td><span class="score good">0.875</span></td>
+                            <td><span class="score">N/A</span></td>
+                            <td><span class="delta neutral">--</span></td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Overall Score</td>
+                            <td><span class="score medium">0.538</span></td>
+                            <td><span class="score good">0.794</span></td>
+                            <td><span class="score good">4.5</span></td>
+                            <td><span class="delta neutral">--</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="note">
+                    <div class="note-title">Note on Scales</div>
+                    <div class="note-text">
+                        LLM and Human LAJ scores are on a 0-1 scale. Human self-ratings are on a 1-5 scale.
+                        Delta shows LAJ rating minus human self-rating (converted to same scale).
+                        Positive delta = LAJ rated higher than human. Negative delta = LAJ rated lower than human.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Variant Performance -->
+            <div class="section">
+                <h2 class="section-title">Variant Performance Comparison</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variant</th>
+                            <th>Source</th>
+                            <th>Conversations</th>
+                            <th>Avg Score</th>
+                            <th>Std Dev</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="metric-name">A</td>
+                            <td><span class="badge llm">LLM</span></td>
+                            <td>100</td>
+                            <td><span class="score medium">0.563</span></td>
+                            <td>0.147</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">B</td>
+                            <td><span class="badge llm">LLM</span></td>
+                            <td>100</td>
+                            <td><span class="score medium">0.514</span></td>
+                            <td>0.163</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">A</td>
+                            <td><span class="badge human">Human</span></td>
+                            <td>1</td>
+                            <td><span class="score good">0.875</span></td>
+                            <td>0.000</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">B</td>
+                            <td><span class="badge human">Human</span></td>
+                            <td>1</td>
+                            <td><span class="score good">0.713</span></td>
+                            <td>0.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Heuristic & Quality Metrics -->
+            <div class="section">
+                <h2 class="section-title">Heuristic & Quality Metrics</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>LLM Testing</th>
+                            <th>Human Testing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="metric-name">Heuristic Pass Rate</td>
+                            <td>77.0%</td>
+                            <td>100.0%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Critical Failure Rate</td>
+                            <td>11.5%</td>
+                            <td>0.0%</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-name">Avg Conversation Length (turns)</td>
+                            <td>4.285</td>
+                            <td>5.5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Methodology -->
+            <div class="methodology">
+                <h3>Methodology Notes</h3>
+                <ul>
+                    <li><strong>LLM Testing:</strong> Simulated conversations using persona-driven LLM interactions against the chatbot, evaluated using LLM-as-Judge framework.</li>
+                    <li><strong>Human Testing:</strong> Real user conversations collected through controlled study, evaluated using the same LLM-as-Judge framework for consistency.</li>
+                    <li><strong>LAJ Scoring:</strong> All conversations evaluated using standardized rubric on 0-1 scale (Task Success, Clarity, Empathy, Policy Compliance).</li>
+                    <li><strong>Human Self-Ratings:</strong> Participants provided subjective ratings on 1-5 scale after conversations (available for subset of metrics).</li>
+                    <li><strong>Heuristic Checks:</strong> Rule-based safety checks applied consistently to all conversations (no personal info leakage, response quality, etc.).</li>
+                    <li><strong>Success Threshold:</strong> Conversations with Task Success >= 0.7 considered successful.</li>
+                </ul>
+            </div>
+
+            <!-- Key Insights -->
+            <div class="section">
+                <h2 class="section-title">Key Insights</h2>
+                <div class="note">
+                    <div class="note-text">LLM testing shows lower success rate (12.0%) compared to human testing (50.0%). This may indicate differences in conversation patterns or evaluation expectations.</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Generated by LLM Testing Comparison Report Generator</p>
+            <p>For questions or issues, please refer to the project documentation.</p>
+        </footer>
+    </div>
+</body>
+</html>

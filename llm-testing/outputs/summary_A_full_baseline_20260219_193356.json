@@ -1,0 +1,87 @@
+{
+  "experiment_id": "exp_20260219_183611_182bbca3",
+  "experiment_name": "full_baseline",
+  "variant": "A",
+  "summary": {
+    "total_conversations": 100,
+    "successful_conversations": 9,
+    "avg_task_success": 0.36499999999999994,
+    "avg_clarity": 0.7169999999999994,
+    "avg_empathy": 0.8650000000000004,
+    "avg_policy_compliance": 0.8270000000000001,
+    "avg_overall_score": 0.5815999999999999,
+    "termination_reasons": {
+      "stalemate": 18,
+      "escalation": 28,
+      "satisfaction": 44,
+      "patience_exceeded": 10
+    },
+    "heuristic_pass_rate": 0.84,
+    "critical_failure_rate": 0.02,
+    "avg_conversation_length": 3.96,
+    "avg_latency_ms": 4192.647696587301,
+    "scores_by_persona": {
+      "persona_01_frustrated_commuter": 0.44600000000000006,
+      "persona_02_elderly_tech_newbie": 0.5800000000000001,
+      "persona_03_teen_gamer": 0.624,
+      "persona_04_corporate_it_manager": 0.538,
+      "persona_05_tourist_on_holiday": 0.7080000000000001,
+      "persona_06_student_budgeter": 0.7020000000000001,
+      "persona_07_paranoid_privacy_seeker": 0.4640000000000001,
+      "persona_08_family_organizer": 0.6620000000000001,
+      "persona_09_rude_rage_quitter": 0.4,
+      "persona_10_forgetful_pensioner": 0.5880000000000001,
+      "persona_11_professional_nomad": 0.7000000000000001,
+      "persona_12_accessibility_user": 0.634,
+      "persona_13_busy_parent": 0.674,
+      "persona_14_troll_persona": 0.624,
+      "persona_15_engineer_hacker": 0.404,
+      "persona_16_confused_upgrader": 0.6360000000000001,
+      "persona_17_bargain_hunter": 0.592,
+      "persona_18_loyal_longtime_customer": 0.576,
+      "persona_19_fraud_victim": 0.53,
+      "persona_20_network_tester": 0.55
+    },
+    "scores_by_scenario": {
+      "scenario_001_esim_setup": 0.5850000000000001,
+      "scenario_002_roaming_activation": 0.5075,
+      "scenario_003_billing_dispute": 0.6210000000000001,
+      "scenario_004_plan_upgrade": 0.5655,
+      "scenario_005_network_issue": 0.6290000000000001
+    }
+  },
+  "metadata": {
+    "started_at": "2026-02-19T18:36:11.235098",
+    "completed_at": "2026-02-19T19:33:56.697026",
+    "duration_seconds": 3465.461928,
+    "personas_tested": [
+      "persona_01_frustrated_commuter",
+      "persona_02_elderly_tech_newbie",
+      "persona_03_teen_gamer",
+      "persona_04_corporate_it_manager",
+      "persona_05_tourist_on_holiday",
+      "persona_06_student_budgeter",
+      "persona_07_paranoid_privacy_seeker",
+      "persona_08_family_organizer",
+      "persona_09_rude_rage_quitter",
+      "persona_10_forgetful_pensioner",
+      "persona_11_professional_nomad",
+      "persona_12_accessibility_user",
+      "persona_13_busy_parent",
+      "persona_14_troll_persona",
+      "persona_15_engineer_hacker",
+      "persona_16_confused_upgrader",
+      "persona_17_bargain_hunter",
+      "persona_18_loyal_longtime_customer",
+      "persona_19_fraud_victim",
+      "persona_20_network_tester"
+    ],
+    "scenarios_tested": [
+      "scenario_001_esim_setup",
+      "scenario_002_roaming_activation",
+      "scenario_003_billing_dispute",
+      "scenario_004_plan_upgrade",
+      "scenario_005_network_issue"
+    ]
+  }
+}
