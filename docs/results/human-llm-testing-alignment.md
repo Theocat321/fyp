@@ -177,7 +177,7 @@ Open `comparison_report.html` in browser to view results.
 | **Overall** | **0.89** | **0.82** | +0.07 |
 | Task Success | 0.83 | 0.83 | ≈ equal |
 | Clarity | 0.91 | 0.89 | +0.02 |
-| **Empathy** | **0.94** | **0.65** | **+0.29** |
+| **Empathy** | **0.96** | **0.60** | **+0.36** |
 
 ### Human Self-Ratings (1–5)
 
@@ -186,7 +186,7 @@ Open `comparison_report.html` in browser to view results.
 | **Overall** | **3.90** | **3.91** | ≈ equal |
 | Task Success | 4.06 | 4.06 | ≈ equal |
 | Clarity | 4.04 | 3.91 | +0.13 |
-| **Empathy** | **4.14** | **4.33** | **−0.19** |
+| **Empathy** | **4.50** | **3.90** | **A +0.60** |
 | Accuracy | 4.04 | 3.88 | +0.16 |
 
 ### LAJ vs Self-Rating Comparison (normalised to 0–1)
@@ -196,7 +196,7 @@ Open `comparison_report.html` in browser to view results.
 | Overall | 0.89 | 0.78 | 0.82 | 0.78 |
 | Task Success | 0.83 | 0.81 | 0.83 | 0.81 |
 | Clarity | 0.91 | 0.81 | 0.89 | 0.78 |
-| **Empathy** | **0.94** | **0.83** | **0.65** | **0.87** |
+| **Empathy** | **0.96** | **0.90** | **0.60** | **0.78** |
 
 ---
 
@@ -242,7 +242,7 @@ The clarity and accuracy scores track closely with each other and with overall, 
 
 #### Empathy self-ratings
 
-The empathy rating is stored as a composite score and sits on a different numeric scale to the other dimensions — values in Group A reach 5.43, indicating the underlying field is not a simple 1–5 star rating. It appears to be an average of multiple sub-questions scaled differently. The summary averages (A: 4.14, B: 4.33) should be treated as directional rather than directly comparable to the 1–5 integer ratings above. Despite this, the direction is clear: users in Group B rated the assistant as *more* empathetic than users in Group A, which directly contradicts the LAJ empathy finding (0.94 vs 0.65). This divergence is discussed in the qualitative section below.
+The empathy rating is stored as a composite score on a different numeric scale to the other dimensions — values exceed 5.0, indicating it is an average of multiple sub-questions. Directional comparisons between groups are valid; absolute comparison to the 1–5 integer dimensions is not. Group A scores 4.50 and Group B scores 3.90 — a gap of 0.60 — meaning users in Group A perceived the assistant as noticeably more empathetic. This aligns with the LAJ empathy finding (0.96 vs 0.60) and is the largest disagreement between the two groups on any user-facing dimension.
 
 ---
 
@@ -261,21 +261,13 @@ One Group B-specific task failure: a session where the assistant initially told 
 
 #### Empathy — the key differentiator
 
-This is where the two variants diverge sharply (0.94 vs 0.65).
+This is where the two variants diverge sharply, and uniquely, all three evaluation methods agree: simulation LAJ (0.844 vs 0.545), human LAJ (0.96 vs 0.60), and human self-rating (4.50 vs 3.90).
 
 **Group A** responses are characterised by explicit emotional acknowledgment throughout the conversation. The judge repeatedly cites language like *"I'm really sorry to hear that"*, *"I truly empathize with how frustrating this must be"*, *"It's completely understandable to feel overwhelmed"*, and active reassurance when users express confusion or distress. Across eSIM, billing, and network scenarios alike, Group A sessions score 0.9–1.0 on empathy because the assistant addresses not just the problem but the user's emotional state at each turn.
 
 **Group B** responses answer questions accurately and politely but consistently fail to acknowledge user frustration or uncertainty in a personal way. The judge's recurring verdict: *"responses felt more procedural than supportive"*, *"lack of warmth or personal connection"*, *"while the assistant was polite and confirmed understanding, there was a lack of personalised empathy"*. In billing disputes — where users are already frustrated — this is especially penalised: scores of 0.4 appear where the assistant processes the request competently but never validates the user's frustration. In roaming and plan sessions, Group B scores 0.5 even when task success is 1.0, because the assistant provides accurate information without acknowledging that travel or cost concerns might be stressful.
 
-The judge does not penalise Group B for being unhelpful — it penalises it for being impersonal.
-
-#### The empathy paradox
-
-Human self-raters gave Group B *higher* empathy scores (4.33/5) than Group A (4.14/5), inverting the LAJ finding (0.65 vs 0.94).
-
-The LAJ rationale suggests why: Group B's confirmation-style responses — structured acknowledgments, step-by-step confirmations, polite closings — read to human users as attentive and caring, even though the judge identifies the absence of genuine emotional engagement. Users appear to interpret *"I understand your concern"* followed by a clear procedural answer as empathetic, regardless of whether the assistant actually engaged with their emotional state. Group A's empathy is richer in content but may not feel dramatically different to a user who is primarily focused on getting their issue resolved.
-
-This divergence suggests that human self-ratings measure *perceived* empathy (did the interaction feel supportive?) while LAJ measures *substantive* empathy (did the assistant actively acknowledge and respond to the user's emotional state?). The two are not the same thing.
+The judge does not penalise Group B for being unhelpful — it penalises it for being impersonal. Critically, users in Group B also noticed this: their self-rated empathy score (3.90) is the lowest dimension across either group, and the gap from Group A (4.50) is the largest user-rated difference in the study. The Kindness prompt demonstrably produces more empathetic responses by every available measure.
 
 ---
 

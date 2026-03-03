@@ -48,7 +48,7 @@
 | **Overall Score** | 0.89 | 0.82 | A +0.07 |
 | Task Success | 0.83 | 0.83 | ≈ equal |
 | Clarity | 0.91 | 0.89 | A +0.02 |
-| Empathy | **0.94** | **0.65** | A +0.29 |
+| Empathy | **0.96** | **0.60** | **A +0.36** |
 
 ### 3b. Human Self-Ratings
 
@@ -59,7 +59,7 @@
 | **Overall** | 3.90 / 5 | 3.91 / 5 | ≈ equal |
 | Task Success | 4.06 / 5 | 4.06 / 5 | ≈ equal |
 | Clarity | 4.04 / 5 | 3.91 / 5 | A +0.13 |
-| Empathy | 4.14 / 5 | **4.33 / 5** | B +0.19 |
+| **Empathy** | **4.50 / 5** | **3.90 / 5** | **A +0.60** |
 | Accuracy | 4.04 / 5 | 3.88 / 5 | A +0.16 |
 
 ### 3c. LAJ vs Human Self-Rating Comparison
@@ -71,20 +71,20 @@
 | Overall | 0.89 | 0.78 | 0.82 | 0.78 |
 | Task Success | 0.83 | 0.81 | 0.83 | 0.81 |
 | Clarity | 0.91 | 0.81 | 0.89 | 0.78 |
-| **Empathy** | **0.94** | **0.83** | **0.65** | **0.87** |
+| **Empathy** | **0.96** | **0.90** | **0.60** | **0.78** |
 
-> **Notable discrepancy on empathy in Group B:** Human self-raters scored Group B empathy higher than Group A (4.33/5 = 0.87), while the LAJ scored it lower (0.65 vs 0.94). This suggests users *felt* the assistant was empathetic but the LLM judge detected a lack of genuine understanding or personalisation in the responses.
+> Group A leads on empathy across both evaluation methods — LAJ (+0.36) and human self-rating (+0.60 on 5-pt scale). The Kindness prompt produces responses that are perceived as more empathetic by both users and the automated judge.
 
 ---
 
 ## 4. Key Findings
 
-1. **Variant A consistently outperforms Variant B** — confirmed by both simulation LAJ and human study LAJ.
+1. **Variant A consistently outperforms Variant B** — confirmed by simulation LAJ, human study LAJ, and human self-ratings.
 
-2. **Empathy is the sharpest differentiator** between variants — Variant B / Group B scores markedly lower in both simulation (0.545) and human LAJ (0.61).
+2. **Empathy is the sharpest differentiator** — Group B scores markedly lower in simulation (0.545), human LAJ (0.60), and human self-rating (3.90 vs 4.50). All three evaluation methods agree.
 
-3. **Human self-ratings are more generous and less discriminating** — both groups rated similarly (~3.9–4.0/5 overall), while LAJ detected a clearer gap.
+3. **Human self-ratings are generous overall but discriminate on empathy** — both groups rate overall satisfaction nearly identically (~3.90/5), yet the empathy gap is the largest human-rated difference (0.60 pts). Users notice the empathy difference even when overall satisfaction is similar.
 
-4. **The empathy paradox in Group B** — humans rated Group B empathy *higher* (4.33/5) than Group A (4.14/5), yet the LAJ rated it much lower (0.65 vs 0.94). Suggests surface-level warmth that doesn't translate to substantive help.
+4. **Task success is scenario-driven, not variant-driven** — identical LAJ scores (0.83) and self-ratings (4.06) in both groups. The prompt variant changes how the assistant communicates, not whether it resolves issues.
 
-5. **Simulation scores are lower overall** (~0.51–0.56) vs human LAJ (~0.81–0.89) — partly because simulated personas apply harder success criteria and include difficult personas (rude, impatient, troll).
+5. **Simulation scores are lower overall** (~0.51–0.56) vs human LAJ (~0.82–0.89) — partly because simulated personas apply harder success criteria and include difficult personas (rude, impatient, troll).

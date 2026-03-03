@@ -1,0 +1,3374 @@
+{
+  "generated_at": "2026-03-03T15:36:10.698343+00:00",
+  "total_sessions": 90,
+  "summary_by_group": {
+    "A": {
+      "n_sessions": 54,
+      "n_with_feedback": 52,
+      "avg_session_duration_s": 323.1,
+      "avg_user_turns": 3.9,
+      "avg_typing_duration_ms": 19204.2,
+      "avg_reply_latency_ms": 3921.5,
+      "resolved_pct": 0.0,
+      "written_feedback_count": 31,
+      "written_feedback": [
+        "some of the wording etc was a bit confusing and random things like the steps all being numbered '1' would usually make me untrusting of a chatbot, but it gave me accurate information and resolved the 'issue'",
+        "they mainly told me to ask my network provider rather than giving actual answers, but thats fine because it is something you'd need to ask ur specific provider for. at the start it just kind of said random names of generic data plans and what their roaming would be without asking what plan i was on, which kinda felt made up, but was more helpful when i said which network provider i was with",
+        "The agent did not really help with my issue and was not able to be specific with why I was overcharged. It then tried to redirect me to customer support but did not provide any way of doing this. It was also kind of annoying how overly \"understanding\" it was.",
+        "The bot's longer messages were getting cut off early",
+        "Yes\nbut I realised I had to scroll down before seeing responses to my questions",
+        "Yes thanks",
+        "Partially,",
+        "Menu options not working \nAnswers were acceptable but, no deal",
+        "Amazing info re possible phones both new and second hand!!\nNice one\nPaul",
+        "It just ignored some of the things I was asking for, and it was hard to read.",
+        "The AI had trouble prompting a full answer so I had to re prompt it to give an understandable answer for one of the points, this was fine after however.",
+        "It took the system a few times to line up with what it said on the previous prompt. The first time I asked for roaming plans and charges and it only responded with the plans. Then when I asked for charges, it gave different named plans with prices then the third time I asked it aligned.",
+        "It's hard to resolve this without knowing why the bill has had an extra charge. The system gave me suggestions why it could be charged but without knowing actually where the 24$ charge came from.",
+        "Very clear plans that could suit anyone and outlined what was in those mobile plans.",
+        "It was a rather generalised response but does outline all the factors that could lead to connection issues.",
+        "system replies promptly and with accurate information, but some text issues in responses. After the initial response line, it is followed by three #'s before the next sentence.",
+        "When the assistant gave a 5 step plan to solve the issue, the last step/prompt was incomplete \"They can provide your\" And ended there. Otherwise helpful and gives a high level of empathy.",
+        "gave accurate information to promots, however, tone feels too forced. Every response starts with the system saying it understands the situation, personally feels forced and repetitive after a while",
+        "Would be great if it was able to offer web links, but understand if that's not within capability yet",
+        "Clear, reliable information provided. I had to tell the system that i was with vodafone, if this was actually for vodafone customer service, I would have expected that to already be known (may just be a personal thing). When asked about ways to contact customer service, it started on a point about social media but didn't finish the point. As previously mentioned, tone feels forcefully understanding of your issue (very repetitive and robot-like). Overall, very effective system",
+        "started off well, clearly outlined options for upgrading. Felt general towards the end. A few formatting issues and some unfinished points.",
+        "First response listed 3 options, all three were labelled as #1. other than that, good experience",
+        "Good response when customer stated first attempts didn't work. Secondary response may be a little *too* empathetic, but that's more personal preference of course. Really good scenario and positive outcome which would have likely led to a fix in the real world.",
+        "I don\u2019t need it to like emphasise with my problem and tell me it\u2019s frustrating I\u2019d rather it just offer straight support. It offered me 6 solutions in decreasing helpfulness and the first solutions were correct and really good but by layer solutions they were a bit far-fetched",
+        "It helped me work out which plan I\u2019m on and offered me 3 distinct plans but then when I asked specifics on the plans like what the additional fees were it got stumped on the specifics. But if it knows the details on what the possible plans are it should surely know further details",
+        "I\u2019d say it helped but then again wasn\u2019t the most specific. I started just confused with the bill and it offered many reasonable solutions on why it could possibly be higher. I then then oh it might be from my data usage but how can I be sure and it just looped back to me looking at the bill which I would have done in the first place",
+        "Overall it got there and picked out a good plan. At first I just asked it to list plans and it kept stopping halfway through explaining them and I had to force it to keep explaining. I also believe when labelling of plans it probably shouldn\u2019t label all the limitations of them if it is trying to sell it to me. However once I gave details on who I was it picked an excellent plan on what would work for my situation",
+        "I said that because I was in Devon was why my data may be bad and it helped me confirm that offering services to check service maps. However when asking for a solution to that they were a little vague also it finished by suggesting getting an alternate provider which surely it shouldn\u2019t do. Also once again it stopped typing halfway through a response when listing off options",
+        "Asked if the information was accurate - I have absolutely no idea how much it costs for data abroad",
+        "Can\u2019t know if my issue was resolved when I can\u2019t see my bill but overall helpful - also listed options as 1,1,1,1",
+        "I don't know how reliable the prices are"
+      ]
+    },
+    "B": {
+      "n_sessions": 36,
+      "n_with_feedback": 36,
+      "avg_session_duration_s": 428.5,
+      "avg_user_turns": 4.4,
+      "avg_typing_duration_ms": 12133.7,
+      "avg_reply_latency_ms": 3517.4,
+      "resolved_pct": 0.0,
+      "written_feedback_count": 18,
+      "written_feedback": [
+        "I think some html syntax was coming through in the outputs when it shouldn't have, like &gt.",
+        "When number listing it was just 1, 1, 1 rather than 1,2,3",
+        "Was hoping for specific info relating to VodaCare's services, rather than general advice.",
+        "All good. Told me what I needed, response format is a bit messy though.",
+        "Expected more specific information about VodaCare. Asked it about my actual provider, gave me the wrong number.",
+        "There were a few errors with the text (lists didn\u2019t say 1,2,3,4 they said 1,1,1,1 and it said &gt after instructions on how to reconfigure network settings.",
+        "it just gave me the same answers again and again- even when I tried to ask about airalo- wasn't tailored",
+        "Some of the AI reponses run out mid-sentence as though the maximum characters have been used of the box size maximum has been reached.  So for example it says 'if you have any more questions, please'",
+        "I would say the advice/ suggestions that the bot gave was a bit vague as a non technical person",
+        "Some bits of guidance are incomplete and all the plans on the list were labelled number one, but the information on the plans that had been completed was very clear.",
+        "I found this a bit more confusing.",
+        "The plans are still all labelled 1.",
+        "Some of the information ran out mid sentence.  All numbered lists are labelled 1.  A wide range of options provided though, with some good things to try.",
+        "some of the chat messages were only half finished",
+        "spoke about plans but originally did not explain them",
+        "The chat box gave broad help, but told me to get help from a manager or another chat box",
+        "Numering is always 1, the agent sometimes rndrd prematurely. Agent forgot context after leaving app for a bit ( excused because no propper auth )",
+        "Partial"
+      ]
+    }
+  },
+  "sessions": [
+    {
+      "session_id": "f6204e1d4308465c9da9907c22439d40",
+      "group": "A",
+      "session_duration_s": 671.9,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 59,
+      "event_counts": {
+        "submit": 3,
+        "focus": 5,
+        "typing_start": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "blur": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5,
+        "response": 5
+      },
+      "typing_durations_ms": [
+        127460,
+        29243,
+        4936,
+        9431,
+        4320
+      ],
+      "avg_typing_duration_ms": 35078,
+      "reply_latencies_ms": [
+        6394,
+        8532,
+        3722,
+        4416,
+        1408
+      ],
+      "avg_reply_latency_ms": 4894,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "some of the wording etc was a bit confusing and random things like the steps all being numbered '1' would usually make me untrusting of a chatbot, but it gave me accurate information and resolved the 'issue'"
+    },
+    {
+      "session_id": "823225f981d04fdfb0ff48257c34f5ed",
+      "group": "A",
+      "session_duration_s": 497.8,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 58,
+      "event_counts": {
+        "submit": 2,
+        "focus": 5,
+        "typing_start": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "blur": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5,
+        "response": 5
+      },
+      "typing_durations_ms": [
+        19476,
+        19316,
+        37392,
+        16469,
+        1892
+      ],
+      "avg_typing_duration_ms": 18909,
+      "reply_latencies_ms": [
+        4943,
+        4770,
+        3562,
+        4420,
+        3947
+      ],
+      "avg_reply_latency_ms": 4328,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "they mainly told me to ask my network provider rather than giving actual answers, but thats fine because it is something you'd need to ask ur specific provider for. at the start it just kind of said random names of generic data plans and what their roaming would be without asking what plan i was on, which kinda felt made up, but was more helpful when i said which network provider i was with"
+    },
+    {
+      "session_id": "a2ad73641c8d41e2b3320ea2adca2c55",
+      "group": "A",
+      "session_duration_s": 337.5,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "blur": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        22125,
+        25068,
+        8075,
+        18065
+      ],
+      "avg_typing_duration_ms": 18333,
+      "reply_latencies_ms": [
+        6243,
+        5170,
+        5800,
+        4545
+      ],
+      "avg_reply_latency_ms": 5440,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "5c1150f2ef1a4a22808b28c1db5e2db3",
+      "group": "A",
+      "session_duration_s": 111.5,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 25,
+      "event_counts": {
+        "submit": 2,
+        "focus": 2,
+        "typing_start": 2,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "blur": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        12808,
+        7955
+      ],
+      "avg_typing_duration_ms": 10382,
+      "reply_latencies_ms": [
+        4391,
+        5645
+      ],
+      "avg_reply_latency_ms": 5018,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "8f813e9356254b55ac5c5bec638e246e",
+      "group": "A",
+      "session_duration_s": 164.2,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 28,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "blur": 3,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        19333,
+        6728
+      ],
+      "avg_typing_duration_ms": 13030,
+      "reply_latencies_ms": [
+        5235,
+        4547
+      ],
+      "avg_reply_latency_ms": 4891,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "6d2ac557a39d483e92280207149aa49e",
+      "group": "B",
+      "session_duration_s": 161.6,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 12,
+      "event_counts": {
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [
+        6707,
+        2807,
+        6692,
+        1768
+      ],
+      "avg_reply_latency_ms": 4494,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "I think some html syntax was coming through in the outputs when it shouldn't have, like &gt."
+    },
+    {
+      "session_id": "e175af2c5a4d44aeb2277b8519a84ecc",
+      "group": "B",
+      "session_duration_s": 112.8,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 9,
+      "event_counts": {
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [
+        4560,
+        7796,
+        4097
+      ],
+      "avg_reply_latency_ms": 5484,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "When number listing it was just 1, 1, 1 rather than 1,2,3"
+    },
+    {
+      "session_id": "c9a6c7d7cf1a4c5aaddfcc6a01fb0258",
+      "group": "B",
+      "session_duration_s": 135.5,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 12,
+      "event_counts": {
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [
+        4039,
+        3472,
+        2465,
+        922
+      ],
+      "avg_reply_latency_ms": 2724,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "e663483f399c4e5b8a7c23f23c8f969f",
+      "group": "B",
+      "session_duration_s": 155.2,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 15,
+      "event_counts": {
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [
+        3383,
+        3657,
+        4009,
+        4822,
+        1112
+      ],
+      "avg_reply_latency_ms": 3397,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "f8539930098f48bc8c1e17ba4a83fcb4",
+      "group": "B",
+      "session_duration_s": 173.2,
+      "user_turns": 9,
+      "assistant_turns": 9,
+      "total_events": 27,
+      "event_counts": {
+        "reply_init": 9,
+        "first_token": 9,
+        "reply_done": 9
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [
+        4607,
+        2103,
+        3824,
+        3373,
+        3840,
+        4734,
+        4942,
+        4638,
+        1022
+      ],
+      "avg_reply_latency_ms": 3676,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "ccee3b9861374f2c9c2a41b9f8d73141",
+      "group": "A",
+      "session_duration_s": 351.5,
+      "user_turns": 8,
+      "assistant_turns": 8,
+      "total_events": 84,
+      "event_counts": {
+        "submit": 3,
+        "focus": 8,
+        "typing_start": 8,
+        "click": 9,
+        "typing_end": 8,
+        "send": 8,
+        "message_send": 8,
+        "reply_init": 8,
+        "first_token": 8,
+        "response": 8,
+        "reply_done": 8
+      },
+      "typing_durations_ms": [
+        24699,
+        1614,
+        15457,
+        2975,
+        16061,
+        5217,
+        2803,
+        17042
+      ],
+      "avg_typing_duration_ms": 10734,
+      "reply_latencies_ms": [
+        3168,
+        1551,
+        3502,
+        3785,
+        3706,
+        3224,
+        8062,
+        3186
+      ],
+      "avg_reply_latency_ms": 3773,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "The agent did not really help with my issue and was not able to be specific with why I was overcharged. It then tried to redirect me to customer support but did not provide any way of doing this. It was also kind of annoying how overly \"understanding\" it was."
+    },
+    {
+      "session_id": "a3d8371fe9f1441db40db32e7b9b81e9",
+      "group": "A",
+      "session_duration_s": 69.3,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 34,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "response": 3,
+        "reply_done": 3,
+        "blur": 1
+      },
+      "typing_durations_ms": [
+        8792,
+        18741,
+        1238
+      ],
+      "avg_typing_duration_ms": 9590,
+      "reply_latencies_ms": [
+        5792,
+        4240,
+        1170
+      ],
+      "avg_reply_latency_ms": 3734,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "bc93799eaa88414ebab21c9e7dbb60d8",
+      "group": "A",
+      "session_duration_s": 42.5,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 23,
+      "event_counts": {
+        "submit": 2,
+        "focus": 2,
+        "typing_start": 2,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "response": 2,
+        "reply_done": 2
+      },
+      "typing_durations_ms": [
+        12775,
+        2517
+      ],
+      "avg_typing_duration_ms": 7646,
+      "reply_latencies_ms": [
+        5420,
+        1913
+      ],
+      "avg_reply_latency_ms": 3666,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "89d73cdae48f499290a9ff911d79e4f4",
+      "group": "A",
+      "session_duration_s": 47.1,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 33,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "response": 3,
+        "first_token": 3,
+        "reply_done": 3
+      },
+      "typing_durations_ms": [
+        5028,
+        6220,
+        4411
+      ],
+      "avg_typing_duration_ms": 5220,
+      "reply_latencies_ms": [
+        2244,
+        4704,
+        3339
+      ],
+      "avg_reply_latency_ms": 3429,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "83fecc2afe1e4e768f54cb3c1d60b7e6",
+      "group": "A",
+      "session_duration_s": 90.2,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 33,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "response": 3,
+        "reply_done": 3
+      },
+      "typing_durations_ms": [
+        8133,
+        9129,
+        12024
+      ],
+      "avg_typing_duration_ms": 9762,
+      "reply_latencies_ms": [
+        6007,
+        5281,
+        4380
+      ],
+      "avg_reply_latency_ms": 5223,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "The bot's longer messages were getting cut off early"
+    },
+    {
+      "session_id": "321f66d9d46b4e4a962da2955a5fa9c8",
+      "group": "B",
+      "session_duration_s": 116.0,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 33,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        12809,
+        8101,
+        386
+      ],
+      "avg_typing_duration_ms": 7099,
+      "reply_latencies_ms": [
+        4204,
+        3805,
+        1493
+      ],
+      "avg_reply_latency_ms": 3167,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Was hoping for specific info relating to VodaCare's services, rather than general advice."
+    },
+    {
+      "session_id": "a16e97cee9034458a2bb9ed305a8c102",
+      "group": "B",
+      "session_duration_s": 69.8,
+      "user_turns": 6,
+      "assistant_turns": 6,
+      "total_events": 63,
+      "event_counts": {
+        "submit": 2,
+        "focus": 6,
+        "typing_start": 6,
+        "click": 7,
+        "typing_end": 6,
+        "message_send": 6,
+        "send": 6,
+        "reply_init": 6,
+        "first_token": 6,
+        "reply_done": 6,
+        "response": 6
+      },
+      "typing_durations_ms": [
+        6140,
+        6353,
+        8357,
+        815,
+        9068,
+        697
+      ],
+      "avg_typing_duration_ms": 5238,
+      "reply_latencies_ms": [
+        2033,
+        2785,
+        2523,
+        1147,
+        3871,
+        1182
+      ],
+      "avg_reply_latency_ms": 2257,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "All good. Told me what I needed, response format is a bit messy though."
+    },
+    {
+      "session_id": "7edac0c6d92f4f99bbbc24bd456c7c84",
+      "group": "B",
+      "session_duration_s": 141.6,
+      "user_turns": 6,
+      "assistant_turns": 6,
+      "total_events": 63,
+      "event_counts": {
+        "submit": 2,
+        "focus": 6,
+        "typing_start": 6,
+        "click": 7,
+        "typing_end": 6,
+        "message_send": 6,
+        "send": 6,
+        "reply_init": 6,
+        "first_token": 6,
+        "reply_done": 6,
+        "response": 6
+      },
+      "typing_durations_ms": [
+        13390,
+        4871,
+        7093,
+        2683,
+        244,
+        6424
+      ],
+      "avg_typing_duration_ms": 5784,
+      "reply_latencies_ms": [
+        4601,
+        1907,
+        3607,
+        3736,
+        1372,
+        4501
+      ],
+      "avg_reply_latency_ms": 3287,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Expected more specific information about VodaCare. Asked it about my actual provider, gave me the wrong number."
+    },
+    {
+      "session_id": "17397850bd4c423f8a48e2fc5b8f3642",
+      "group": "B",
+      "session_duration_s": 199.7,
+      "user_turns": 8,
+      "assistant_turns": 8,
+      "total_events": 83,
+      "event_counts": {
+        "submit": 2,
+        "focus": 8,
+        "typing_start": 8,
+        "click": 9,
+        "typing_end": 8,
+        "send": 8,
+        "message_send": 8,
+        "reply_init": 8,
+        "first_token": 8,
+        "reply_done": 8,
+        "response": 8
+      },
+      "typing_durations_ms": [
+        5938,
+        34130,
+        4883,
+        1883,
+        3302,
+        22469,
+        813,
+        2467
+      ],
+      "avg_typing_duration_ms": 9486,
+      "reply_latencies_ms": [
+        4818,
+        3191,
+        2733,
+        4531,
+        2985,
+        3166,
+        2893,
+        1458
+      ],
+      "avg_reply_latency_ms": 3222,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "bffd677537404fa484cabe0ccbac481e",
+      "group": "B",
+      "session_duration_s": 131.8,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 33,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        3943,
+        10394,
+        6477
+      ],
+      "avg_typing_duration_ms": 6938,
+      "reply_latencies_ms": [
+        1914,
+        4412,
+        1118
+      ],
+      "avg_reply_latency_ms": 2481,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "d1317c49b6324be78c1f034ddb2f2390",
+      "group": "A",
+      "session_duration_s": 315.0,
+      "user_turns": 0,
+      "assistant_turns": 0,
+      "total_events": 3,
+      "event_counts": {
+        "submit": 2,
+        "click": 1
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [],
+      "avg_reply_latency_ms": null,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "ddf28c8196b749399d01d66e6fc997df",
+      "group": "A",
+      "session_duration_s": 977.4,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 55,
+      "event_counts": {
+        "submit": 2,
+        "focus": 5,
+        "typing_start": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5,
+        "response": 5,
+        "blur": 2
+      },
+      "typing_durations_ms": [
+        25653,
+        126768,
+        9696,
+        12613,
+        9861
+      ],
+      "avg_typing_duration_ms": 36918,
+      "reply_latencies_ms": [
+        11333,
+        4983,
+        5067,
+        3857,
+        2034
+      ],
+      "avg_reply_latency_ms": 5455,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Yes\nbut I realised I had to scroll down before seeing responses to my questions"
+    },
+    {
+      "session_id": "00c40e715a874578b0b99e20ad45d926",
+      "group": "A",
+      "session_duration_s": 1490.3,
+      "user_turns": 6,
+      "assistant_turns": 6,
+      "total_events": 65,
+      "event_counts": {
+        "submit": 2,
+        "focus": 6,
+        "typing_start": 6,
+        "blur": 2,
+        "click": 7,
+        "typing_end": 6,
+        "send": 6,
+        "message_send": 6,
+        "reply_init": 6,
+        "first_token": 6,
+        "reply_done": 6,
+        "response": 6
+      },
+      "typing_durations_ms": [
+        93968,
+        54553,
+        37423,
+        138654,
+        19026,
+        9030
+      ],
+      "avg_typing_duration_ms": 58776,
+      "reply_latencies_ms": [
+        6405,
+        4603,
+        4895,
+        4942,
+        6052,
+        1288
+      ],
+      "avg_reply_latency_ms": 4698,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Yes thanks"
+    },
+    {
+      "session_id": "43cde96f0f1446bab6888dd406061a12",
+      "group": "A",
+      "session_duration_s": 331.8,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 45,
+      "event_counts": {
+        "submit": 2,
+        "focus": 5,
+        "typing_start": 4,
+        "blur": 1,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        67777,
+        10993,
+        33741,
+        33322
+      ],
+      "avg_typing_duration_ms": 36458,
+      "reply_latencies_ms": [
+        3813,
+        2595,
+        3432,
+        4055
+      ],
+      "avg_reply_latency_ms": 3474,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Partially,"
+    },
+    {
+      "session_id": "c1b1f2845d5f449dacc0f9ec4afe2498",
+      "group": "A",
+      "session_duration_s": 763.8,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 53,
+      "event_counts": {
+        "submit": 2,
+        "focus": 5,
+        "typing_start": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5,
+        "response": 5
+      },
+      "typing_durations_ms": [
+        64483,
+        11171,
+        55631,
+        26129,
+        24071
+      ],
+      "avg_typing_duration_ms": 36297,
+      "reply_latencies_ms": [
+        5411,
+        3965,
+        5422,
+        2937,
+        2220
+      ],
+      "avg_reply_latency_ms": 3991,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Menu options not working \nAnswers were acceptable but, no deal"
+    },
+    {
+      "session_id": "2eaa69d4d0ea4a67b660954e4e1bca38",
+      "group": "A",
+      "session_duration_s": 1258.4,
+      "user_turns": 13,
+      "assistant_turns": 13,
+      "total_events": 137,
+      "event_counts": {
+        "submit": 2,
+        "focus": 14,
+        "typing_start": 13,
+        "click": 14,
+        "typing_end": 13,
+        "send": 13,
+        "message_send": 13,
+        "reply_init": 13,
+        "first_token": 13,
+        "reply_done": 13,
+        "response": 13,
+        "blur": 3
+      },
+      "typing_durations_ms": [
+        52645,
+        110098,
+        25000,
+        9139,
+        17397,
+        17477,
+        74621,
+        20066,
+        20544,
+        9546,
+        21910,
+        95267,
+        19880
+      ],
+      "avg_typing_duration_ms": 37968,
+      "reply_latencies_ms": [
+        5953,
+        12597,
+        3915,
+        4577,
+        3634,
+        3699,
+        3518,
+        3012,
+        2605,
+        5004,
+        2194,
+        3880,
+        1769
+      ],
+      "avg_reply_latency_ms": 4335,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Amazing info re possible phones both new and second hand!!\nNice one\nPaul"
+    },
+    {
+      "session_id": "0cd21a822ac84138b25ce288f6becd86",
+      "group": "A",
+      "session_duration_s": 25.6,
+      "user_turns": 0,
+      "assistant_turns": 0,
+      "total_events": 5,
+      "event_counts": {
+        "submit": 1,
+        "click": 2,
+        "focus": 1,
+        "blur": 1
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [],
+      "avg_reply_latency_ms": null,
+      "has_feedback": false,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "eb2e87e1c78941d5be94486f667466cb",
+      "group": "A",
+      "session_duration_s": 101.7,
+      "user_turns": 1,
+      "assistant_turns": 1,
+      "total_events": 14,
+      "event_counts": {
+        "submit": 2,
+        "focus": 1,
+        "typing_start": 1,
+        "blur": 1,
+        "click": 2,
+        "typing_end": 1,
+        "send": 1,
+        "message_send": 1,
+        "reply_init": 1,
+        "first_token": 1,
+        "reply_done": 1,
+        "response": 1
+      },
+      "typing_durations_ms": [
+        26493
+      ],
+      "avg_typing_duration_ms": 26493,
+      "reply_latencies_ms": [
+        5941
+      ],
+      "avg_reply_latency_ms": 5941,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "9a0ced8f3ed9449a9c11e1d9e9804710",
+      "group": "A",
+      "session_duration_s": 129.4,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 24,
+      "event_counts": {
+        "submit": 2,
+        "focus": 2,
+        "typing_start": 2,
+        "blur": 1,
+        "click": 3,
+        "typing_end": 2,
+        "message_send": 2,
+        "send": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        29064,
+        18400
+      ],
+      "avg_typing_duration_ms": 23732,
+      "reply_latencies_ms": [
+        4545,
+        4789
+      ],
+      "avg_reply_latency_ms": 4667,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "cdf047490d2e4e2091f5a3260e28e0b4",
+      "group": "A",
+      "session_duration_s": 203.4,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 34,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "blur": 1,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        37240,
+        6412,
+        6164
+      ],
+      "avg_typing_duration_ms": 16605,
+      "reply_latencies_ms": [
+        3994,
+        4604,
+        4211
+      ],
+      "avg_reply_latency_ms": 4270,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "8b487159c14a46faacb2c754e62e9aa3",
+      "group": "A",
+      "session_duration_s": 238.2,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 55,
+      "event_counts": {
+        "submit": 2,
+        "focus": 6,
+        "typing_start": 5,
+        "blur": 1,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5,
+        "response": 5
+      },
+      "typing_durations_ms": [
+        40706,
+        20310,
+        3949,
+        11326,
+        651
+      ],
+      "avg_typing_duration_ms": 15388,
+      "reply_latencies_ms": [
+        4919,
+        7034,
+        5478,
+        5192,
+        4519
+      ],
+      "avg_reply_latency_ms": 5428,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "It just ignored some of the things I was asking for, and it was hard to read."
+    },
+    {
+      "session_id": "daef89fed1754190a8391d2d03fd9988",
+      "group": "A",
+      "session_duration_s": 227.8,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 44,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "blur": 1,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        48543,
+        33783,
+        45113,
+        14321
+      ],
+      "avg_typing_duration_ms": 35440,
+      "reply_latencies_ms": [
+        4377,
+        4610,
+        4759,
+        4376
+      ],
+      "avg_reply_latency_ms": 4530,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "f15f6f903af84114a73024008d046775",
+      "group": "A",
+      "session_duration_s": null,
+      "user_turns": 0,
+      "assistant_turns": 0,
+      "total_events": 1,
+      "event_counts": {
+        "submit": 1
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [],
+      "avg_reply_latency_ms": null,
+      "has_feedback": false,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "04fed030b50941f6941553e3e9e3fd86",
+      "group": "A",
+      "session_duration_s": 756.9,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 23,
+      "event_counts": {
+        "focus": 2,
+        "typing_start": 2,
+        "blur": 1,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2,
+        "submit": 1
+      },
+      "typing_durations_ms": [
+        85113,
+        8889
+      ],
+      "avg_typing_duration_ms": 47001,
+      "reply_latencies_ms": [
+        3772,
+        3780
+      ],
+      "avg_reply_latency_ms": 3776,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "The AI had trouble prompting a full answer so I had to re prompt it to give an understandable answer for one of the points, this was fine after however."
+    },
+    {
+      "session_id": "9c32bb93de5c4c9480937909d90e9a7f",
+      "group": "A",
+      "session_duration_s": 537.2,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 53,
+      "event_counts": {
+        "submit": 2,
+        "focus": 5,
+        "typing_start": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5,
+        "response": 5
+      },
+      "typing_durations_ms": [
+        15605,
+        7588,
+        9670,
+        5983,
+        2014
+      ],
+      "avg_typing_duration_ms": 8172,
+      "reply_latencies_ms": [
+        3275,
+        2741,
+        1830,
+        2257,
+        649
+      ],
+      "avg_reply_latency_ms": 2150,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "It took the system a few times to line up with what it said on the previous prompt. The first time I asked for roaming plans and charges and it only responded with the plans. Then when I asked for charges, it gave different named plans with prices then the third time I asked it aligned."
+    },
+    {
+      "session_id": "5ca936b6ab974fb0aeaa656d216e8ce4",
+      "group": "A",
+      "session_duration_s": 102.1,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 23,
+      "event_counts": {
+        "submit": 2,
+        "focus": 2,
+        "typing_start": 2,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        32652,
+        5467
+      ],
+      "avg_typing_duration_ms": 19060,
+      "reply_latencies_ms": [
+        2168,
+        2831
+      ],
+      "avg_reply_latency_ms": 2500,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "It's hard to resolve this without knowing why the bill has had an extra charge. The system gave me suggestions why it could be charged but without knowing actually where the 24$ charge came from."
+    },
+    {
+      "session_id": "cbd1b275fb854803bc378617c34706e6",
+      "group": "A",
+      "session_duration_s": 93.7,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 24,
+      "event_counts": {
+        "submit": 2,
+        "focus": 2,
+        "typing_start": 2,
+        "blur": 1,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        20496,
+        3562
+      ],
+      "avg_typing_duration_ms": 12029,
+      "reply_latencies_ms": [
+        2379,
+        2516
+      ],
+      "avg_reply_latency_ms": 2448,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Very clear plans that could suit anyone and outlined what was in those mobile plans."
+    },
+    {
+      "session_id": "9ae8bc20214d44ad9dbbf7a2e20d3e91",
+      "group": "A",
+      "session_duration_s": 146.7,
+      "user_turns": 1,
+      "assistant_turns": 1,
+      "total_events": 13,
+      "event_counts": {
+        "submit": 2,
+        "focus": 1,
+        "typing_start": 1,
+        "click": 2,
+        "typing_end": 1,
+        "send": 1,
+        "message_send": 1,
+        "reply_init": 1,
+        "first_token": 1,
+        "reply_done": 1,
+        "response": 1
+      },
+      "typing_durations_ms": [
+        99767
+      ],
+      "avg_typing_duration_ms": 99767,
+      "reply_latencies_ms": [
+        1976
+      ],
+      "avg_reply_latency_ms": 1976,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "It was a rather generalised response but does outline all the factors that could lead to connection issues."
+    },
+    {
+      "session_id": "56ab536ee2704f36825aff1d47d5087a",
+      "group": "B",
+      "session_duration_s": 226.2,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 58,
+      "event_counts": {
+        "submit": 2,
+        "focus": 5,
+        "typing_start": 5,
+        "blur": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5,
+        "response": 5
+      },
+      "typing_durations_ms": [
+        14094,
+        24274,
+        20281,
+        2946,
+        2532
+      ],
+      "avg_typing_duration_ms": 12825,
+      "reply_latencies_ms": [
+        2658,
+        3852,
+        3711,
+        756,
+        1849
+      ],
+      "avg_reply_latency_ms": 2565,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "There were a few errors with the text (lists didn\u2019t say 1,2,3,4 they said 1,1,1,1 and it said &gt after instructions on how to reconfigure network settings."
+    },
+    {
+      "session_id": "6716f8531ee84528adae35f105e4e5f4",
+      "group": "A",
+      "session_duration_s": 1066.7,
+      "user_turns": 0,
+      "assistant_turns": 0,
+      "total_events": 2,
+      "event_counts": {
+        "click": 1,
+        "submit": 1
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [],
+      "avg_reply_latency_ms": null,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "7edd2df5d8d64bce9828b5660bd33793",
+      "group": "A",
+      "session_duration_s": 334.5,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 23,
+      "event_counts": {
+        "submit": 2,
+        "focus": 2,
+        "typing_start": 2,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        3317,
+        6836
+      ],
+      "avg_typing_duration_ms": 5076,
+      "reply_latencies_ms": [
+        3104,
+        3527
+      ],
+      "avg_reply_latency_ms": 3316,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "system replies promptly and with accurate information, but some text issues in responses. After the initial response line, it is followed by three #'s before the next sentence."
+    },
+    {
+      "session_id": "bd1dc5bc197543b882e8b71307f7bbe3",
+      "group": "A",
+      "session_duration_s": 90.1,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 35,
+      "event_counts": {
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "blur": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3,
+        "submit": 1
+      },
+      "typing_durations_ms": [
+        8273,
+        5890,
+        5331
+      ],
+      "avg_typing_duration_ms": 6498,
+      "reply_latencies_ms": [
+        2100,
+        2659,
+        899
+      ],
+      "avg_reply_latency_ms": 1886,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "When the assistant gave a 5 step plan to solve the issue, the last step/prompt was incomplete \"They can provide your\" And ended there. Otherwise helpful and gives a high level of empathy."
+    },
+    {
+      "session_id": "adf0f82180aa4112a774b4076ed254bb",
+      "group": "A",
+      "session_duration_s": 364.2,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 43,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        4206,
+        8260,
+        12962,
+        13315
+      ],
+      "avg_typing_duration_ms": 9686,
+      "reply_latencies_ms": [
+        2877,
+        4113,
+        2944,
+        3353
+      ],
+      "avg_reply_latency_ms": 3322,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "gave accurate information to promots, however, tone feels too forced. Every response starts with the system saying it understands the situation, personally feels forced and repetitive after a while"
+    },
+    {
+      "session_id": "623cfc9827c7481da4eb3ca1f05f5be2",
+      "group": "A",
+      "session_duration_s": 200.1,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 36,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "blur": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        19109,
+        11430,
+        1006
+      ],
+      "avg_typing_duration_ms": 10515,
+      "reply_latencies_ms": [
+        3898,
+        1797,
+        679
+      ],
+      "avg_reply_latency_ms": 2125,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Would be great if it was able to offer web links, but understand if that's not within capability yet"
+    },
+    {
+      "session_id": "99b403fcdff84493bf0473af3e5c3c0c",
+      "group": "A",
+      "session_duration_s": 546.9,
+      "user_turns": 6,
+      "assistant_turns": 6,
+      "total_events": 63,
+      "event_counts": {
+        "submit": 2,
+        "focus": 6,
+        "typing_start": 6,
+        "click": 7,
+        "typing_end": 6,
+        "send": 6,
+        "message_send": 6,
+        "reply_init": 6,
+        "first_token": 6,
+        "reply_done": 6,
+        "response": 6
+      },
+      "typing_durations_ms": [
+        23483,
+        11003,
+        5535,
+        14481,
+        21331,
+        2222
+      ],
+      "avg_typing_duration_ms": 13009,
+      "reply_latencies_ms": [
+        3561,
+        4714,
+        9933,
+        1704,
+        2448,
+        1203
+      ],
+      "avg_reply_latency_ms": 3927,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Clear, reliable information provided. I had to tell the system that i was with vodafone, if this was actually for vodafone customer service, I would have expected that to already be known (may just be a personal thing). When asked about ways to contact customer service, it started on a point about social media but didn't finish the point. As previously mentioned, tone feels forcefully understanding of your issue (very repetitive and robot-like). Overall, very effective system"
+    },
+    {
+      "session_id": "b948723433784a668436ef29b24aa77b",
+      "group": "B",
+      "session_duration_s": 42.3,
+      "user_turns": 0,
+      "assistant_turns": 0,
+      "total_events": 3,
+      "event_counts": {
+        "focus": 1,
+        "click": 1,
+        "submit": 1
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [],
+      "avg_reply_latency_ms": null,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "1993faecc025410399ada39707d478c1",
+      "group": "B",
+      "session_duration_s": 304.0,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 36,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "blur": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        14254,
+        7846,
+        6537
+      ],
+      "avg_typing_duration_ms": 9546,
+      "reply_latencies_ms": [
+        3090,
+        3684,
+        2771
+      ],
+      "avg_reply_latency_ms": 3182,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "it just gave me the same answers again and again- even when I tried to ask about airalo- wasn't tailored"
+    },
+    {
+      "session_id": "512c4e783e154331891cc1ab4e19523a",
+      "group": "A",
+      "session_duration_s": 195.6,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 36,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "blur": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        14864,
+        12716,
+        17874
+      ],
+      "avg_typing_duration_ms": 15151,
+      "reply_latencies_ms": [
+        3105,
+        3483,
+        726
+      ],
+      "avg_reply_latency_ms": 2438,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "e09690e71bf14c9aa71936b763ad781f",
+      "group": "A",
+      "session_duration_s": 581.4,
+      "user_turns": 7,
+      "assistant_turns": 7,
+      "total_events": 81,
+      "event_counts": {
+        "submit": 2,
+        "focus": 11,
+        "typing_start": 7,
+        "click": 8,
+        "typing_end": 7,
+        "send": 7,
+        "message_send": 7,
+        "reply_init": 7,
+        "first_token": 7,
+        "reply_done": 7,
+        "response": 7,
+        "blur": 4
+      },
+      "typing_durations_ms": [
+        8722,
+        12827,
+        14836,
+        4695,
+        23218,
+        17297,
+        11093
+      ],
+      "avg_typing_duration_ms": 13241,
+      "reply_latencies_ms": [
+        3450,
+        1439,
+        2747,
+        2571,
+        2667,
+        3595,
+        3262
+      ],
+      "avg_reply_latency_ms": 2819,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "started off well, clearly outlined options for upgrading. Felt general towards the end. A few formatting issues and some unfinished points."
+    },
+    {
+      "session_id": "46f8afcfddcb4e27a91386471f9eb19e",
+      "group": "B",
+      "session_duration_s": 4588.6,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 27,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 2,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "blur": 3,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        20223,
+        4098
+      ],
+      "avg_typing_duration_ms": 12160,
+      "reply_latencies_ms": [
+        2643,
+        3099
+      ],
+      "avg_reply_latency_ms": 2871,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "485f0e80182f48d0bcf929eaafadb823",
+      "group": "A",
+      "session_duration_s": 314.0,
+      "user_turns": 6,
+      "assistant_turns": 6,
+      "total_events": 65,
+      "event_counts": {
+        "submit": 2,
+        "focus": 7,
+        "typing_start": 6,
+        "click": 7,
+        "typing_end": 6,
+        "send": 6,
+        "message_send": 6,
+        "reply_init": 6,
+        "first_token": 6,
+        "reply_done": 6,
+        "response": 6,
+        "blur": 1
+      },
+      "typing_durations_ms": [
+        8728,
+        7567,
+        21017,
+        7628,
+        18022,
+        4444
+      ],
+      "avg_typing_duration_ms": 11234,
+      "reply_latencies_ms": [
+        2969,
+        1648,
+        2372,
+        4057,
+        4495,
+        2759
+      ],
+      "avg_reply_latency_ms": 3050,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "a849e4a956c14a34819f8ba37a31a1f9",
+      "group": "A",
+      "session_duration_s": 178.0,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 37,
+      "event_counts": {
+        "submit": 3,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "message_send": 3,
+        "send": 3,
+        "blur": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        11056,
+        14657,
+        1671
+      ],
+      "avg_typing_duration_ms": 9128,
+      "reply_latencies_ms": [
+        3631,
+        3013,
+        1269
+      ],
+      "avg_reply_latency_ms": 2638,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "First response listed 3 options, all three were labelled as #1. other than that, good experience"
+    },
+    {
+      "session_id": "3d2c24bf378142a6b3849d80b416f49d",
+      "group": "A",
+      "session_duration_s": 80.4,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 25,
+      "event_counts": {
+        "submit": 2,
+        "focus": 2,
+        "typing_start": 2,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "blur": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        10777,
+        13465
+      ],
+      "avg_typing_duration_ms": 12121,
+      "reply_latencies_ms": [
+        3730,
+        3011
+      ],
+      "avg_reply_latency_ms": 3370,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Good response when customer stated first attempts didn't work. Secondary response may be a little *too* empathetic, but that's more personal preference of course. Really good scenario and positive outcome which would have likely led to a fix in the real world."
+    },
+    {
+      "session_id": "39ba92ee4b9a4c7eb5eff9f8b94b4ec6",
+      "group": "B",
+      "session_duration_s": 124.5,
+      "user_turns": 0,
+      "assistant_turns": 0,
+      "total_events": 3,
+      "event_counts": {
+        "submit": 2,
+        "click": 1
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [],
+      "avg_reply_latency_ms": null,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "a57902d065af4d129a6c6a7d40208d18",
+      "group": "B",
+      "session_duration_s": 216.5,
+      "user_turns": 1,
+      "assistant_turns": 1,
+      "total_events": 15,
+      "event_counts": {
+        "submit": 3,
+        "focus": 1,
+        "typing_start": 1,
+        "click": 2,
+        "typing_end": 1,
+        "send": 1,
+        "message_send": 1,
+        "blur": 1,
+        "reply_init": 1,
+        "first_token": 1,
+        "reply_done": 1,
+        "response": 1
+      },
+      "typing_durations_ms": [
+        637
+      ],
+      "avg_typing_duration_ms": 637,
+      "reply_latencies_ms": [
+        3568
+      ],
+      "avg_reply_latency_ms": 3568,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "503e34b35bea4e148da4b92d305c671a",
+      "group": "B",
+      "session_duration_s": 164.4,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 35,
+      "event_counts": {
+        "focus": 3,
+        "typing_start": 3,
+        "blur": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3,
+        "submit": 1
+      },
+      "typing_durations_ms": [
+        11477,
+        26400,
+        24665
+      ],
+      "avg_typing_duration_ms": 20847,
+      "reply_latencies_ms": [
+        2781,
+        3748,
+        3294
+      ],
+      "avg_reply_latency_ms": 3274,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Some of the AI reponses run out mid-sentence as though the maximum characters have been used of the box size maximum has been reached.  So for example it says 'if you have any more questions, please'"
+    },
+    {
+      "session_id": "6f5e48040e594b22b7548b5a9a6c9098",
+      "group": "B",
+      "session_duration_s": 98.7,
+      "user_turns": 0,
+      "assistant_turns": 0,
+      "total_events": 5,
+      "event_counts": {
+        "submit": 2,
+        "focus": 1,
+        "blur": 1,
+        "click": 1
+      },
+      "typing_durations_ms": [],
+      "avg_typing_duration_ms": null,
+      "reply_latencies_ms": [],
+      "avg_reply_latency_ms": null,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "f13b361557db451d89ea08dd5bd61e87",
+      "group": "B",
+      "session_duration_s": 47.7,
+      "user_turns": 1,
+      "assistant_turns": 1,
+      "total_events": 14,
+      "event_counts": {
+        "submit": 2,
+        "focus": 1,
+        "typing_start": 1,
+        "click": 2,
+        "typing_end": 1,
+        "send": 1,
+        "message_send": 1,
+        "blur": 1,
+        "reply_init": 1,
+        "first_token": 1,
+        "reply_done": 1,
+        "response": 1
+      },
+      "typing_durations_ms": [
+        10667
+      ],
+      "avg_typing_duration_ms": 10667,
+      "reply_latencies_ms": [
+        3705
+      ],
+      "avg_reply_latency_ms": 3705,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "9cfb97c10b9f485eb0ea97a0e02b3b9b",
+      "group": "B",
+      "session_duration_s": 518.1,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 25,
+      "event_counts": {
+        "submit": 2,
+        "focus": 2,
+        "typing_start": 2,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "blur": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        8841,
+        20395
+      ],
+      "avg_typing_duration_ms": 14618,
+      "reply_latencies_ms": [
+        3321,
+        3017
+      ],
+      "avg_reply_latency_ms": 3169,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "I would say the advice/ suggestions that the bot gave was a bit vague as a non technical person"
+    },
+    {
+      "session_id": "8c24f2b73c5648988bd0659ee72b7865",
+      "group": "B",
+      "session_duration_s": 438.1,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "blur": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        11670,
+        16873,
+        16552,
+        38349
+      ],
+      "avg_typing_duration_ms": 20861,
+      "reply_latencies_ms": [
+        987,
+        2264,
+        2933,
+        3846
+      ],
+      "avg_reply_latency_ms": 2508,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Some bits of guidance are incomplete and all the plans on the list were labelled number one, but the information on the plans that had been completed was very clear."
+    },
+    {
+      "session_id": "43af6243ea5e49ad8f1d9cceffd234ca",
+      "group": "B",
+      "session_duration_s": 680.1,
+      "user_turns": 9,
+      "assistant_turns": 9,
+      "total_events": 102,
+      "event_counts": {
+        "submit": 2,
+        "focus": 9,
+        "typing_start": 9,
+        "blur": 9,
+        "click": 10,
+        "typing_end": 9,
+        "send": 9,
+        "message_send": 9,
+        "reply_init": 9,
+        "first_token": 9,
+        "reply_done": 9,
+        "response": 9
+      },
+      "typing_durations_ms": [
+        17690,
+        16201,
+        13493,
+        23601,
+        28123,
+        24117,
+        45111,
+        23575,
+        65709
+      ],
+      "avg_typing_duration_ms": 28624,
+      "reply_latencies_ms": [
+        3105,
+        3068,
+        3017,
+        2268,
+        2944,
+        1366,
+        2933,
+        2782,
+        1669
+      ],
+      "avg_reply_latency_ms": 2572,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "I found this a bit more confusing."
+    },
+    {
+      "session_id": "51e9b84afd83486e952effcdab41a0da",
+      "group": "B",
+      "session_duration_s": 211.8,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "blur": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        45612,
+        12364,
+        10587,
+        13960
+      ],
+      "avg_typing_duration_ms": 20631,
+      "reply_latencies_ms": [
+        2761,
+        2873,
+        2130,
+        2153
+      ],
+      "avg_reply_latency_ms": 2479,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "04ac6eb93dda469c84da67c3a0cb4710",
+      "group": "B",
+      "session_duration_s": 361.2,
+      "user_turns": 6,
+      "assistant_turns": 6,
+      "total_events": 69,
+      "event_counts": {
+        "submit": 2,
+        "focus": 6,
+        "typing_start": 6,
+        "blur": 6,
+        "click": 7,
+        "typing_end": 6,
+        "send": 6,
+        "message_send": 6,
+        "reply_init": 6,
+        "first_token": 6,
+        "reply_done": 6,
+        "response": 6
+      },
+      "typing_durations_ms": [
+        14556,
+        48779,
+        8969,
+        9131,
+        27722,
+        20510
+      ],
+      "avg_typing_duration_ms": 21611,
+      "reply_latencies_ms": [
+        1170,
+        4447,
+        3143,
+        3020,
+        3507,
+        1319
+      ],
+      "avg_reply_latency_ms": 2768,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "The plans are still all labelled 1."
+    },
+    {
+      "session_id": "1735773488bb48fe8786c0f844ab007b",
+      "group": "B",
+      "session_duration_s": 672.6,
+      "user_turns": 8,
+      "assistant_turns": 8,
+      "total_events": 91,
+      "event_counts": {
+        "submit": 2,
+        "focus": 8,
+        "typing_start": 8,
+        "blur": 8,
+        "click": 9,
+        "typing_end": 8,
+        "send": 8,
+        "message_send": 8,
+        "reply_init": 8,
+        "first_token": 8,
+        "reply_done": 8,
+        "response": 8
+      },
+      "typing_durations_ms": [
+        44526,
+        47083,
+        23940,
+        9962,
+        10863,
+        35695,
+        27485,
+        17267
+      ],
+      "avg_typing_duration_ms": 27103,
+      "reply_latencies_ms": [
+        1290,
+        3362,
+        3440,
+        3077,
+        3891,
+        3194,
+        3442,
+        2858
+      ],
+      "avg_reply_latency_ms": 3069,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Some of the information ran out mid sentence.  All numbered lists are labelled 1.  A wide range of options provided though, with some good things to try."
+    },
+    {
+      "session_id": "1b084757b28f4b83b841b8d8c3ef5a04",
+      "group": "A",
+      "session_duration_s": 368.4,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 58,
+      "event_counts": {
+        "submit": 2,
+        "focus": 5,
+        "typing_start": 5,
+        "blur": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "response": 5,
+        "reply_done": 5
+      },
+      "typing_durations_ms": [
+        7488,
+        4650,
+        4287,
+        9949,
+        3590
+      ],
+      "avg_typing_duration_ms": 5993,
+      "reply_latencies_ms": [
+        5711,
+        6039,
+        5006,
+        5680,
+        2626
+      ],
+      "avg_reply_latency_ms": 5012,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "I don\u2019t need it to like emphasise with my problem and tell me it\u2019s frustrating I\u2019d rather it just offer straight support. It offered me 6 solutions in decreasing helpfulness and the first solutions were correct and really good but by layer solutions they were a bit far-fetched"
+    },
+    {
+      "session_id": "7ef7b54cb005462ebdad62b0649e4568",
+      "group": "A",
+      "session_duration_s": 229.7,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "blur": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "response": 4,
+        "reply_done": 4
+      },
+      "typing_durations_ms": [
+        11832,
+        21802,
+        9067,
+        11410
+      ],
+      "avg_typing_duration_ms": 13528,
+      "reply_latencies_ms": [
+        4689,
+        3243,
+        4642,
+        4087
+      ],
+      "avg_reply_latency_ms": 4165,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "It helped me work out which plan I\u2019m on and offered me 3 distinct plans but then when I asked specifics on the plans like what the additional fees were it got stumped on the specifics. But if it knows the details on what the possible plans are it should surely know further details"
+    },
+    {
+      "session_id": "94d7466afe0f4388b665618e24e95f07",
+      "group": "A",
+      "session_duration_s": 449.3,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "blur": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "response": 4,
+        "reply_done": 4
+      },
+      "typing_durations_ms": [
+        32221,
+        16447,
+        15779,
+        14293
+      ],
+      "avg_typing_duration_ms": 19685,
+      "reply_latencies_ms": [
+        5752,
+        4008,
+        4543,
+        5030
+      ],
+      "avg_reply_latency_ms": 4833,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "I\u2019d say it helped but then again wasn\u2019t the most specific. I started just confused with the bill and it offered many reasonable solutions on why it could possibly be higher. I then then oh it might be from my data usage but how can I be sure and it just looped back to me looking at the bill which I would have done in the first place"
+    },
+    {
+      "session_id": "4d136187f58d463b9a747f4cccf16787",
+      "group": "A",
+      "session_duration_s": 153.7,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "blur": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "response": 4,
+        "reply_done": 4
+      },
+      "typing_durations_ms": [
+        15939,
+        15552,
+        30374,
+        3269
+      ],
+      "avg_typing_duration_ms": 16284,
+      "reply_latencies_ms": [
+        4084,
+        3874,
+        3631,
+        1388
+      ],
+      "avg_reply_latency_ms": 3244,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Overall it got there and picked out a good plan. At first I just asked it to list plans and it kept stopping halfway through explaining them and I had to force it to keep explaining. I also believe when labelling of plans it probably shouldn\u2019t label all the limitations of them if it is trying to sell it to me. However once I gave details on who I was it picked an excellent plan on what would work for my situation"
+    },
+    {
+      "session_id": "42467dcf54804f1694c0c07adaced85a",
+      "group": "A",
+      "session_duration_s": 176.3,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 36,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "blur": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "response": 3,
+        "reply_done": 3
+      },
+      "typing_durations_ms": [
+        10534,
+        14984,
+        9441
+      ],
+      "avg_typing_duration_ms": 11653,
+      "reply_latencies_ms": [
+        4844,
+        3184,
+        4039
+      ],
+      "avg_reply_latency_ms": 4022,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "I said that because I was in Devon was why my data may be bad and it helped me confirm that offering services to check service maps. However when asking for a solution to that they were a little vague also it finished by suggesting getting an alternate provider which surely it shouldn\u2019t do. Also once again it stopped typing halfway through a response when listing off options"
+    },
+    {
+      "session_id": "5488e9b404894e26a171c16fc5332be0",
+      "group": "A",
+      "session_duration_s": 97.8,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 27,
+      "event_counts": {
+        "submit": 3,
+        "focus": 3,
+        "typing_start": 2,
+        "blur": 2,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        6153,
+        19301
+      ],
+      "avg_typing_duration_ms": 12727,
+      "reply_latencies_ms": [
+        7022,
+        2363
+      ],
+      "avg_reply_latency_ms": 4692,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "8ef55a8a055e4eac9ae9512450ed74c2",
+      "group": "A",
+      "session_duration_s": 192.2,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 59,
+      "event_counts": {
+        "submit": 3,
+        "focus": 5,
+        "typing_start": 5,
+        "blur": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5,
+        "response": 5
+      },
+      "typing_durations_ms": [
+        7585,
+        4590,
+        21093,
+        9259,
+        4384
+      ],
+      "avg_typing_duration_ms": 9382,
+      "reply_latencies_ms": [
+        5352,
+        3817,
+        4367,
+        3126,
+        4119
+      ],
+      "avg_reply_latency_ms": 4156,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Asked if the information was accurate - I have absolutely no idea how much it costs for data abroad"
+    },
+    {
+      "session_id": "e7f9ab8cad3f4598adf469503196d6b3",
+      "group": "A",
+      "session_duration_s": 169.3,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 36,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "blur": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        10296,
+        11508,
+        22295
+      ],
+      "avg_typing_duration_ms": 14700,
+      "reply_latencies_ms": [
+        2795,
+        3401,
+        3736
+      ],
+      "avg_reply_latency_ms": 3311,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Can\u2019t know if my issue was resolved when I can\u2019t see my bill but overall helpful - also listed options as 1,1,1,1"
+    },
+    {
+      "session_id": "388af12770c2441e99fb65d599e2a48a",
+      "group": "A",
+      "session_duration_s": 92.6,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "blur": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        4372,
+        6277,
+        5377,
+        2728
+      ],
+      "avg_typing_duration_ms": 4688,
+      "reply_latencies_ms": [
+        1406,
+        5626,
+        5138,
+        3727
+      ],
+      "avg_reply_latency_ms": 3974,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "6a2e8a8a2e254ca3b2a5732c401c2d64",
+      "group": "A",
+      "session_duration_s": 115.6,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 36,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "blur": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        6370,
+        3617,
+        5892
+      ],
+      "avg_typing_duration_ms": 5293,
+      "reply_latencies_ms": [
+        3458,
+        3423,
+        4240
+      ],
+      "avg_reply_latency_ms": 3707,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "a0aebd63409447f98093bb8c93835883",
+      "group": "B",
+      "session_duration_s": 318.1,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 57,
+      "event_counts": {
+        "submit": 3,
+        "focus": 5,
+        "typing_start": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "response": 5,
+        "reply_done": 5,
+        "blur": 3
+      },
+      "typing_durations_ms": [
+        7630,
+        25228,
+        10655,
+        15107,
+        10709
+      ],
+      "avg_typing_duration_ms": 13866,
+      "reply_latencies_ms": [
+        3830,
+        7494,
+        3099,
+        4299,
+        5734
+      ],
+      "avg_reply_latency_ms": 4891,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "some of the chat messages were only half finished"
+    },
+    {
+      "session_id": "a52a6c395d17427c863c2a7955b9d8cc",
+      "group": "B",
+      "session_duration_s": 134.6,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 35,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "blur": 2,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "response": 3,
+        "reply_done": 3
+      },
+      "typing_durations_ms": [
+        17037,
+        9480,
+        9695
+      ],
+      "avg_typing_duration_ms": 12071,
+      "reply_latencies_ms": [
+        6494,
+        4561,
+        1892
+      ],
+      "avg_reply_latency_ms": 4316,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "spoke about plans but originally did not explain them"
+    },
+    {
+      "session_id": "2a8d8c7f366143a48cfaa843347cd161",
+      "group": "B",
+      "session_duration_s": 747.0,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 34,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "blur": 1,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "response": 3,
+        "reply_done": 3
+      },
+      "typing_durations_ms": [
+        12538,
+        10097,
+        3090
+      ],
+      "avg_typing_duration_ms": 8575,
+      "reply_latencies_ms": [
+        4909,
+        4237,
+        4690
+      ],
+      "avg_reply_latency_ms": 4612,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "The chat box gave broad help, but told me to get help from a manager or another chat box"
+    },
+    {
+      "session_id": "4ad4638645854376a9f0d8f8c62b3c04",
+      "group": "B",
+      "session_duration_s": 72.5,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 43,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "click": 5,
+        "typing_end": 4,
+        "message_send": 4,
+        "send": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "response": 4,
+        "reply_done": 4
+      },
+      "typing_durations_ms": [
+        14218,
+        5830,
+        4563,
+        1119
+      ],
+      "avg_typing_duration_ms": 6432,
+      "reply_latencies_ms": [
+        5634,
+        3356,
+        4399,
+        1677
+      ],
+      "avg_reply_latency_ms": 3766,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "00e3692c3b89490d88fc36a3429bf798",
+      "group": "B",
+      "session_duration_s": 183.7,
+      "user_turns": 7,
+      "assistant_turns": 7,
+      "total_events": 75,
+      "event_counts": {
+        "submit": 4,
+        "focus": 7,
+        "typing_start": 7,
+        "click": 8,
+        "typing_end": 7,
+        "message_send": 7,
+        "send": 7,
+        "reply_init": 7,
+        "first_token": 7,
+        "response": 7,
+        "reply_done": 7
+      },
+      "typing_durations_ms": [
+        18061,
+        13887,
+        15629,
+        3481,
+        5259,
+        4652,
+        10353
+      ],
+      "avg_typing_duration_ms": 10189,
+      "reply_latencies_ms": [
+        4034,
+        5057,
+        5318,
+        5544,
+        3602,
+        4985,
+        4676
+      ],
+      "avg_reply_latency_ms": 4745,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "6c73310b5e5645f5994b2a8af98589b4",
+      "group": "A",
+      "session_duration_s": 267.1,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "blur": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        33953,
+        22596,
+        21055,
+        10524
+      ],
+      "avg_typing_duration_ms": 22032,
+      "reply_latencies_ms": [
+        6064,
+        6323,
+        4483,
+        2845
+      ],
+      "avg_reply_latency_ms": 4929,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "b5b84e3e268e464caecd21d147f2be54",
+      "group": "A",
+      "session_duration_s": 290.1,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "blur": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        48991,
+        6681,
+        9557,
+        9909
+      ],
+      "avg_typing_duration_ms": 18784,
+      "reply_latencies_ms": [
+        6159,
+        4523,
+        5797,
+        2593
+      ],
+      "avg_reply_latency_ms": 4768,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "I don't know how reliable the prices are"
+    },
+    {
+      "session_id": "fbb1b1c709354aca9de3c4d982625dbe",
+      "group": "A",
+      "session_duration_s": 126.4,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "blur": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        58274,
+        7225,
+        11173,
+        3666
+      ],
+      "avg_typing_duration_ms": 20084,
+      "reply_latencies_ms": [
+        6238,
+        5228,
+        3106,
+        1225
+      ],
+      "avg_reply_latency_ms": 3949,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "df91a5207a9a49c2a789ce49e5b9f52d",
+      "group": "A",
+      "session_duration_s": 192.5,
+      "user_turns": 5,
+      "assistant_turns": 5,
+      "total_events": 58,
+      "event_counts": {
+        "submit": 2,
+        "focus": 5,
+        "typing_start": 5,
+        "click": 6,
+        "typing_end": 5,
+        "send": 5,
+        "message_send": 5,
+        "blur": 5,
+        "reply_init": 5,
+        "first_token": 5,
+        "reply_done": 5,
+        "response": 5
+      },
+      "typing_durations_ms": [
+        33212,
+        17210,
+        8302,
+        10658,
+        4837
+      ],
+      "avg_typing_duration_ms": 14844,
+      "reply_latencies_ms": [
+        4740,
+        4241,
+        3871,
+        4247,
+        1537
+      ],
+      "avg_reply_latency_ms": 3727,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "f5535e839d254f0da971aa07f91fc00c",
+      "group": "A",
+      "session_duration_s": 171.1,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "blur": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        19692,
+        16269,
+        14154,
+        14232
+      ],
+      "avg_typing_duration_ms": 16087,
+      "reply_latencies_ms": [
+        5007,
+        4867,
+        3669,
+        5102
+      ],
+      "avg_reply_latency_ms": 4661,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "4af62cbfd24e49a88300f5bd5d30d79c",
+      "group": "B",
+      "session_duration_s": 3595.4,
+      "user_turns": 6,
+      "assistant_turns": 6,
+      "total_events": 73,
+      "event_counts": {
+        "submit": 2,
+        "focus": 8,
+        "typing_start": 6,
+        "blur": 8,
+        "click": 7,
+        "typing_end": 6,
+        "send": 6,
+        "message_send": 6,
+        "reply_init": 6,
+        "first_token": 6,
+        "reply_done": 6,
+        "response": 6
+      },
+      "typing_durations_ms": [
+        52074,
+        17762,
+        37419,
+        24898,
+        12032,
+        4107
+      ],
+      "avg_typing_duration_ms": 24715,
+      "reply_latencies_ms": [
+        3654,
+        5343,
+        2855,
+        5167,
+        4221,
+        3741
+      ],
+      "avg_reply_latency_ms": 4164,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Numering is always 1, the agent sometimes rndrd prematurely. Agent forgot context after leaving app for a bit ( excused because no propper auth )"
+    },
+    {
+      "session_id": "9a46af2ad85c4ea597d1d29ba59c3c46",
+      "group": "B",
+      "session_duration_s": 76.4,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 46,
+      "event_counts": {
+        "focus": 4,
+        "typing_start": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "blur": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4,
+        "submit": 1
+      },
+      "typing_durations_ms": [
+        4168,
+        14058,
+        3408,
+        5412
+      ],
+      "avg_typing_duration_ms": 6762,
+      "reply_latencies_ms": [
+        5093,
+        5672,
+        5776,
+        2237
+      ],
+      "avg_reply_latency_ms": 4694,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "052dba3a20b64110a00f26916ddc9258",
+      "group": "B",
+      "session_duration_s": 51.5,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "blur": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        9744,
+        8020,
+        3660,
+        2638
+      ],
+      "avg_typing_duration_ms": 6016,
+      "reply_latencies_ms": [
+        2423,
+        4517,
+        3639,
+        3949
+      ],
+      "avg_reply_latency_ms": 3632,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "090cf610ad6b43e49f7bd75989e33b57",
+      "group": "B",
+      "session_duration_s": 64.5,
+      "user_turns": 3,
+      "assistant_turns": 3,
+      "total_events": 36,
+      "event_counts": {
+        "submit": 2,
+        "focus": 3,
+        "typing_start": 3,
+        "click": 4,
+        "typing_end": 3,
+        "send": 3,
+        "message_send": 3,
+        "blur": 3,
+        "reply_init": 3,
+        "first_token": 3,
+        "reply_done": 3,
+        "response": 3
+      },
+      "typing_durations_ms": [
+        5302,
+        7070,
+        2714
+      ],
+      "avg_typing_duration_ms": 5029,
+      "reply_latencies_ms": [
+        1666,
+        5145,
+        4112
+      ],
+      "avg_reply_latency_ms": 3641,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": "Partial"
+    },
+    {
+      "session_id": "3e9d39a68d9d48f5b1f928585ef53795",
+      "group": "B",
+      "session_duration_s": 50.2,
+      "user_turns": 4,
+      "assistant_turns": 4,
+      "total_events": 47,
+      "event_counts": {
+        "submit": 2,
+        "focus": 4,
+        "typing_start": 4,
+        "click": 5,
+        "typing_end": 4,
+        "send": 4,
+        "message_send": 4,
+        "blur": 4,
+        "reply_init": 4,
+        "first_token": 4,
+        "reply_done": 4,
+        "response": 4
+      },
+      "typing_durations_ms": [
+        5017,
+        4606,
+        4256,
+        914
+      ],
+      "avg_typing_duration_ms": 3698,
+      "reply_latencies_ms": [
+        6408,
+        3065,
+        3076,
+        4266
+      ],
+      "avg_reply_latency_ms": 4204,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    },
+    {
+      "session_id": "157675d4cb2d4c898a269cc1049f6e8d",
+      "group": "B",
+      "session_duration_s": 40.3,
+      "user_turns": 2,
+      "assistant_turns": 2,
+      "total_events": 25,
+      "event_counts": {
+        "submit": 2,
+        "focus": 2,
+        "typing_start": 2,
+        "click": 3,
+        "typing_end": 2,
+        "send": 2,
+        "message_send": 2,
+        "blur": 2,
+        "reply_init": 2,
+        "first_token": 2,
+        "reply_done": 2,
+        "response": 2
+      },
+      "typing_durations_ms": [
+        3917,
+        11515
+      ],
+      "avg_typing_duration_ms": 7716,
+      "reply_latencies_ms": [
+        1721,
+        5258
+      ],
+      "avg_reply_latency_ms": 3490,
+      "has_feedback": true,
+      "resolved": null,
+      "written_feedback": null
+    }
+  ]
+}
