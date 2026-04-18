@@ -15,7 +15,6 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 from collections import defaultdict
 
-# Add paths
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "server"))
 
@@ -27,121 +26,83 @@ try:
 except ImportError:
     OpenAI = None
 
-# Load environment
 load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 
 class HumanLAJAnalyzer:
-    """Analyze human conversations with both self-ratings and LLM-as-Judge."""
 
     def __init__(self):
-        """Initialize analyzer."""
         self.supabase_url = os.getenv("SUPABASE_URL")
         self.supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
-
         if not (self.supabase_url and self.supabase_key):
             raise RuntimeError("Supabase not configured")
-
         self.headers = {
             "apikey": self.supabase_key,
             "Authorization": f"Bearer {self.supabase_key}",
             "Content-Type": "application/json",
         }
-
-        # Initialize OpenAI if available
         api_key = os.getenv("OPENAI_API_KEY")
         self.llm_client = OpenAI(api_key=api_key) if api_key and OpenAI else None
         self.llm_model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
     def fetch_all_messages(self) -> List[Dict[str, Any]]:
-        """Fetch all messages from database."""
         logger.info("Fetching all messages from Supabase...")
-
         all_messages = []
         offset = 0
         limit = 1000
-
         while True:
             resp = requests.get(
                 f"{self.supabase_url}/rest/v1/messages?offset={offset}&limit={limit}",
-                headers=self.headers,
-                timeout=10
+                headers=self.headers, timeout=10
             )
-
             if resp.status_code != 200:
                 break
-
             batch = resp.json() if isinstance(resp.json(), list) else []
             if not batch:
                 break
-
             all_messages.extend(batch)
             offset += limit
 
-        # Filter to human data
+        # filter out simulated conversations
         human_messages = [
             m for m in all_messages
-            if m.get('participant_id')
-            and not str(m.get('participant_id')).lower().startswith('llm')
+            if m.get('participant_id') and not str(m.get('participant_id')).lower().startswith('llm')
         ]
-
         logger.info(f"Fetched {len(human_messages)} human messages")
         return human_messages
 
     def fetch_feedback(self) -> List[Dict[str, Any]]:
-        """Fetch feedback from database."""
         logger.info("Fetching feedback from Supabase...")
-
-        resp = requests.get(
-            f"{self.supabase_url}/rest/v1/support_feedback",
-            headers=self.headers,
-            timeout=10
-        )
-
+        resp = requests.get(f"{self.supabase_url}/rest/v1/support_feedback", headers=self.headers, timeout=10)
         if resp.status_code != 200:
             return []
-
         feedback = resp.json() if isinstance(resp.json(), list) else []
         logger.info(f"Fetched {len(feedback)} feedback entries")
         return feedback
 
     def group_messages_by_session(self, messages: List[Dict[str, Any]]) -> Dict[str, List]:
-        """Group messages by session ID."""
         sessions = defaultdict(list)
         for msg in messages:
-            sid = msg.get('session_id')
-            if sid:
+            if sid := msg.get('session_id'):
                 sessions[sid].append(msg)
         return dict(sessions)
 
     def evaluate_session_with_llm(self, session_id: str, messages: List[Dict]) -> Dict[str, Any]:
-        """Evaluate a session using LLM-as-Judge (matches simulation framework)."""
         if not self.llm_client:
             logger.warning(f"LLM client not available, skipping LAJ for {session_id}")
-            return {
-                "task_success": 0,
-                "clarity": 0,
-                "empathy": 0,
-                "overall": 0,
-                "error": "LLM not configured"
-            }
+            return {"task_success": 0, "clarity": 0, "empathy": 0, "overall": 0, "error": "LLM not configured"}
 
-        # Build transcript in same format as simulation
-        transcript_lines = []
+        # build transcript in same format as simulation
+        lines = []
         for i, msg in enumerate(sorted(messages, key=lambda m: m.get('created_at', '')), 1):
             role = "USER" if msg.get('role') == 'user' else "ASSISTANT"
-            content = msg.get('content', '')
-            transcript_lines.append(f"[Turn {i}] {role}: {content}")
-        transcript_text = "\n".join(transcript_lines)
+            lines.append(f"[Turn {i}] {role}: {msg.get('content', '')}")
+        transcript_text = "\n".join(lines)
 
-        # Build prompt matching the simulation framework
+        # prompt matches the simulation framework scoring format
         prompt = f"""Evaluate this customer service conversation based on the following criteria.
 
 # TRANSCRIPT
@@ -179,34 +140,23 @@ OVERALL ASSESSMENT:
 [Summary of conversation quality]
 """
 
-        # Evaluate with LLM
         try:
             response = self.llm_client.chat.completions.create(
                 model=self.llm_model,
                 messages=[
-                    {
-                        "role": "system",
-                        "content": "You are an expert evaluator of customer service conversations. Provide objective, detailed assessments based on the given criteria."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
+                    {"role": "system", "content": "You are an expert evaluator of customer service conversations. Provide objective, detailed assessments based on the given criteria."},
+                    {"role": "user", "content": prompt}
                 ],
-                temperature=0.3,
-                max_tokens=1000
+                temperature=0.3, max_tokens=1000
             )
-
             evaluation_text = response.choices[0].message.content.strip()
 
-            # Parse scores using same method as simulation
+            # parse scores using same method as simulation
             def extract_score(text: str, dimension: str) -> float:
-                pattern = rf"{dimension}:\s*([0-9]*\.?[0-9]+)"
-                match = re.search(pattern, text, re.IGNORECASE)
+                match = re.search(rf"{dimension}:\s*([0-9]*\.?[0-9]+)", text, re.IGNORECASE)
                 if match:
                     try:
-                        score = float(match.group(1))
-                        return max(0.0, min(1.0, score))
+                        return max(0.0, min(1.0, float(match.group(1))))
                     except ValueError:
                         return 0.5
                 return 0.5
@@ -215,44 +165,22 @@ OVERALL ASSESSMENT:
             clarity = extract_score(evaluation_text, "CLARITY")
             empathy = extract_score(evaluation_text, "EMPATHY")
 
-            # Calculate weighted overall (matching simulation weights)
-            overall = (
-                task_success * 0.6 +
-                clarity * 0.2 +
-                empathy * 0.2
-            )
+            # weighted overall matching simulation weights
+            overall = task_success * 0.6 + clarity * 0.2 + empathy * 0.2
 
-            return {
-                "task_success": task_success,
-                "clarity": clarity,
-                "empathy": empathy,
-                "overall": overall,
-                "rationale": evaluation_text
-            }
+            return {"task_success": task_success, "clarity": clarity, "empathy": empathy, "overall": overall, "rationale": evaluation_text}
 
         except Exception as e:
             logger.debug(f"LLM evaluation error for {session_id}: {e}")
-            return {
-                "task_success": 0,
-                "clarity": 0,
-                "empathy": 0,
-                "overall": 0,
-                "error": str(e)
-            }
+            return {"task_success": 0, "clarity": 0, "empathy": 0, "overall": 0, "error": str(e)}
 
     def generate_combined_report(self, output_file: Optional[str] = None) -> Dict[str, Any]:
-        """Generate combined human + LLM report."""
         logger.info("Generating combined report...")
-
-        # Fetch all data
         messages = self.fetch_all_messages()
         feedback = self.fetch_feedback()
         sessions = self.group_messages_by_session(messages)
-
-        # Map feedback by session
         feedback_by_session = {f.get('session_id'): f for f in feedback if f.get('session_id')}
 
-        # Evaluate sessions with LLM
         logger.info(f"Evaluating {len(sessions)} sessions with LLM-as-Judge...")
         laj_results = {}
         for i, (session_id, session_messages) in enumerate(sessions.items(), 1):
@@ -260,13 +188,10 @@ OVERALL ASSESSMENT:
                 logger.info(f"  Evaluated {i}/{len(sessions)} sessions...")
             laj_results[session_id] = self.evaluate_session_with_llm(session_id, session_messages)
 
-        # Organize by group
         group_data = {"A": [], "B": []}
-
         for feedback_entry in feedback:
             session_id = feedback_entry.get('session_id')
             group = feedback_entry.get('participant_group', 'unspecified')
-
             combined = {
                 "session_id": session_id,
                 "human_ratings": {
@@ -279,7 +204,6 @@ OVERALL ASSESSMENT:
                 "laj_evaluation": laj_results.get(session_id, {}),
                 "message_count": len(sessions.get(session_id, []))
             }
-
             if group in group_data:
                 group_data[group].append(combined)
 
@@ -295,44 +219,30 @@ OVERALL ASSESSMENT:
             "by_group": {}
         }
 
-        # Add group statistics
+        def avg(vals):
+            return round(sum(vals) / len(vals), 2) if vals else 0
+
         for group in ["A", "B"]:
             entries = group_data[group]
             if not entries:
                 continue
 
-            # Extract nested values for human ratings
-            human_overall = [e["human_ratings"].get("overall") for e in entries if e["human_ratings"].get("overall")]
-            human_task = [e["human_ratings"].get("task_success") for e in entries if e["human_ratings"].get("task_success")]
-            human_clarity = [e["human_ratings"].get("clarity") for e in entries if e["human_ratings"].get("clarity")]
-            human_empathy = [e["human_ratings"].get("empathy") for e in entries if e["human_ratings"].get("empathy")]
-            human_accuracy = [e["human_ratings"].get("accuracy") for e in entries if e["human_ratings"].get("accuracy")]
-
-            # Extract values for LLM evaluation
-            laj_overall = [e["laj_evaluation"].get("overall", 0) for e in entries if e["laj_evaluation"].get("overall") is not None]
-            laj_task = [e["laj_evaluation"].get("task_success", 0) for e in entries if e["laj_evaluation"].get("task_success") is not None]
-            laj_clarity = [e["laj_evaluation"].get("clarity", 0) for e in entries if e["laj_evaluation"].get("clarity") is not None]
-            laj_empathy = [e["laj_evaluation"].get("empathy", 0) for e in entries if e["laj_evaluation"].get("empathy") is not None]
+            h = lambda k: [e["human_ratings"].get(k) for e in entries if e["human_ratings"].get(k)]
+            l = lambda k: [e["laj_evaluation"].get(k, 0) for e in entries if e["laj_evaluation"].get(k) is not None]
 
             report["by_group"][group] = {
                 "count": len(entries),
                 "human_ratings": {
-                    "overall": {"avg": round(sum(human_overall) / len(human_overall), 2) if human_overall else 0, "count": len(human_overall)},
-                    "task_success": {"avg": round(sum(human_task) / len(human_task), 2) if human_task else 0, "count": len(human_task)},
-                    "clarity": {"avg": round(sum(human_clarity) / len(human_clarity), 2) if human_clarity else 0, "count": len(human_clarity)},
-                    "empathy": {"avg": round(sum(human_empathy) / len(human_empathy), 2) if human_empathy else 0, "count": len(human_empathy)},
-                    "accuracy": {"avg": round(sum(human_accuracy) / len(human_accuracy), 2) if human_accuracy else 0, "count": len(human_accuracy)},
+                    k: {"avg": avg(h(k)), "count": len(h(k))}
+                    for k in ["overall", "task_success", "clarity", "empathy", "accuracy"]
                 },
                 "laj_evaluation": {
-                    "overall": {"avg": round(sum(laj_overall) / len(laj_overall), 2) if laj_overall else 0, "count": len(laj_overall)},
-                    "task_success": {"avg": round(sum(laj_task) / len(laj_task), 2) if laj_task else 0, "count": len(laj_task)},
-                    "clarity": {"avg": round(sum(laj_clarity) / len(laj_clarity), 2) if laj_clarity else 0, "count": len(laj_clarity)},
-                    "empathy": {"avg": round(sum(laj_empathy) / len(laj_empathy), 2) if laj_empathy else 0, "count": len(laj_empathy)},
+                    k: {"avg": avg(l(k)), "count": len(l(k))}
+                    for k in ["overall", "task_success", "clarity", "empathy"]
                 },
                 "sessions": entries
             }
 
-        # Save report
         if output_file:
             with open(output_file, 'w') as f:
                 json.dump(report, f, indent=2)
@@ -342,30 +252,18 @@ OVERALL ASSESSMENT:
 
 
 def main():
-    """Main entry point."""
     parser = argparse.ArgumentParser(description="Analyze human conversations with human ratings + LLM evaluation")
-    parser.add_argument(
-        "--output",
-        type=str,
-        default="human_laj_combined_analysis.json",
-        help="Output file (default: human_laj_combined_analysis.json)"
-    )
-
+    parser.add_argument("--output", type=str, default="human_laj_combined_analysis.json")
     args = parser.parse_args()
 
     try:
         analyzer = HumanLAJAnalyzer()
         report = analyzer.generate_combined_report(args.output)
-
-        print("\n" + "="*70)
-        print("COMBINED HUMAN + LLM ANALYSIS REPORT")
-        print("="*70)
-        print(f"Total sessions analyzed: {report['summary']['total_sessions']}")
+        print(f"\nCombined Human + LLM Analysis")
+        print(f"Total sessions: {report['summary']['total_sessions']}")
         print(f"Feedback collected: {report['summary']['feedback_collected']}")
         print(f"Groups: {list(report['by_group'].keys())}")
-        print("="*70)
-        print(f"\n✅ Full report saved to: {args.output}")
-
+        print(f"\nFull report saved to: {args.output}")
     except Exception as e:
         logger.error(f"Error: {e}", exc_info=True)
         sys.exit(1)
