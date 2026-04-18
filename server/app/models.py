@@ -38,7 +38,7 @@ class ParticipantInsert(BaseModel):
     name: Optional[str] = None
     group: Optional[str] = None  # 'A' | 'B'
     session_id: Optional[str] = None
-    scenario_id: Optional[str] = None  # NEW: Track which scenario human is testing
+    scenario_id: Optional[str] = None
 
 
 class MessageInsert(BaseModel):
@@ -61,7 +61,7 @@ class FeedbackInsert(BaseModel):
     rating_clarity: Optional[int] = None  # 20% weight in rubric
     rating_empathy: Optional[int] = None  # 20% weight in rubric
     rating_accuracy: Optional[int] = None  # 10% weight (policy compliance)
-    resolved: Optional[bool] = None  # Yes/No/Partial resolution status
-    comments_other: Optional[str] = None  # Optional feedback text
+    resolved: Optional[bool] = None
+    comments_other: Optional[str] = None
     user_agent: Optional[str] = None
     page_url: Optional[str] = None
