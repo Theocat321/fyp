@@ -20,13 +20,6 @@ from app.storage import SupabaseStore
 
 
 def export_real_conversations(output_path: Path, limit: int = None):
-    """
-    Export real user conversations (excluding sim_ sessions) to CSV.
-
-    Args:
-        output_path: Path to output CSV file
-        limit: Optional limit on number of messages to fetch
-    """
     store = SupabaseStore()
 
     if not store.is_configured():
@@ -50,7 +43,6 @@ def export_real_conversations(output_path: Path, limit: int = None):
 
     print(f"Fetched {len(messages)} messages")
 
-    # Filter out simulated conversations (session_id starts with "sim_")
     real_messages = [
         msg for msg in messages
         if not msg.get('session_id', '').startswith('sim_')
@@ -63,7 +55,6 @@ def export_real_conversations(output_path: Path, limit: int = None):
         print("Make sure you have real users (not starting with 'sim_') in your database.")
         sys.exit(0)
 
-    # Write to CSV
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, 'w', newline='') as f:
@@ -89,12 +80,9 @@ def export_real_conversations(output_path: Path, limit: int = None):
             })
 
     print(f"\n✓ Exported {len(real_messages)} messages to {output_path}")
-
-    # Show session breakdown
     sessions = set(msg.get('session_id') for msg in real_messages)
     print(f"✓ {len(sessions)} unique sessions")
 
-    # Show variant breakdown
     variants = {}
     for msg in real_messages:
         variant = msg.get('participant_group', 'unknown')
@@ -106,7 +94,6 @@ def export_real_conversations(output_path: Path, limit: int = None):
 
 
 def main():
-    """Main entry point."""
     parser = argparse.ArgumentParser(
         description="Export real user conversations from Supabase to CSV"
     )

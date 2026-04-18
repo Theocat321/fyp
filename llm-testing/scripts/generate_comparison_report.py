@@ -33,15 +33,6 @@ logger = logging.getLogger(__name__)
 
 
 def load_llm_results(pattern: str) -> List[Dict[str, Any]]:
-    """
-    Load LLM experiment results from JSON files matching pattern.
-
-    Args:
-        pattern: Glob pattern for LLM result files
-
-    Returns:
-        List of experiment result dictionaries
-    """
     files = glob(pattern)
     logger.info(f"Found {len(files)} LLM result files matching pattern: {pattern}")
 
@@ -59,15 +50,6 @@ def load_llm_results(pattern: str) -> List[Dict[str, Any]]:
 
 
 def load_human_results(file_path: str) -> Dict[str, Any]:
-    """
-    Load human evaluation results from JSON file.
-
-    Args:
-        file_path: Path to human evaluation JSON file
-
-    Returns:
-        Human evaluation result dictionary
-    """
     logger.info(f"Loading human results from: {file_path}")
 
     try:
