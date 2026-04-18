@@ -104,7 +104,6 @@ class BehaviourPuller:
     def compute_session_metrics(self, events: list, messages: list, feedback: list) -> dict:
         """Compute per-session behavioural metrics."""
 
-        # Index feedback and messages by session
         feedback_by_session = {f["session_id"]: f for f in feedback if f.get("session_id")}
         messages_by_session = defaultdict(list)
         for m in messages:
@@ -112,7 +111,6 @@ class BehaviourPuller:
             if sid:
                 messages_by_session[sid].append(m)
 
-        # Group events by session
         events_by_session = defaultdict(list)
         for e in events:
             sid = e.get("session_id")
@@ -142,7 +140,6 @@ class BehaviourPuller:
             timestamps = [t for t in timestamps if t is not None]
             session_duration_s = (max(timestamps) - min(timestamps)) if len(timestamps) >= 2 else None
 
-            # Typing durations (typing_end events with duration_ms)
             typing_durations = [
                 e["duration_ms"] for e in evts
                 if e.get("event") == "typing_end" and e.get("duration_ms") is not None
@@ -154,17 +151,14 @@ class BehaviourPuller:
                 if e.get("event") == "reply_done" and e.get("duration_ms") is not None
             ]
 
-            # Message counts from messages table
             session_messages = messages_by_session.get(sid, [])
             user_turns = sum(1 for m in session_messages if m.get("role") == "user")
             assistant_turns = sum(1 for m in session_messages if m.get("role") == "assistant")
 
-            # Event type breakdown
             event_counts = defaultdict(int)
             for e in evts:
                 event_counts[e.get("event", "unknown")] += 1
 
-            # Feedback
             fb = feedback_by_session.get(sid, {})
             written_feedback = fb.get("comments_other", "").strip() if fb.get("comments_other") else None
             resolved = fb.get("resolved")
@@ -263,7 +257,6 @@ def main():
         json.dump(output, f, indent=2)
     logger.info(f"Written to {args.output}")
 
-    # Print summary
     print("\n" + "=" * 65)
     print("BEHAVIOURAL DATA SUMMARY")
     print("=" * 65)
@@ -280,7 +273,6 @@ def main():
         print(f"  Written feedback entries:  {stats['written_feedback_count']}")
         print()
 
-    # Print written feedback
     for group, stats in summary.items():
         if stats.get("written_feedback"):
             print(f"--- Written feedback Group {group} ---")

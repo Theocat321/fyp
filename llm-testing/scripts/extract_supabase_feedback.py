@@ -9,26 +9,21 @@ from pathlib import Path
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 SUPABASE_URL = os.getenv('SUPABASE_URL')
 SUPABASE_SERVICE_ROLE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
 
 def extract_feedback():
-    # Initialize Supabase client
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
-    # Fetch all feedback from support_feedback table
     response = supabase.table('support_feedback').select('*').execute()
     feedback_data = response.data
 
-    # Bucket feedback by group
     group_a_feedback = []
     group_b_feedback = []
 
     for feedback in feedback_data:
-        # Only include feedback with actual comments
         if feedback.get('comments_other'):
             entry = {
                 'session_id': feedback.get('session_id'),
@@ -43,7 +38,6 @@ def extract_feedback():
             elif group == 'B':
                 group_b_feedback.append(entry)
 
-    # Write Group A feedback to file
     with open(Path(__file__).parent.parent / "outputs" / "group_a_feedback.txt", 'w') as f:
         f.write(f"=== GROUP A HUMAN FEEDBACK ===\n")
         f.write(f"Total feedback entries: {len(group_a_feedback)}\n\n")
@@ -55,7 +49,6 @@ def extract_feedback():
             f.write(f"Comment:\n{feedback['comment']}\n")
             f.write("\n" + "="*80 + "\n\n")
 
-    # Write Group B feedback to file
     with open(Path(__file__).parent.parent / "outputs" / "group_b_feedback.txt", 'w') as f:
         f.write(f"=== GROUP B HUMAN FEEDBACK ===\n")
         f.write(f"Total feedback entries: {len(group_b_feedback)}\n\n")

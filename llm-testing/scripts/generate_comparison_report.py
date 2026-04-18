@@ -62,19 +62,9 @@ def load_human_results(file_path: str) -> Dict[str, Any]:
 
 
 def calculate_llm_stats(llm_results: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """
-    Aggregate statistics from LLM experiment results.
-
-    Args:
-        llm_results: List of LLM experiment result dictionaries
-
-    Returns:
-        Dictionary with aggregated statistics
-    """
     if not llm_results:
         return {}
 
-    # Collect all conversations from all experiments
     all_conversations = []
     for experiment in llm_results:
         conversations = experiment.get('conversations', [])
@@ -83,7 +73,6 @@ def calculate_llm_stats(llm_results: List[Dict[str, Any]]) -> Dict[str, Any]:
     if not all_conversations:
         return {}
 
-    # Extract scores
     task_success_scores = []
     clarity_scores = []
     empathy_scores = []
@@ -91,8 +80,6 @@ def calculate_llm_stats(llm_results: List[Dict[str, Any]]) -> Dict[str, Any]:
     turn_counts = []
     heuristic_passes = []
     critical_failures = []
-
-    # By variant
     scores_by_variant = {}
 
     for conv in all_conversations:
@@ -108,13 +95,11 @@ def calculate_llm_stats(llm_results: List[Dict[str, Any]]) -> Dict[str, Any]:
         heuristic_passes.append(1 if heuristic_results.get('all_passed', False) else 0)
         critical_failures.append(1 if heuristic_results.get('critical_failures', []) else 0)
 
-        # Track by variant
         variant = conv.get('variant', 'unknown')
         if variant not in scores_by_variant:
             scores_by_variant[variant] = []
         scores_by_variant[variant].append(eval_scores.get('overall_weighted', 0))
 
-    # Calculate statistics
     stats = {
         'total_conversations': len(all_conversations),
         'avg_task_success': mean(task_success_scores),
@@ -132,7 +117,6 @@ def calculate_llm_stats(llm_results: List[Dict[str, Any]]) -> Dict[str, Any]:
         'scores_by_variant': {}
     }
 
-    # Calculate variant averages
     for variant, scores in scores_by_variant.items():
         stats['scores_by_variant'][variant] = {
             'avg': mean(scores),
@@ -144,21 +128,11 @@ def calculate_llm_stats(llm_results: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 
 def calculate_human_stats(human_results: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Aggregate statistics from human evaluation results.
-
-    Args:
-        human_results: Human evaluation result dictionary
-
-    Returns:
-        Dictionary with aggregated statistics
-    """
     conversations = human_results.get('conversations', [])
 
     if not conversations:
         return {}
 
-    # Extract LAJ scores for human conversations
     task_success_scores = []
     clarity_scores = []
     empathy_scores = []
@@ -166,19 +140,14 @@ def calculate_human_stats(human_results: Dict[str, Any]) -> Dict[str, Any]:
     turn_counts = []
     heuristic_passes = []
     critical_failures = []
-
-    # Extract human self-ratings
     human_task_ratings = []
     human_clarity_ratings = []
     human_empathy_ratings = []
     human_overall_ratings = []
-
-    # By variant
     scores_by_variant = {}
     laj_human_deltas = {'task_success': [], 'clarity': [], 'empathy': []}
 
     for conv in conversations:
-        # LAJ scores
         eval_scores = conv.get('llm_evaluation', {})
         task_success_scores.append(eval_scores.get('task_success', 0))
         clarity_scores.append(eval_scores.get('clarity', 0))
@@ -191,13 +160,11 @@ def calculate_human_stats(human_results: Dict[str, Any]) -> Dict[str, Any]:
         heuristic_passes.append(1 if heuristic_results.get('all_passed', False) else 0)
         critical_failures.append(1 if heuristic_results.get('critical_failures', []) else 0)
 
-        # Track by variant
         variant = conv.get('variant', 'unknown')
         if variant not in scores_by_variant:
             scores_by_variant[variant] = []
         scores_by_variant[variant].append(eval_scores.get('overall_weighted', 0))
 
-        # Extract human ratings from config snapshot
         config = conv.get('config_snapshot', {})
         human_feedback = config.get('human_feedback', {})
 
@@ -210,7 +177,6 @@ def calculate_human_stats(human_results: Dict[str, Any]) -> Dict[str, Any]:
         if human_feedback.get('rating_overall') is not None:
             human_overall_ratings.append(human_feedback['rating_overall'])
 
-        # Extract deltas
         comparison = config.get('laj_vs_human_comparison', {})
         if comparison.get('task_success', {}).get('delta') is not None:
             laj_human_deltas['task_success'].append(comparison['task_success']['delta'])
@@ -219,7 +185,6 @@ def calculate_human_stats(human_results: Dict[str, Any]) -> Dict[str, Any]:
         if comparison.get('empathy', {}).get('delta') is not None:
             laj_human_deltas['empathy'].append(comparison['empathy']['delta'])
 
-    # Calculate statistics
     stats = {
         'total_conversations': len(conversations),
         'laj_scores': {
@@ -255,7 +220,6 @@ def calculate_human_stats(human_results: Dict[str, Any]) -> Dict[str, Any]:
         'scores_by_variant': {}
     }
 
-    # Calculate variant averages
     for variant, scores in scores_by_variant.items():
         stats['scores_by_variant'][variant] = {
             'avg': mean(scores),
@@ -281,7 +245,6 @@ def generate_html_report(
     """
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Helper to format scores
     def fmt_score(value: Optional[float], scale: str = "0-1") -> str:
         if value is None:
             return "N/A"
@@ -296,7 +259,6 @@ def generate_html_report(
             return "N/A"
         return f"{value * 100:.1f}%"
 
-    # HTML template with embedded CSS
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -619,7 +581,6 @@ def generate_html_report(
                     <tbody>
 """
 
-    # Add rubric score rows
     rubric_metrics = [
         ('Task Success', 'task_success'),
         ('Clarity', 'clarity'),
@@ -632,7 +593,6 @@ def generate_html_report(
         human_laj_val = human_stats.get('laj_scores', {}).get(f'avg_{metric_key}', 0)
         human_self_val = human_stats.get('human_ratings', {}).get(f'avg_{metric_key}')
 
-        # Only show delta for metrics that have human self-ratings
         if metric_key in ['task_success', 'clarity', 'empathy']:
             delta_val = human_stats.get('laj_vs_human', {}).get(f'avg_{metric_key}_delta')
             if delta_val is not None:
@@ -643,7 +603,6 @@ def generate_html_report(
         else:
             delta_html = '<span class="delta neutral">--</span>'
 
-        # Color coding for scores
         llm_class = 'good' if llm_val >= 0.7 else 'medium' if llm_val >= 0.5 else 'poor'
         human_laj_class = 'good' if human_laj_val >= 0.7 else 'medium' if human_laj_val >= 0.5 else 'poor'
 
@@ -676,7 +635,6 @@ def generate_html_report(
             </div>
 """
 
-    # Variant Comparison
     if llm_stats.get('scores_by_variant') or human_stats.get('scores_by_variant'):
         html += """
             <!-- Variant Performance -->
@@ -695,7 +653,6 @@ def generate_html_report(
                     <tbody>
 """
 
-        # LLM variants
         for variant, data in sorted(llm_stats.get('scores_by_variant', {}).items()):
             score_class = 'good' if data['avg'] >= 0.7 else 'medium' if data['avg'] >= 0.5 else 'poor'
             html += f"""                        <tr>
@@ -707,7 +664,6 @@ def generate_html_report(
                         </tr>
 """
 
-        # Human variants
         for variant, data in sorted(human_stats.get('scores_by_variant', {}).items()):
             score_class = 'good' if data['avg'] >= 0.7 else 'medium' if data['avg'] >= 0.5 else 'poor'
             html += f"""                        <tr>
@@ -724,7 +680,6 @@ def generate_html_report(
             </div>
 """
 
-    # Heuristics and Quality Metrics
     html += f"""
             <!-- Heuristic & Quality Metrics -->
             <div class="section">
@@ -775,10 +730,8 @@ def generate_html_report(
                 <h2 class="section-title">Key Insights</h2>
 """
 
-    # Generate insights
     insights = []
 
-    # Compare success rates
     llm_success = llm_stats.get('successful_rate', 0)
     human_success = human_stats.get('successful_rate', 0)
     if llm_success and human_success:
@@ -787,7 +740,6 @@ def generate_html_report(
             direction = "higher" if llm_success > human_success else "lower"
             insights.append(f"LLM testing shows {direction} success rate ({fmt_pct(llm_success)}) compared to human testing ({fmt_pct(human_success)}). This may indicate differences in conversation patterns or evaluation expectations.")
 
-    # Compare LAJ vs human self-ratings
     human_ratings = human_stats.get('human_ratings', {})
     if human_ratings.get('count_with_ratings', 0) > 0:
         task_delta = human_stats.get('laj_vs_human', {}).get('avg_task_success_delta')
@@ -796,14 +748,12 @@ def generate_html_report(
                 direction = "higher" if task_delta > 0 else "lower"
                 insights.append(f"LAJ ratings are {direction} than human self-ratings by {abs(task_delta):.2f} points on average (1-5 scale). This suggests potential calibration differences between AI and human evaluation standards.")
 
-    # Compare heuristic failures
     llm_failures = llm_stats.get('critical_failure_rate', 0)
     human_failures = human_stats.get('critical_failure_rate', 0)
     if llm_failures and human_failures:
         if human_failures > llm_failures * 1.5:
             insights.append(f"Human conversations have higher critical failure rate ({fmt_pct(human_failures)}) vs LLM testing ({fmt_pct(llm_failures)}). This may reflect more unpredictable edge cases in real user behavior.")
 
-    # Variant comparison
     llm_variants = llm_stats.get('scores_by_variant', {})
     human_variants = human_stats.get('scores_by_variant', {})
     if 'A' in llm_variants and 'B' in llm_variants:
@@ -837,7 +787,6 @@ def generate_html_report(
 </html>
 """
 
-    # Write to file
     output_file = Path(output_path)
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -908,13 +857,11 @@ Examples:
 
     args = parser.parse_args()
 
-    # Setup logging
     setup_logging(args.log_level)
 
     logger.info("Starting comparison report generation...")
 
     try:
-        # Load LLM results (support multiple patterns)
         llm_results = []
         for pattern in args.llm_results.split(','):
             pattern = pattern.strip()
@@ -927,27 +874,23 @@ Examples:
 
         logger.info(f"Loaded {len(llm_results)} LLM experiment files")
 
-        # Load human results
         human_results = load_human_results(args.human_results)
 
         if not human_results.get('conversations'):
             logger.error("No conversations found in human results")
             sys.exit(1)
 
-        # Calculate statistics
-        logger.info("Calculating LLM statistics...")
+            logger.info("Calculating LLM statistics...")
         llm_stats = calculate_llm_stats(llm_results)
 
         logger.info("Calculating human statistics...")
         human_stats = calculate_human_stats(human_results)
 
-        # Generate report
         logger.info("Generating HTML report...")
         generate_html_report(llm_stats, human_stats, args.output)
 
         logger.info(f"Success! Report generated: {args.output}")
 
-        # Print summary to console
         print("\n" + "="*80)
         print("COMPARISON REPORT GENERATED")
         print("="*80)
