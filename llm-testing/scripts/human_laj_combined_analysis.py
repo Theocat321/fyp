@@ -1,9 +1,4 @@
 #!/usr/bin/env python3
-"""
-Combined Human Self-Ratings + LLM-as-Judge Analysis.
-Fetches human conversations, evaluates with LLM-as-Judge, and compares Group A vs B.
-Usage: python3 human_laj_combined_analysis.py [--output combined_report.json]
-"""
 import argparse
 import json
 import logging
