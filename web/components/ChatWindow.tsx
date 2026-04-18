@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import MessageBubble from "./MessageBubble";
 import { sendMessage, ChatResponse, sendMessageStream, fetchMessages, fetchScenarios } from "../lib/api";
 import { logEvent } from "../lib/telemetry";
 import EnrollmentForm from "./EnrollmentForm";
+import MessageList from "./MessageList";
 
 type Msg = { role: "user" | "assistant"; text: string };
 
@@ -420,9 +420,10 @@ export default function ChatWindow() {
 
   return (
     <div className="chat-shell">
-      <div
-        className="chat-list"
-        ref={listRef}
+      <MessageList
+        messages={messages}
+        busy={busy}
+        listRef={listRef}
         onScroll={() => {
           try {
             const el = listRef.current;
@@ -431,15 +432,7 @@ export default function ChatWindow() {
             setAtBottom(nearBottom);
           } catch {}
         }}
-      >
-        {messages.map((m, i) => (
-          <MessageBubble key={i} role={m.role} text={m.text} />
-        ))}
-        {busy && <MessageBubble role="assistant" typing />}
-        <div className="sr-only" aria-live="polite" aria-atomic="true">
-          {busy ? "VodaCare is typing" : ""}
-        </div>
-      </div>
+      />
       <form className="input-row" onSubmit={onSubmit}>
         <button
           type="button"
