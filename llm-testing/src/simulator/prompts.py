@@ -1,21 +1,10 @@
-"""Prompt generation for user simulator."""
 from typing import List, Dict
 from src.persona.models import Persona
 from src.scenario.models import Scenario
 
 
 def build_simulator_system_prompt(persona: Persona, scenario: Scenario) -> str:
-    """
-    Build system prompt for user simulator.
-
-    Args:
-        persona: The persona to simulate
-        scenario: The scenario context
-
-    Returns:
-        System prompt string
-    """
-    prompt = f"""You are simulating a customer interacting with VodaCare customer support.
+    return f"""You are simulating a customer interacting with VodaCare customer support.
 
 # Your Identity
 Name: {persona.name}
@@ -57,29 +46,10 @@ Location: {persona.location}
 
 Remember: You are {persona.name}, and you're having a genuine customer support interaction."""
 
-    return prompt
 
-
-def build_simulator_user_message(
-    conversation_history: List[Dict[str, str]],
-    turn_number: int
-) -> str:
-    """
-    Build the user message for the simulator based on conversation history.
-
-    Args:
-        conversation_history: List of previous messages (format: [{"role": "user"|"assistant", "content": "..."}])
-        turn_number: Current turn number
-
-    Returns:
-        User message to send to simulator
-    """
+def build_simulator_user_message(conversation_history: List[Dict[str, str]], turn_number: int) -> str:
     if turn_number == 1:
-        # First turn uses seed utterance from persona (already in history)
         return ""
-
-    # For subsequent turns, we ask the simulator to continue the conversation
-    # The history will be in the messages, so we just need a continuation prompt
     return "Continue the conversation as your persona. Respond to the assistant's last message."
 
 
@@ -88,23 +58,6 @@ def format_conversation_for_simulator(
     scenario: Scenario,
     conversation_history: List[Dict[str, str]]
 ) -> List[Dict[str, str]]:
-    """
-    Format conversation history for OpenAI API with simulator context.
-
-    Args:
-        persona: The persona being simulated
-        scenario: The scenario context
-        conversation_history: Previous conversation turns
-
-    Returns:
-        List of messages formatted for OpenAI API
-    """
-    system_prompt = build_simulator_system_prompt(persona, scenario)
-
-    messages = [
-        {"role": "system", "content": system_prompt}
-    ]
-
+    messages = [{"role": "system", "content": build_simulator_system_prompt(persona, scenario)}]
     messages.extend(conversation_history)
-
     return messages

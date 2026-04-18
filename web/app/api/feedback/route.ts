@@ -9,17 +9,13 @@ export async function POST(request: NextRequest) {
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      console.error('[Feedback] Supabase not configured');
-      return NextResponse.json(
-        { ok: false, error: 'supabase_not_configured' },
-        { status: 500 }
-      );
+      console.error('Supabase not configured');
+      return NextResponse.json({ ok: false, error: 'supabase_not_configured' }, { status: 500 });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Prepare feedback row matching condensed database schema
-    const feedbackRow = {
+    const row = {
       session_id: body.session_id || null,
       participant_id: body.participant_id || null,
       participant_group: body.participant_group || null,
@@ -37,25 +33,21 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await supabase
       .from('support_feedback')
-      .insert([feedbackRow])
+      .insert([row])
       .select();
 
     if (error) {
-      console.error('[Feedback] Supabase insert error:', error);
+      console.error('feedback insert error:', error);
       return NextResponse.json(
         { ok: false, error: 'insert_failed', details: error.message },
         { status: 500 }
       );
     }
 
-    console.log('[Feedback] Successfully stored feedback:', data);
     return NextResponse.json({ ok: true, stored: true }, { status: 200 });
 
   } catch (error) {
-    console.error('[Feedback API] Error:', error);
-    return NextResponse.json(
-      { ok: false, error: 'feedback_failed' },
-      { status: 500 }
-    );
+    console.error(error);
+    return NextResponse.json({ ok: false, error: 'feedback_failed' }, { status: 500 });
   }
 }

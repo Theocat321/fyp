@@ -1,4 +1,3 @@
-"""Conversation orchestrator for running multi-turn interactions."""
 import logging
 from datetime import datetime
 from typing import Dict, List, Any
@@ -14,9 +13,6 @@ logger = logging.getLogger(__name__)
 
 
 class ConversationOrchestrator:
-    """
-    Orchestrates multi-turn conversations between simulated user and chatbot.
-    """
 
     def __init__(
         self,
@@ -24,51 +20,16 @@ class ConversationOrchestrator:
         api_client: VodaCareClient,
         termination_checker: TerminationChecker
     ):
-        """
-        Initialize the orchestrator.
-
-        Args:
-            user_simulator: User simulator instance
-            api_client: API client for chatbot
-            termination_checker: Termination logic checker
-        """
         self.user_simulator = user_simulator
         self.api_client = api_client
         self.termination_checker = termination_checker
 
-    def run_conversation(
-        self,
-        persona: Persona,
-        scenario: Scenario,
-        variant: str,
-        seed: int
-    ) -> Dict[str, Any]:
-        """
-        Run a complete conversation between persona and chatbot.
-
-        Args:
-            persona: The persona to simulate
-            scenario: The scenario context
-            variant: System prompt variant ("A" or "B")
-            seed: Random seed for reproducibility
-
-        Returns:
-            Dictionary containing:
-                - transcript: List of ConversationTurn objects
-                - termination: TerminationInfo object
-                - total_turns: Number of turns
-                - average_latency_ms: Average response latency
-                - session_id: Session identifier used
-        """
+    def run_conversation(self, persona: Persona, scenario: Scenario, variant: str, seed: int) -> Dict[str, Any]:
         session_id = f"sim_{persona.id}_{scenario.id}_{seed}"
         participant_id = f"llm_test_{seed}"
 
-        logger.info(
-            f"Starting conversation: {persona.id} × {scenario.id} "
-            f"(variant={variant}, seed={seed})"
-        )
+        logger.info(f"Starting: {persona.id} × {scenario.id} (variant={variant}, seed={seed})")
 
-        # Register participant in database
         try:
             self.api_client.register_participant(
                 participant_id=participant_id,
@@ -82,7 +43,6 @@ class ConversationOrchestrator:
         transcript: List[ConversationTurn] = []
         conversation_history: List[Dict[str, str]] = []
         latencies: List[float] = []
-
         turn_number = 0
         started_at = datetime.now()
 
@@ -97,22 +57,13 @@ class ConversationOrchestrator:
                     conversation_history=conversation_history,
                     turn_number=turn_number
                 )
-
                 logger.info(f"User: {user_message[:100]}...")
 
-                user_turn = ConversationTurn(
-                    turn_number=turn_number,
-                    speaker="user",
-                    message=user_message,
-                    timestamp=datetime.now()
-                )
-                transcript.append(user_turn)
-
-                # Add to conversation history for simulator
-                conversation_history.append({
-                    "role": "user",
-                    "content": user_message
-                })
+                transcript.append(ConversationTurn(
+                    turn_number=turn_number, speaker="user",
+                    message=user_message, timestamp=datetime.now()
+                ))
+                conversation_history.append({"role": "user", "content": user_message})
 
                 try:
                     api_response = self.api_client.send_message(
@@ -121,69 +72,39 @@ class ConversationOrchestrator:
                         participant_group=variant,
                         participant_id=participant_id
                     )
-
                     assistant_message = api_response["response"]
                     latency = api_response["latency_ms"]
                     latencies.append(latency)
-
-                    logger.info(
-                        f"Assistant: {assistant_message[:100]}... "
-                        f"(latency: {latency:.0f}ms)"
-                    )
-
+                    logger.info(f"Assistant: {assistant_message[:100]}... ({latency:.0f}ms)")
                 except Exception as e:
                     logger.error(f"API error: {e}")
-                    # Record error in transcript
                     assistant_message = f"[ERROR: {str(e)}]"
                     latency = 0
 
-                assistant_turn = ConversationTurn(
-                    turn_number=turn_number,
-                    speaker="assistant",
-                    message=assistant_message,
-                    timestamp=datetime.now(),
+                transcript.append(ConversationTurn(
+                    turn_number=turn_number, speaker="assistant",
+                    message=assistant_message, timestamp=datetime.now(),
                     metadata={"latency_ms": latency}
-                )
-                transcript.append(assistant_turn)
-
-                # Add to conversation history for simulator
-                conversation_history.append({
-                    "role": "assistant",
-                    "content": assistant_message
-                })
+                ))
+                conversation_history.append({"role": "assistant", "content": assistant_message})
 
                 should_end, reason, details = self.termination_checker.should_terminate(
                     persona=persona,
                     conversation_history=conversation_history,
                     turn_number=turn_number
                 )
-
                 if should_end:
-                    logger.info(f"Conversation ending: {reason} - {details}")
-                    termination = TerminationInfo(
-                        reason=reason,
-                        turn_number=turn_number,
-                        details=details
-                    )
+                    logger.info(f"Ending: {reason} — {details}")
+                    termination = TerminationInfo(reason=reason, turn_number=turn_number, details=details)
                     break
 
         except Exception as e:
             logger.error(f"Conversation error: {e}", exc_info=True)
-            # Create termination info for error case
-            termination = TerminationInfo(
-                reason="error",
-                turn_number=turn_number,
-                details=f"Error occurred: {str(e)}"
-            )
+            termination = TerminationInfo(reason="error", turn_number=turn_number, details=str(e))
 
         completed_at = datetime.now()
-
         avg_latency = sum(latencies) / len(latencies) if latencies else 0
-
-        logger.info(
-            f"Conversation completed: {turn_number} turns, "
-            f"avg latency: {avg_latency:.0f}ms, reason: {termination.reason}"
-        )
+        logger.info(f"Done: {turn_number} turns, avg latency {avg_latency:.0f}ms, reason: {termination.reason}")
 
         return {
             "transcript": transcript,

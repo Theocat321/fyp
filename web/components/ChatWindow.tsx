@@ -222,7 +222,6 @@ export default function ChatWindow() {
     try {
       const now = Date.now();
       setLastSendAt(now);
-      // Generic 'send' event for funnel
       await logEvent({
         session_id: sid,
         participant_id: participantId,
@@ -234,7 +233,6 @@ export default function ChatWindow() {
         client_ts: now,
         page_url: typeof window !== "undefined" ? window.location.href : undefined,
       });
-      // Legacy/message-specific event
       await logEvent({
         session_id: sid,
         participant_id: participantId,
@@ -248,7 +246,6 @@ export default function ChatWindow() {
       });
     } catch {}
     setMessages((m) => [...m, { role: "user", text: trimmed }]);
-    // Persist user message via Python backend (best-effort)
     try {
       const pid = ensureParticipantId();
       await fetch("/api/messages", {
@@ -298,7 +295,6 @@ export default function ChatWindow() {
           },
           onDone: async (finalText) => {
             setBusy(false);
-            // Persist assistant message via Python backend (best-effort)
             try {
               const pid = ensureParticipantId();
               await fetch("/api/messages", {
@@ -313,7 +309,6 @@ export default function ChatWindow() {
                   participant_group: participantGroup,
                 }),
               });
-              // Client-side response event for funnel
               try {
                 const now = Date.now();
                 const dur = lastSendAt ? now - lastSendAt : undefined;
@@ -352,7 +347,6 @@ export default function ChatWindow() {
           });
         } catch {}
         setMessages((m) => [...m, { role: "assistant", text: resp.reply }]);
-        // Persist assistant message via Python backend (best-effort)
         try {
           const pid = ensureParticipantId();
           await fetch("/api/messages", {
@@ -367,7 +361,6 @@ export default function ChatWindow() {
               participant_group: participantGroup,
             }),
           });
-          // Client-side response event for funnel (non-stream)
           try {
             const now = Date.now();
             const dur = lastSendAt ? now - lastSendAt : undefined;

@@ -1,4 +1,3 @@
-"""Experiment runner for orchestrating full test runs."""
 import logging
 import uuid
 from datetime import datetime
@@ -24,9 +23,6 @@ logger = logging.getLogger(__name__)
 
 
 class ExperimentRunner:
-    """
-    Orchestrates complete experiment runs across personas and scenarios.
-    """
 
     def __init__(
         self,
@@ -39,19 +35,6 @@ class ExperimentRunner:
         base_seed: int = 42,
         rubric: Dict = None
     ):
-        """
-        Initialize the experiment runner.
-
-        Args:
-            openai_api_key: OpenAI API key
-            vodacare_api_url: VodaCare API base URL
-            openai_model_simulator: Model for user simulation
-            openai_model_judge: Model for evaluation
-            api_timeout: API timeout in seconds
-            max_turns: Maximum conversation turns
-            base_seed: Base random seed
-            rubric: Evaluation rubric
-        """
         self.openai_api_key = openai_api_key
         self.vodacare_api_url = vodacare_api_url
         self.openai_model_simulator = openai_model_simulator
@@ -69,26 +52,14 @@ class ExperimentRunner:
             model=openai_model_simulator,
             base_seed=base_seed
         )
-
-        self.api_client = VodaCareClient(
-            base_url=vodacare_api_url,
-            timeout=api_timeout
-        )
-
+        self.api_client = VodaCareClient(base_url=vodacare_api_url, timeout=api_timeout)
         self.termination_checker = TerminationChecker(max_turns=max_turns)
-
         self.orchestrator = ConversationOrchestrator(
             user_simulator=self.user_simulator,
             api_client=self.api_client,
             termination_checker=self.termination_checker
         )
-
-        self.llm_judge = LLMJudge(
-            api_key=openai_api_key,
-            model=openai_model_judge,
-            rubric=rubric
-        )
-
+        self.llm_judge = LLMJudge(api_key=openai_api_key, model=openai_model_judge, rubric=rubric)
         self.heuristic_evaluator = HeuristicEvaluator()
 
     def run_experiment(
@@ -98,42 +69,23 @@ class ExperimentRunner:
         scenario_ids: List[str],
         experiment_name: str = "unnamed_experiment"
     ) -> ExperimentRun:
-        """
-        Run a complete experiment.
-
-        Args:
-            variant: System prompt variant ("A" or "B")
-            persona_ids: List of persona IDs to test
-            scenario_ids: List of scenario IDs to test
-            experiment_name: Name for this experiment run
-
-        Returns:
-            ExperimentRun object with all results
-        """
         experiment_id = f"exp_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
 
-        logger.info("="*80)
-        logger.info(f"Starting Experiment: {experiment_name}")
-        logger.info(f"Experiment ID: {experiment_id}")
-        logger.info(f"Variant: {variant}")
-        logger.info(f"Personas: {len(persona_ids)}")
-        logger.info(f"Scenarios: {len(scenario_ids)}")
-        logger.info(f"Total conversations: {len(persona_ids) * len(scenario_ids)}")
-        logger.info("="*80)
+        logger.info(f"Starting: {experiment_name} ({experiment_id}) — variant={variant}, "
+                    f"{len(persona_ids)} personas × {len(scenario_ids)} scenarios")
 
         started_at = datetime.now()
         conversations: List[ConversationRun] = []
 
         personas = [self.persona_loader.load(pid) for pid in persona_ids]
         scenarios = [self.scenario_loader.load(sid) for sid in scenario_ids]
-
         total = len(personas) * len(scenarios)
         current = 0
 
         for persona in personas:
             for scenario in scenarios:
                 current += 1
-                logger.info(f"\n[{current}/{total}] Running: {persona.id} × {scenario.id}")
+                logger.info(f"[{current}/{total}] {persona.id} × {scenario.id}")
 
                 try:
                     conv_result = self.orchestrator.run_conversation(
@@ -149,26 +101,20 @@ class ExperimentRunner:
                         transcript=conv_result["transcript"]
                     )
 
-                    heuristic_checks = self.heuristic_evaluator.evaluate(
-                        conv_result["transcript"]
-                    )
-
+                    heuristic_checks = self.heuristic_evaluator.evaluate(conv_result["transcript"])
                     critical_failures = [
                         check.check_name
                         for check in heuristic_checks
                         if not check.passed and check.severity == "critical"
                     ]
-
                     heuristic_results = HeuristicResults(
                         checks=heuristic_checks,
                         all_passed=all(check.passed for check in heuristic_checks),
                         critical_failures=critical_failures
                     )
 
-                    run_id = f"run_{experiment_id}_{current:03d}"
-
                     conversation_run = ConversationRun(
-                        run_id=run_id,
+                        run_id=f"run_{experiment_id}_{current:03d}",
                         experiment_id=experiment_id,
                         persona_id=persona.id,
                         scenario_id=scenario.id,
@@ -188,37 +134,28 @@ class ExperimentRunner:
                             "max_turns": self.max_turns
                         }
                     )
-
                     conversations.append(conversation_run)
 
                     logger.info(
-                        f"✓ Completed: {conv_result['total_turns']} turns, "
+                        f"✓ {conv_result['total_turns']} turns, "
                         f"score: {llm_scores.overall_weighted:.3f}, "
                         f"reason: {conv_result['termination'].reason}"
                     )
 
                 except Exception as e:
-                    logger.error(
-                        f"✗ Failed: {persona.id} × {scenario.id}: {e}",
-                        exc_info=True
-                    )
+                    logger.error(f"✗ {persona.id} × {scenario.id}: {e}", exc_info=True)
                     continue
 
         completed_at = datetime.now()
         duration = (completed_at - started_at).total_seconds()
+        logger.info(f"Done in {duration:.1f}s — {len(conversations)}/{total} conversations succeeded")
 
-        logger.info(f"\n{'='*80}")
-        logger.info(f"Experiment completed in {duration:.1f} seconds")
-        logger.info(f"Successful conversations: {len(conversations)}/{total}")
-
-        summary = self._compute_summary(conversations)
-
-        experiment_run = ExperimentRun(
+        return ExperimentRun(
             experiment_id=experiment_id,
             experiment_name=experiment_name,
             variant=variant,
             conversations=conversations,
-            summary=summary,
+            summary=self._compute_summary(conversations),
             started_at=started_at,
             completed_at=completed_at,
             total_duration_seconds=duration,
@@ -230,96 +167,42 @@ class ExperimentRunner:
             vodacare_api_url=self.vodacare_api_url
         )
 
-        return experiment_run
-
-    def _compute_summary(
-        self,
-        conversations: List[ConversationRun]
-    ) -> SummaryStatistics:
-        """Compute summary statistics from conversations."""
-
+    def _compute_summary(self, conversations: List[ConversationRun]) -> SummaryStatistics:
         if not conversations:
             return SummaryStatistics(
-                total_conversations=0,
-                successful_conversations=0,
-                avg_task_success=0.0,
-                avg_clarity=0.0,
-                avg_empathy=0.0,
-                avg_overall_score=0.0,
-                termination_reasons={},
-                heuristic_pass_rate=0.0,
-                critical_failure_rate=0.0,
-                avg_conversation_length=0.0,
-                avg_latency_ms=0.0
+                total_conversations=0, successful_conversations=0,
+                avg_task_success=0.0, avg_clarity=0.0, avg_empathy=0.0,
+                avg_overall_score=0.0, termination_reasons={},
+                heuristic_pass_rate=0.0, critical_failure_rate=0.0,
+                avg_conversation_length=0.0, avg_latency_ms=0.0
             )
 
         total = len(conversations)
+        successful = sum(1 for c in conversations if c.llm_evaluation.task_success >= 0.7)  # task_success >= 0.7
 
-        # Count successful (task_success >= 0.7)
-        successful = sum(
-            1 for conv in conversations
-            if conv.llm_evaluation.task_success >= 0.7
-        )
-
-        avg_task_success = sum(
-            conv.llm_evaluation.task_success for conv in conversations
-        ) / total
-
-        avg_clarity = sum(
-            conv.llm_evaluation.clarity for conv in conversations
-        ) / total
-
-        avg_empathy = sum(
-            conv.llm_evaluation.empathy for conv in conversations
-        ) / total
-
-        avg_overall = sum(
-            conv.llm_evaluation.overall_weighted for conv in conversations
-        ) / total
+        avg_task_success = sum(c.llm_evaluation.task_success for c in conversations) / total
+        avg_clarity = sum(c.llm_evaluation.clarity for c in conversations) / total
+        avg_empathy = sum(c.llm_evaluation.empathy for c in conversations) / total
+        avg_overall = sum(c.llm_evaluation.overall_weighted for c in conversations) / total
 
         termination_reasons = defaultdict(int)
-        for conv in conversations:
-            termination_reasons[conv.termination.reason] += 1
+        for c in conversations:
+            termination_reasons[c.termination.reason] += 1
 
-        heuristic_pass_rate = sum(
-            1 for conv in conversations
-            if conv.heuristic_results.all_passed
-        ) / total
-
-        critical_failure_rate = sum(
-            1 for conv in conversations
-            if conv.heuristic_results.critical_failures
-        ) / total
-
-        avg_length = sum(
-            conv.total_turns for conv in conversations
-        ) / total
-
-        avg_latency = sum(
-            conv.average_latency_ms for conv in conversations
-        ) / total
+        heuristic_pass_rate = sum(1 for c in conversations if c.heuristic_results.all_passed) / total
+        critical_failure_rate = sum(1 for c in conversations if c.heuristic_results.critical_failures) / total
+        avg_length = sum(c.total_turns for c in conversations) / total
+        avg_latency = sum(c.average_latency_ms for c in conversations) / total
 
         scores_by_persona = defaultdict(list)
-        for conv in conversations:
-            scores_by_persona[conv.persona_id].append(
-                conv.llm_evaluation.overall_weighted
-            )
-
-        avg_by_persona = {
-            persona_id: sum(scores) / len(scores)
-            for persona_id, scores in scores_by_persona.items()
-        }
+        for c in conversations:
+            scores_by_persona[c.persona_id].append(c.llm_evaluation.overall_weighted)
+        avg_by_persona = {k: sum(v) / len(v) for k, v in scores_by_persona.items()}
 
         scores_by_scenario = defaultdict(list)
-        for conv in conversations:
-            scores_by_scenario[conv.scenario_id].append(
-                conv.llm_evaluation.overall_weighted
-            )
-
-        avg_by_scenario = {
-            scenario_id: sum(scores) / len(scores)
-            for scenario_id, scores in scores_by_scenario.items()
-        }
+        for c in conversations:
+            scores_by_scenario[c.scenario_id].append(c.llm_evaluation.overall_weighted)
+        avg_by_scenario = {k: sum(v) / len(v) for k, v in scores_by_scenario.items()}
 
         return SummaryStatistics(
             total_conversations=total,

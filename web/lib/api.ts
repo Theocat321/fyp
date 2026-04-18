@@ -11,7 +11,6 @@ export type ChatResponse = {
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
 function apiUrl(path: string) {
-  // If a localhost base is set but we're not on localhost (e.g., Vercel), ignore it.
   try {
     if (typeof window !== "undefined") {
       const onLocalhost = /localhost|127\.0\.0\.1/.test(window.location.host);
@@ -96,7 +95,6 @@ export async function sendMessageStream(
           if (line.startsWith("event:")) {
             eventType = line.slice(6).trim();
           } else if (line.startsWith("data:")) {
-            // Per SSE spec, remove one optional leading space after the colon only
             let v = line.slice(5);
             if (v.startsWith(" ")) v = v.slice(1);
             dataLines.push(v);
