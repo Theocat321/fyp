@@ -29,7 +29,7 @@ from typing import List, Dict, Any, Optional
 from collections import defaultdict
 
 # Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from config.settings import settings
 from src.evaluator.llm_judge import LLMJudge
@@ -47,7 +47,7 @@ from src.persona.models import Persona, BehavioralTraits, ConversationParameters
 from src.scenario.models import Scenario, SuccessCriteria
 
 # Add server app to path to use its storage module
-server_path = Path(__file__).parent.parent / "server"
+server_path = Path(__file__).parent.parent.parent / "server"
 sys.path.insert(0, str(server_path))
 
 from app.storage import SupabaseStore

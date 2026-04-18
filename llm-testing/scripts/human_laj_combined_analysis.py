@@ -16,8 +16,8 @@ from typing import List, Dict, Any, Optional
 from collections import defaultdict
 
 # Add paths
-sys.path.insert(0, str(Path(__file__).parent))
-sys.path.insert(0, str(Path(__file__).parent.parent / "server"))
+sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "server"))
 
 import requests
 from dotenv import load_dotenv
@@ -28,7 +28,7 @@ except ImportError:
     OpenAI = None
 
 # Load environment
-load_dotenv(Path(__file__).parent.parent / ".env")
+load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 # Configure logging
 logging.basicConfig(

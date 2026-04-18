@@ -17,6 +17,9 @@ from datetime import datetime
 from typing import List, Dict, Any
 from collections import defaultdict
 
+# Add llm-testing/ to path so config/src packages resolve
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from config.settings import settings
 from src.evaluator.llm_judge import LLMJudge
 from src.evaluator.heuristics import HeuristicEvaluator

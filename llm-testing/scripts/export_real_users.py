@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 # Add server app to path to use its storage module
-sys.path.insert(0, str(Path(__file__).parent.parent / "server"))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "server"))
 
 from app.storage import SupabaseStore
 

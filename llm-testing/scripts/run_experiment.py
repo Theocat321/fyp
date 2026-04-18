@@ -10,6 +10,10 @@ Usage:
 import argparse
 import logging
 import sys
+from pathlib import Path
+
+# Add llm-testing/ to path so config/src packages resolve
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from config.settings import settings
 from src.persona.loader import PersonaLoader
