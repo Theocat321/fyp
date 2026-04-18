@@ -5,11 +5,12 @@ and bucket them into separate text files for Group A and Group B.
 """
 
 import os
+from pathlib import Path
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv('/Users/stagcto/fyp/.env')
+load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 SUPABASE_URL = os.getenv('SUPABASE_URL')
 SUPABASE_SERVICE_ROLE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
@@ -43,7 +44,7 @@ def extract_feedback():
                 group_b_feedback.append(entry)
 
     # Write Group A feedback to file
-    with open('/Users/stagcto/fyp/group_a_feedback.txt', 'w') as f:
+    with open(Path(__file__).parent.parent / "outputs" / "group_a_feedback.txt", 'w') as f:
         f.write(f"=== GROUP A HUMAN FEEDBACK ===\n")
         f.write(f"Total feedback entries: {len(group_a_feedback)}\n\n")
         for i, feedback in enumerate(group_a_feedback, 1):
@@ -55,7 +56,7 @@ def extract_feedback():
             f.write("\n" + "="*80 + "\n\n")
 
     # Write Group B feedback to file
-    with open('/Users/stagcto/fyp/group_b_feedback.txt', 'w') as f:
+    with open(Path(__file__).parent.parent / "outputs" / "group_b_feedback.txt", 'w') as f:
         f.write(f"=== GROUP B HUMAN FEEDBACK ===\n")
         f.write(f"Total feedback entries: {len(group_b_feedback)}\n\n")
         for i, feedback in enumerate(group_b_feedback, 1):

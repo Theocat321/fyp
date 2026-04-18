@@ -5,10 +5,11 @@ and bucket them into separate text files for Group A and Group B.
 """
 
 import json
+from pathlib import Path
 
 def extract_and_bucket_responses():
     # Load the JSON data
-    with open('/Users/stagcto/fyp/llm-testing/human_laj_combined_analysis.json', 'r') as f:
+    with open(Path(__file__).parent.parent / "outputs" / "human_laj_combined_analysis.json", 'r') as f:
         data = json.load(f)
 
     # Extract responses for Group A
@@ -34,7 +35,7 @@ def extract_and_bucket_responses():
                 })
 
     # Write Group A responses to file
-    with open('/Users/stagcto/fyp/group_a_responses.txt', 'w') as f:
+    with open(Path(__file__).parent.parent / "outputs" / "group_a_responses.txt", 'w') as f:
         f.write(f"=== GROUP A RESPONSES ===\n")
         f.write(f"Total responses: {len(group_a_responses)}\n\n")
         for i, response in enumerate(group_a_responses, 1):
@@ -43,7 +44,7 @@ def extract_and_bucket_responses():
             f.write("\n\n")
 
     # Write Group B responses to file
-    with open('/Users/stagcto/fyp/group_b_responses.txt', 'w') as f:
+    with open(Path(__file__).parent.parent / "outputs" / "group_b_responses.txt", 'w') as f:
         f.write(f"=== GROUP B RESPONSES ===\n")
         f.write(f"Total responses: {len(group_b_responses)}\n\n")
         for i, response in enumerate(group_b_responses, 1):
