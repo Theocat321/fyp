@@ -1,0 +1,23 @@
+Source,Metric,Mean_A,Mean_B,Delta,t,df,p,Sig,Cohens_d,Effect_Size,CI_Lower,CI_Upper
+Human Self-Rating,Overall,3.900,3.910,-0.010,-0.051,71.4,0.9593,,-0.011,negligible,-0.3991,0.3791
+Human Self-Rating,Task Success,4.060,4.060,0.000,0.000,78.9,1.0000,,0.000,negligible,-0.4273,0.4273
+Human Self-Rating,Clarity,4.040,3.910,0.130,0.707,71.5,0.4821,,0.157,negligible,-0.2368,0.4968
+Human Self-Rating,Empathy,4.500,3.900,0.600,2.996,52.5,0.0042,**,0.722,medium,0.1982,1.0018
+Human Self-Rating,Accuracy,4.040,3.880,0.160,0.870,71.5,0.3874,,0.193,negligible,-0.2068,0.5268
+Human LAJ,Overall,0.890,0.820,0.070,3.391,57.3,0.0013,**,0.793,medium,0.0287,0.1113
+Human LAJ,Task Success,0.830,0.830,0.000,0.000,68.3,1.0000,,0.000,negligible,-0.0799,0.0799
+Human LAJ,Clarity,0.910,0.890,0.020,1.178,61.5,0.2433,,0.270,small,-0.0139,0.0539
+Human LAJ,Empathy,0.960,0.600,0.360,13.136,38.6,0.0000,***,3.450,large,0.3045,0.4155
+Simulation LAJ,Overall,0.563,0.514,0.049,2.310,198.0,0.0219,*,0.327,small,0.0072,0.0908
+Simulation LAJ,Task Success,0.347,0.351,-0.004,-0.129,198.0,0.8978,,-0.018,negligible,-0.0654,0.0574
+Simulation LAJ,Clarity,0.709,0.721,-0.012,-0.707,198.0,0.4803,,-0.100,negligible,-0.0455,0.0215
+Simulation LAJ,Empathy,0.844,0.545,0.299,13.821,172.5,0.0000,***,1.955,large,0.2563,0.3417
+Telemetry,Session duration (s),323.000,428.000,-105.000,-3.516,63.6,0.0008,***,-0.791,medium,-164.6611,-45.3389
+Telemetry,User turns,3.900,4.400,-0.500,-1.378,65.6,0.1729,,-0.308,small,-1.2245,0.2245
+Telemetry,Typing dur/turn (s),19.000,12.000,7.000,5.106,87.7,0.0000,***,1.005,large,4.2753,9.7247
+Telemetry,Reply latency (s),3.900,3.500,0.400,1.400,85.0,0.1652,,0.288,small,-0.1682,0.9682
+
+Source,Test,Statistic,p,Sig,Note
+Simulation Outcomes,Outcome distribution (4-cat),χ²(3) = 1.600,0.6594,,Resolved/Escalation/Stalemate/Patience
+Simulation Outcomes,Critical failure (A:5% vs B:18%),"χ²(1,Yates) = 7.074; Fisher OR = 0.240",0.0067,**,Fisher's exact preferred for small cells
+Simulation Outcomes,Heuristic pass (A:81% vs B:73%),"χ²(1,Yates) = 1.383; Fisher OR = 1.577",0.2393,,
